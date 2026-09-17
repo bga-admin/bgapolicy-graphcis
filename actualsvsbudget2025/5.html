@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Percent over/underspend against departmental budget, 2025</title>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+  <style>
+:root {
+  --navy: #002344;
+  --blue: #003A63;
+  --mid: #4F89A8;
+  --sky: #9ECBDD;
+  --yellow: #F6AE2D;
+  --ink: #1A1A1A;
+  --muted: #66767E;
+  --grid: #E2EAEE;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #fff; }
+body { font-family: "Synthese", "Helvetica Neue", Arial, sans-serif; color: var(--ink); }
+.graphic {
+  width: 100%;
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 18px 16px 12px;
+  background: #fff;
+}
+.graphic h2 {
+  margin: 0 0 12px;
+  max-width: 820px;
+  color: var(--navy);
+  font-size: clamp(20px, 2.7vw, 28px);
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+  font-weight: 800;
+}
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px 16px;
+  margin: 0 0 8px;
+}
+.legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #44545B;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+.legend-swatch { width: 10px; height: 10px; display: block; flex: 0 0 10px; }
+.chart-host { position: relative; width: 100%; min-height: 260px; }
+.chart-host svg { display: block; width: 100%; overflow: visible; }
+.d3-tooltip {
+  position: absolute;
+  z-index: 10;
+  width: 210px;
+  pointer-events: none;
+  display: none;
+  background: #fff;
+  border: 1px solid #C9DCE4;
+  padding: 10px 11px;
+  box-shadow: 0 8px 22px rgba(0, 35, 68, .12);
+  clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+  color: var(--ink);
+  font-size: 12px;
+}
+.tt-title { margin-bottom: 5px; color: var(--navy); font-weight: 800; }
+.tt-row { display: flex; justify-content: space-between; gap: 12px; padding: 2px 0; }
+.tt-row strong { font-variant-numeric: tabular-nums; }
+/* Optional source + data table styles. The markup is commented out below. */
+.graphic-meta { margin-top: 8px; }
+.source { margin: 0 0 8px; color: var(--muted); font-size: 11px; line-height: 1.4; }
+.data-details { border-top: 1px solid var(--grid); padding-top: 8px; }
+.data-details summary { cursor: pointer; color: var(--blue); font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .05em; }
+.table-wrap { max-height: 340px; overflow: auto; margin-top: 8px; border: 1px solid var(--grid); }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th, td { padding: 7px 8px; border-bottom: 1px solid #E9EFF2; text-align: left; white-space: nowrap; }
+th { position: sticky; top: 0; background: var(--navy); color: #fff; }
+td.numeric { text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 640px) {
+  .graphic { padding: 14px 10px 10px; }
+  .graphic h2 { margin-bottom: 10px; }
+  .legend { gap: 6px 12px; }
+  .legend-item { font-size: 11px; }
+}
+</style>
+</head>
+<body>
+  <main class="graphic">
+    <h2>Percent over/underspend against departmental budget, 2025</h2>
+    <div class="legend" aria-label="Legend"><span class="legend-item"><i class="legend-swatch" style="background:#F6AE2D"></i>Over budget</span><span class="legend-item"><i class="legend-swatch" style="background:#4F89A8"></i>Under budget</span></div>
+    <div id="chart" class="chart-host"></div>
+    <!-- OPTIONAL META — uncomment if you want source + data table back later.
+<footer class="graphic-meta">
+  <p class="source">Source: City of Chicago Department of Finance.</p>
+  <details class="data-details">
+  <summary>View data</summary>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Department</th><th>Percent over/underspend</th></tr></thead>
+      <tbody><tr><td>CFD</td><td class="numeric">+9.8%</td></tr><tr><td>CPD</td><td class="numeric">+7.7%</td></tr><tr><td>CCHR</td><td class="numeric">+2.4%</td></tr><tr><td>CPL</td><td class="numeric">−1.4%</td></tr><tr><td>OBM</td><td class="numeric">−2.4%</td></tr><tr><td>BACP</td><td class="numeric">−2.6%</td></tr><tr><td>COUNCIL</td><td class="numeric">−2.7%</td></tr><tr><td>LAW</td><td class="numeric">−3.0%</td></tr><tr><td>MOPD</td><td class="numeric">−3.8%</td></tr><tr><td>DSS</td><td class="numeric">−4.0%</td></tr><tr><td>COPA</td><td class="numeric">−5.8%</td></tr><tr><td>ENVIRO</td><td class="numeric">−6.0%</td></tr><tr><td>OIG</td><td class="numeric">−6.1%</td></tr><tr><td>DWM</td><td class="numeric">−6.4%</td></tr><tr><td>DCASE</td><td class="numeric">−6.9%</td></tr><tr><td>CDOT</td><td class="numeric">−7.7%</td></tr><tr><td>DHR</td><td class="numeric">−8.9%</td></tr><tr><td>DOF</td><td class="numeric">−9.4%</td></tr><tr><td>CACC</td><td class="numeric">−9.7%</td></tr><tr><td>OEMC</td><td class="numeric">−9.8%</td></tr><tr><td>AIS</td><td class="numeric">−10.7%</td></tr><tr><td>DOB</td><td class="numeric">−11.2%</td></tr><tr><td>DPS</td><td class="numeric">−11.3%</td></tr><tr><td>DFSS</td><td class="numeric">−11.6%</td></tr><tr><td>DOAH</td><td class="numeric">−12.2%</td></tr><tr><td>CLERK</td><td class="numeric">−13.6%</td></tr><tr><td>DOH</td><td class="numeric">−14.4%</td></tr><tr><td>CCPSA</td><td class="numeric">−14.5%</td></tr><tr><td>PSA</td><td class="numeric">−14.8%</td></tr><tr><td>DOTI</td><td class="numeric">−15.7%</td></tr><tr><td>CDA</td><td class="numeric">−16.1%</td></tr><tr><td>CDPH</td><td class="numeric">−16.7%</td></tr><tr><td>POLICE BOARD</td><td class="numeric">−16.7%</td></tr><tr><td>CTO</td><td class="numeric">−18.6%</td></tr><tr><td>LAC</td><td class="numeric">−18.9%</td></tr><tr><td>MAYOR</td><td class="numeric">−24.5%</td></tr><tr><td>ETHICS</td><td class="numeric">−28.7%</td></tr><tr><td>ELECTIONS</td><td class="numeric">−52.9%</td></tr><tr><td>DPD</td><td class="numeric">−87.0%</td></tr></tbody>
+    </table>
+  </div>
+</details>
+</footer>
+END OPTIONAL META -->
+  </main>
+  <script>
+const CONFIG = {"type":"divergingHorizontal","title":"Percent over/underspend against departmental budget, 2025","data":[{"department":"CFD","variance":0.098},{"department":"CPD","variance":0.077},{"department":"CCHR","variance":0.024},{"department":"CPL","variance":-0.014},{"department":"OBM","variance":-0.024},{"department":"BACP","variance":-0.026},{"department":"COUNCIL","variance":-0.027},{"department":"LAW","variance":-0.03},{"department":"MOPD","variance":-0.038},{"department":"DSS","variance":-0.04},{"department":"COPA","variance":-0.058},{"department":"ENVIRO","variance":-0.06},{"department":"OIG","variance":-0.061},{"department":"DWM","variance":-0.064},{"department":"DCASE","variance":-0.069},{"department":"CDOT","variance":-0.077},{"department":"DHR","variance":-0.089},{"department":"DOF","variance":-0.094},{"department":"CACC","variance":-0.097},{"department":"OEMC","variance":-0.098},{"department":"AIS","variance":-0.107},{"department":"DOB","variance":-0.112},{"department":"DPS","variance":-0.113},{"department":"DFSS","variance":-0.116},{"department":"DOAH","variance":-0.122},{"department":"CLERK","variance":-0.136},{"department":"DOH","variance":-0.144},{"department":"CCPSA","variance":-0.145},{"department":"PSA","variance":-0.148},{"department":"DOTI","variance":-0.157},{"department":"CDA","variance":-0.161},{"department":"CDPH","variance":-0.167},{"department":"POLICE BOARD","variance":-0.167},{"department":"CTO","variance":-0.186},{"department":"LAC","variance":-0.189},{"department":"MAYOR","variance":-0.245},{"department":"ETHICS","variance":-0.287},{"department":"ELECTIONS","variance":-0.529},{"department":"DPD","variance":-0.87}],"valueType":"percent"};
+
+const COLORS = {
+  navy: '#002344', blue: '#003A63', mid: '#4F89A8', sky: '#9ECBDD',
+  yellow: '#F6AE2D', ink: '#1A1A1A', muted: '#66767E', grid: '#E2EAEE', white: '#FFFFFF'
+};
+const FONT_SANS = '"Synthese", "Helvetica Neue", Arial, sans-serif';
+
+function exactMoney(value) {
+  const sign = value < 0 ? '−' : '';
+  return `${sign}$${d3.format(',.0f')(Math.abs(value))}`;
+}
+function compactMoney(value) {
+  const sign = value < 0 ? '−' : '';
+  const n = Math.abs(value);
+  if (n >= 1e9) return `${sign}$${d3.format('.2~f')(n / 1e9)}B`;
+  if (n >= 1e6) return `${sign}$${d3.format('.3~f')(n / 1e6)}M`;
+  if (n >= 1e3) return `${sign}$${d3.format('.3~f')(n / 1e3)}K`;
+  return `${sign}$${d3.format(',.0f')(n)}`;
+}
+function compactAxisMoney(value) {
+  const sign = value < 0 ? '−' : '';
+  const n = Math.abs(value);
+  if (n >= 1e9) return `${sign}$${d3.format('.2~f')(n / 1e9)}B`;
+  if (n >= 1e6) return `${sign}$${d3.format('.2~f')(n / 1e6)}M`;
+  if (n >= 1e3) return `${sign}$${d3.format('.2~f')(n / 1e3)}K`;
+  return `${sign}$${d3.format(',.0f')(n)}`;
+}
+function percent(value) { return d3.format('.1%')(value); }
+function signedPercent(value) {
+  if (value === 0) return '0.0%';
+  return `${value > 0 ? '+' : '−'}${d3.format('.1%')(Math.abs(value))}`;
+}
+function signedMoney(value) {
+  if (value === 0) return '$0';
+  return `${value > 0 ? '+' : '−'}${compactMoney(Math.abs(value))}`;
+}
+function millions(value) { return `$${d3.format('.1f')(value)}M`; }
+function valueFormatter(config, value, exact = false) {
+  if (config.valueType === 'percent') return exact ? percent(value) : d3.format('.0%')(value);
+  if (config.valueType === 'millions') return exact ? millions(value) : `$${d3.format('.0f')(value)}M`;
+  return exact ? exactMoney(value) : compactAxisMoney(value);
+}
+function tooltipHtml(title, rows) {
+  return `<div class="tt-title">${title}</div>${rows.map(r => `<div class="tt-row"><span>${r.label}</span><strong>${r.value}</strong></div>`).join('')}`;
+}
+function showTooltip(tooltip, event, html, host) {
+  const [x, y] = d3.pointer(event, host);
+  tooltip.html(html)
+    .style('display', 'block')
+    .style('left', `${Math.max(4, Math.min(x + 14, host.clientWidth - 220))}px`)
+    .style('top', `${Math.max(8, y - 12)}px`);
+}
+function hideTooltip(tooltip) { tooltip.style('display', 'none'); }
+function styleAxis(g) {
+  g.select('.domain').remove();
+  g.selectAll('text').attr('fill', COLORS.muted).attr('font-family', FONT_SANS).attr('font-size', 11);
+  g.selectAll('line').attr('stroke', COLORS.grid);
+}
+function makeSvg(host, height) {
+  const width = Math.max(host.clientWidth || 680, 320);
+  d3.select(host).selectAll('*').remove();
+  const tooltip = d3.select(host).append('div').attr('class', 'd3-tooltip');
+  const svg = d3.select(host).append('svg')
+    .attr('viewBox', `0 0 ${width} ${height}`)
+    .attr('role', 'img')
+    .attr('aria-label', CONFIG.title)
+    .attr('height', height);
+  return { svg, tooltip, width };
+}
+function emphasizeLatestTick(axis, year) {
+  if (!year) return;
+  axis.selectAll('.tick text').filter(d => String(d) === String(year)).attr('fill', COLORS.navy).attr('font-weight', 800);
+}
+
+function drawStackedHorizontal(host, config) {
+  const rowH = host.clientWidth < 520 ? 26 : 23;
+  const height = Math.max(500, config.data.length * rowH + 72);
+  const { svg, tooltip, width } = makeSvg(host, height);
+  const margin = { top: 10, right: 18, bottom: 38, left: width < 520 ? 74 : 88 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+  const data = config.data;
+  const max = d3.max(data, d => d.total) || 1;
+  const x = d3.scaleLinear().domain([0, max]).nice(5).range([0, innerW]);
+  const y = d3.scaleBand().domain(data.map(d => d.department)).range([0, innerH]).padding(0.24);
+  const xAxis = g.append('g').attr('transform', `translate(0,${innerH})`).call(
+    d3.axisBottom(x).ticks(width < 520 ? 3 : 5).tickSize(-innerH).tickFormat(compactAxisMoney)
+  );
+  styleAxis(xAxis);
+  const yAxis = g.append('g').call(d3.axisLeft(y).tickSize(0));
+  styleAxis(yAxis);
+  yAxis.selectAll('text').attr('fill', COLORS.ink).attr('font-weight', 600);
+  config.series.forEach((series, seriesIndex) => {
+    g.selectAll(`.segment-${series.key}`)
+      .data(data.filter(d => (d[series.key] || 0) > 0)).join('rect')
+      .attr('x', d => {
+        let start = 0;
+        for (let i = 0; i < seriesIndex; i++) start += d[config.series[i].key] || 0;
+        return x(start);
+      })
+      .attr('y', d => y(d.department))
+      .attr('width', d => x(d[series.key] || 0) - x(0))
+      .attr('height', y.bandwidth())
+      .attr('fill', series.color)
+      .on('mouseenter mousemove', function(event, d) {
+        d3.select(this).attr('opacity', .82);
+        showTooltip(tooltip, event, tooltipHtml(d.department, [
+          {label:'Budget spent', value:exactMoney(d.spent || 0)},
+          {label:'Budget unspent', value:exactMoney(d.unspent || 0)},
+          {label:'Overspend', value:exactMoney(d.overspend || 0)},
+          {label:'Total shown', value:exactMoney(d.total || 0)}
+        ]), host);
+      })
+      .on('mouseleave', function() { d3.select(this).attr('opacity', 1); hideTooltip(tooltip); });
+  });
+}
+
+function drawGroupedYear(host, config) {
+  const height = host.clientWidth < 520 ? 390 : 440;
+  const { svg, tooltip, width } = makeSvg(host, height);
+  const margin = { top: 12, right: 18, bottom: 42, left: width < 520 ? 54 : 70 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+  const rows = config.years.map(year => {
+    const row = { year };
+    config.departments.forEach(department => {
+      const match = config.data.find(d => d.year === year && d.department === department);
+      row[department] = match ? match.value : null;
+    });
+    return row;
+  });
+  const max = d3.max(config.data, d => d.value) || 1;
+  const x0 = d3.scaleBand().domain(config.years).range([0, innerW]).padding(0.24);
+  const x1 = d3.scaleBand().domain(config.departments).range([0, x0.bandwidth()]).padding(0.12);
+  const y = d3.scaleLinear().domain([0, max]).nice(5).range([innerH, 0]);
+  const yAxis = g.append('g').call(d3.axisLeft(y).ticks(5).tickSize(-innerW).tickFormat(d => valueFormatter(config, d)));
+  styleAxis(yAxis);
+  const xAxis = g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x0).tickSize(0));
+  styleAxis(xAxis);
+  xAxis.selectAll('text').attr('fill', COLORS.ink).attr('font-weight', 700);
+  emphasizeLatestTick(xAxis, '2025');
+  const yearG = g.selectAll('.year-group').data(rows).join('g').attr('class','year-group').attr('transform', d => `translate(${x0(d.year)},0)`);
+  const barData = d => config.departments.map(department => ({year:d.year, department, value:d[department]})).filter(d => d.value != null);
+  yearG.selectAll('rect').data(barData).join('rect')
+    .attr('x', d => x1(d.department)).attr('y', d => y(d.value))
+    .attr('width', x1.bandwidth()).attr('height', d => innerH - y(d.value))
+    .attr('fill', d => config.colors[d.department])
+    .on('mouseenter mousemove', function(event, d) {
+      d3.select(this).attr('opacity', .82);
+      showTooltip(tooltip, event, tooltipHtml(`${d.department} · ${d.year}`, [{label:'Overspend', value:valueFormatter(config, d.value, true)}]), host);
+    })
+    .on('mouseleave', function() { d3.select(this).attr('opacity', 1); hideTooltip(tooltip); });
+  yearG.selectAll('.direct-label').data(barData).join('text').attr('class','direct-label')
+    .attr('x', d => x1(d.department) + x1.bandwidth()/2).attr('y', d => Math.max(12, y(d.value)-5))
+    .attr('text-anchor','middle').attr('fill', COLORS.ink).attr('font-family', FONT_SANS)
+    .attr('font-size', width < 520 ? 9 : 10).attr('font-weight', 700)
+    .text(d => valueFormatter(config, d.value, true));
+}
+
+function drawDivergingHorizontal(host, config) {
+  const sorted = [...config.data].sort((a,b) => b.variance - a.variance);
+  const rowH = host.clientWidth < 520 ? 26 : 23;
+  const height = Math.max(500, sorted.length * rowH + 74);
+  const { svg, tooltip, width } = makeSvg(host, height);
+  const margin = { top: 10, right: width < 520 ? 52 : 72, bottom: 40, left: width < 520 ? 74 : 88 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+  const min = d3.min(sorted, d => d.variance) || 0;
+  const max = d3.max(sorted, d => d.variance) || 0;
+  const pad = (max - min) * .035;
+  const x = d3.scaleLinear().domain([min-pad, max+pad]).nice(5).range([0, innerW]);
+  const y = d3.scaleBand().domain(sorted.map(d => d.department)).range([0, innerH]).padding(.24);
+  const xAxis = g.append('g').attr('transform', `translate(0,${innerH})`).call(d3.axisBottom(x).ticks(width<520?4:6).tickSize(-innerH).tickFormat(d => valueFormatter(config,d)));
+  styleAxis(xAxis);
+  const yAxis = g.append('g').call(d3.axisLeft(y).tickSize(0));
+  styleAxis(yAxis);
+  yAxis.selectAll('text').attr('fill', COLORS.ink).attr('font-weight', 600);
+  g.append('line').attr('x1',x(0)).attr('x2',x(0)).attr('y1',0).attr('y2',innerH).attr('stroke',COLORS.ink).attr('stroke-width',1.2);
+  g.selectAll('.variance-bar').data(sorted).join('rect').attr('class','variance-bar')
+    .attr('x', d => x(Math.min(0,d.variance))).attr('y', d => y(d.department))
+    .attr('width', d => Math.abs(x(d.variance)-x(0))).attr('height', y.bandwidth())
+    .attr('fill', d => d.variance > 0 ? COLORS.yellow : COLORS.mid)
+    .on('mouseenter mousemove', function(event,d) {
+      d3.select(this).attr('opacity',.82);
+      showTooltip(tooltip,event,tooltipHtml(d.department,[{label:d.variance>0?'Over budget':'Under budget',value:valueFormatter(config,Math.abs(d.variance),true)}]),host);
+    })
+    .on('mouseleave', function(){ d3.select(this).attr('opacity',1); hideTooltip(tooltip); });
+  g.selectAll('.variance-label').data(sorted).join('text').attr('class','variance-label')
+    .attr('x',d=>x(d.variance)+(d.variance>=0?5:-5)).attr('y',d=>y(d.department)+y.bandwidth()/2+3.5)
+    .attr('text-anchor',d=>d.variance>=0?'start':'end').attr('font-family',FONT_SANS)
+    .attr('font-size',width<520?8.5:9.5).attr('font-weight',700).attr('fill',COLORS.ink)
+    .text(d=>config.valueType==='percent'?signedPercent(d.variance):signedMoney(d.variance));
+}
+
+function drawStackedColumn(host, config) {
+  const height = host.clientWidth < 520 ? 400 : 450;
+  const { svg, tooltip, width } = makeSvg(host, height);
+  const margin = { top: 20, right: 18, bottom: 42, left: width < 520 ? 54 : 72 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+  const x = d3.scaleBand().domain(config.data.map(d=>String(d.year))).range([0,innerW]).padding(.28);
+  const stack = d3.stack().keys(config.series.map(d=>d.key)).value((d,key)=>d[key]||0);
+  const stacked = stack(config.data);
+  const max = d3.max(config.data,d=>d3.sum(config.series,s=>d[s.key]||0))||1;
+  const y = d3.scaleLinear().domain([0,max]).nice(5).range([innerH,0]);
+  const yAxis = g.append('g').call(d3.axisLeft(y).ticks(5).tickSize(-innerW).tickFormat(d=>valueFormatter(config,d)));
+  styleAxis(yAxis);
+  const xAxis = g.append('g').attr('transform',`translate(0,${innerH})`).call(d3.axisBottom(x).tickSize(0));
+  styleAxis(xAxis);
+  xAxis.selectAll('text').attr('fill',COLORS.ink).attr('font-weight',700);
+  emphasizeLatestTick(xAxis, config.highlightYear);
+  const layer = g.selectAll('.stack-layer').data(stacked).join('g').attr('class','stack-layer').attr('fill',d=>config.series.find(s=>s.key===d.key).color);
+  layer.selectAll('rect').data(d=>d.map(segment=>({segment,key:d.key,row:segment.data}))).join('rect')
+    .attr('x',d=>x(String(d.row.year))).attr('y',d=>y(d.segment[1]))
+    .attr('height',d=>Math.max(0,y(d.segment[0])-y(d.segment[1]))).attr('width',x.bandwidth())
+    .on('mouseenter mousemove',function(event,d){
+      d3.select(this).attr('opacity',.82);
+      const total=d3.sum(config.series,s=>d.row[s.key]||0);
+      const series=config.series.find(s=>s.key===d.key);
+      showTooltip(tooltip,event,tooltipHtml(String(d.row.year),[{label:series.label,value:valueFormatter(config,d.row[d.key]||0,true)},{label:'Total',value:valueFormatter(config,total,true)}]),host);
+    })
+    .on('mouseleave',function(){d3.select(this).attr('opacity',1);hideTooltip(tooltip);});
+  stacked.forEach(seriesLayer=>{
+    g.selectAll(`.label-${seriesLayer.key}`).data(seriesLayer.map(segment=>({segment,row:segment.data,key:seriesLayer.key,value:segment.data[seriesLayer.key]||0})).filter(d=>y(d.segment[0])-y(d.segment[1])>22&&d.value>0)).join('text')
+      .attr('x',d=>x(String(d.row.year))+x.bandwidth()/2).attr('y',d=>(y(d.segment[0])+y(d.segment[1]))/2+4)
+      .attr('text-anchor','middle').attr('font-family',FONT_SANS).attr('font-size',width<520?9:10).attr('font-weight',700)
+      .attr('fill',d=>{const s=config.series.find(item=>item.key===d.key);return s.color===COLORS.yellow||s.color===COLORS.sky?COLORS.ink:COLORS.white;})
+      .text(d=>valueFormatter(config,d.value,true));
+  });
+  g.selectAll('.total-label').data(config.data).join('text').attr('class','total-label')
+    .attr('x',d=>x(String(d.year))+x.bandwidth()/2).attr('y',d=>y(d3.sum(config.series,s=>d[s.key]||0))-7)
+    .attr('text-anchor','middle').attr('font-family',FONT_SANS).attr('font-size',width<520?9:10).attr('font-weight',800).attr('fill',COLORS.ink)
+    .text(d=>valueFormatter(config,d3.sum(config.series,s=>d[s.key]||0),true));
+}
+
+function drawSimpleColumn(host, config) {
+  const height = host.clientWidth < 520 ? 360 : 410;
+  const { svg, tooltip, width } = makeSvg(host, height);
+  const margin = { top: 20, right: 18, bottom: 42, left: width < 520 ? 54 : 70 };
+  const innerW = width - margin.left - margin.right;
+  const innerH = height - margin.top - margin.bottom;
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+  const x = d3.scaleBand().domain(config.data.map(d=>String(d.year))).range([0,innerW]).padding(.42);
+  const y = d3.scaleLinear().domain([0,d3.max(config.data,d=>d.value)||1]).nice(5).range([innerH,0]);
+  const yAxis = g.append('g').call(d3.axisLeft(y).ticks(5).tickSize(-innerW).tickFormat(d=>valueFormatter(config,d)));
+  styleAxis(yAxis);
+  const xAxis = g.append('g').attr('transform',`translate(0,${innerH})`).call(d3.axisBottom(x).tickSize(0));
+  styleAxis(xAxis);
+  xAxis.selectAll('text').attr('fill',COLORS.ink).attr('font-weight',700);
+  emphasizeLatestTick(xAxis, config.highlightYear);
+  g.selectAll('rect.data-bar').data(config.data).join('rect').attr('class','data-bar')
+    .attr('x',d=>x(String(d.year))).attr('y',d=>y(d.value)).attr('width',x.bandwidth()).attr('height',d=>innerH-y(d.value)).attr('fill',config.color)
+    .on('mouseenter mousemove',function(event,d){d3.select(this).attr('opacity',.82);showTooltip(tooltip,event,tooltipHtml(String(d.year),[{label:'Personnel services overspend',value:exactMoney(d.value)}]),host);})
+    .on('mouseleave',function(){d3.select(this).attr('opacity',1);hideTooltip(tooltip);});
+  g.selectAll('.bar-label').data(config.data).join('text').attr('class','bar-label')
+    .attr('x',d=>x(String(d.year))+x.bandwidth()/2).attr('y',d=>y(d.value)-8).attr('text-anchor','middle')
+    .attr('font-family',FONT_SANS).attr('font-size',11).attr('font-weight',800).attr('fill',COLORS.ink).text(d=>exactMoney(d.value));
+}
+
+function draw() {
+  const host = document.getElementById('chart');
+  if (!host) return;
+  if (CONFIG.type === 'stackedHorizontal') drawStackedHorizontal(host, CONFIG);
+  if (CONFIG.type === 'groupedYear') drawGroupedYear(host, CONFIG);
+  if (CONFIG.type === 'divergingHorizontal') drawDivergingHorizontal(host, CONFIG);
+  if (CONFIG.type === 'stackedColumn') drawStackedColumn(host, CONFIG);
+  if (CONFIG.type === 'simpleColumn') drawSimpleColumn(host, CONFIG);
+}
+let resizeTimer;
+window.addEventListener('resize', () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(draw, 120); });
+draw();
+
+  </script>
+</body>
+</html>
