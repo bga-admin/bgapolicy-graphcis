@@ -91,7 +91,7 @@ td.numeric { text-align: right; font-variant-numeric: tabular-nums; }
 <body>
   <main class="graphic">
     <h2>Net over/underspend against departmental budget, 2025</h2>
-    <div class="legend" aria-label="Legend"><span class="legend-item"><i class="legend-swatch" style="background:#F6AE2D"></i>Over budget</span><span class="legend-item"><i class="legend-swatch" style="background:#4F89A8"></i>Under budget</span></div>
+    <div class="legend" aria-label="Legend"><span class="legend-item"><i class="legend-swatch" style="background:#C4473A"></i>Over budget</span><span class="legend-item"><i class="legend-swatch" style="background:#4F89A8"></i>Under budget</span></div>
     <div id="chart" class="chart-host"></div>
     <!-- OPTIONAL META — uncomment if you want source + data table back later.
 <footer class="graphic-meta">
@@ -113,7 +113,7 @@ const CONFIG = {"type":"divergingHorizontal","title":"Net over/underspend agains
 
 const COLORS = {
   navy: '#002344', blue: '#003A63', mid: '#4F89A8', sky: '#9ECBDD',
-  yellow: '#F6AE2D', ink: '#1A1A1A', muted: '#66767E', grid: '#E2EAEE', white: '#FFFFFF'
+  yellow: '#F6AE2D', red: '#C4473A', ink: '#1A1A1A', muted: '#66767E', grid: '#E2EAEE', white: '#FFFFFF'
 };
 const FONT_SANS = '"Synthese", "Helvetica Neue", Arial, sans-serif';
 
@@ -294,7 +294,7 @@ function drawDivergingHorizontal(host, config) {
   g.selectAll('.variance-bar').data(sorted).join('rect').attr('class','variance-bar')
     .attr('x', d => x(Math.min(0,d.variance))).attr('y', d => y(d.department))
     .attr('width', d => Math.abs(x(d.variance)-x(0))).attr('height', y.bandwidth())
-    .attr('fill', d => d.variance > 0 ? COLORS.yellow : COLORS.mid)
+    .attr('fill', d => d.variance > 0 ? COLORS.red : COLORS.mid)
     .on('mouseenter mousemove', function(event,d) {
       d3.select(this).attr('opacity',.82);
       showTooltip(tooltip,event,tooltipHtml(d.department,[{label:d.variance>0?'Over budget':'Under budget',value:valueFormatter(config,Math.abs(d.variance),true)}]),host);
@@ -304,7 +304,14 @@ function drawDivergingHorizontal(host, config) {
     .attr('x',d=>x(d.variance)+(d.variance>=0?5:-5)).attr('y',d=>y(d.department)+y.bandwidth()/2+3.5)
     .attr('text-anchor',d=>d.variance>=0?'start':'end').attr('font-family',FONT_SANS)
     .attr('font-size',width<520?8.5:9.5).attr('font-weight',700).attr('fill',COLORS.ink)
-    .text(d=>config.valueType==='percent'?signedPercent(d.variance):signedMoney(d.variance));
+    .text(d=>config.valueType==='percent'?signedPercent(d.variance):signedMoney(d.variance))
+    .each(function(d) {
+      // Keep long negative bars' values inside the bar when an outside label
+      // would run into the department name at the left edge of the plot.
+      if (d.variance < 0 && x(d.variance) - 5 - this.getComputedTextLength() < 4) {
+        d3.select(this).attr('x', x(d.variance) + 6).attr('text-anchor', 'start');
+      }
+    });
 }
 
 function drawStackedColumn(host, config) {
