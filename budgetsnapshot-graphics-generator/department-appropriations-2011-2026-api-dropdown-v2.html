@@ -1,0 +1,2607 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="description" content="Department appropriations history generated live from City of Chicago budget APIs." />
+<title>Department Appropriation — Chicago City Budgets 2011–2026 (Proposed)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#FBFCFD;
+  --surface:#FFFFFF;
+  --primary:#3E7699;
+  --primary-dark:#1F4964;
+  --accent:#F9C468;
+  --text:#33383D;
+  --muted:#8B9096;
+  --border:#E7ECF0;
+  --negative:#CB7B6E;
+  --display:'Barlow Condensed',Arial,sans-serif;
+  --sans:'Inter',Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--text)}
+body{font-family:var(--sans);-webkit-font-smoothing:antialiased}
+.shell{width:min(100% - 28px,820px);margin:34px auto 70px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:26px 26px 18px}
+.card + .card{margin-top:22px}
+.eyebrow{font-size:10.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--primary);margin-bottom:6px}
+h1{font-family:var(--display);font-size:clamp(27px,4vw,35px);line-height:1.04;letter-spacing:-.012em;color:var(--primary-dark);margin:0;max-width:720px}
+.sub{font-size:12px;color:var(--muted);margin:7px 0 0}
+.status{margin:15px 0 10px;font-size:11.5px;color:var(--muted);line-height:1.45}
+.status.ready{display:none}
+.status.error{display:block;color:var(--negative);font-weight:600;background:#fff8f7;border-left:3px solid var(--negative);padding:10px 12px}
+.status.warning{display:block;color:#6f571c;background:#fffaf0;border-left:3px solid var(--accent);padding:10px 12px}
+.chart-wrap{position:relative;width:100%;min-height:300px;margin-top:8px}
+.chart-wrap svg{display:block;width:100%;height:auto;overflow:visible}
+.legend{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:10px 0 0;font-size:11px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:14px;height:10px}
+.tooltip{position:absolute;z-index:5;pointer-events:none;min-width:138px;padding:10px 11px;background:rgba(31,73,100,.96);color:#fff;border-radius:8px;box-shadow:0 8px 24px rgba(31,73,100,.18);font-size:11px;line-height:1.4;opacity:0;transform:translate(-50%,-108%);transition:opacity .08s ease}
+.tooltip.show{opacity:1}
+.tooltip .yr{font-weight:700;font-size:12px;margin-bottom:2px}
+.tooltip .amt{font-family:var(--display);font-size:20px;font-weight:800;line-height:1.05}
+.tooltip .agency{opacity:.76;margin-top:4px;font-size:9.5px}
+.foot{margin-top:12px;font-size:11.5px;line-height:1.5;color:var(--muted);font-style:italic}
+details{margin-top:15px;padding-top:14px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+summary{cursor:pointer;color:var(--primary-dark);font-weight:700}
+.table-wrap{overflow:auto;margin-top:12px}
+table{width:100%;min-width:720px;border-collapse:collapse}
+th,td{padding:7px 8px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+th{font-size:9.5px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted)}
+a{color:var(--primary)}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}
+button{border:1px solid var(--border);background:#fff;color:var(--primary-dark);font:600 11px var(--sans);padding:7px 10px;border-radius:7px;cursor:pointer}
+button:hover{border-color:var(--primary)}
+.department-picker{display:flex;align-items:end;gap:10px;flex-wrap:wrap;margin-top:18px;padding:14px;background:#F7FAFC;border:1px solid var(--border);border-radius:8px}
+.department-picker label{display:grid;gap:5px;flex:1;min-width:240px}
+.department-picker label span{font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.department-picker select{width:100%;min-height:39px;border:1px solid var(--border);border-radius:7px;background:#fff;color:var(--primary-dark);font:600 12px var(--sans);padding:8px 34px 8px 10px}
+.department-picker select:focus{outline:2px solid rgba(62,118,153,.2);outline-offset:1px;border-color:var(--primary)}
+.department-picker .picker-note{font-size:10.5px;color:var(--muted);line-height:1.4;flex-basis:100%}
+
+@media(max-width:560px){
+  .shell{width:min(100% - 18px,820px);margin-top:14px}
+  .card{padding:19px 14px 16px}
+  .chart-wrap{min-height:255px}
+  h1{font-size:27px}
+}
+</style>
+</head>
+<body>
+<main class="shell">
+  <section class="card" aria-labelledby="chartTitle">
+    <header>
+      <div class="eyebrow">Historical context</div>
+      <h1 id="chartTitle">Department Appropriation, Chicago City Budgets 2011–2026 (Proposed)</h1>
+      <p class="sub">Total budgeted appropriation, in millions · missing City API years are shown as gaps</p>
+      <div class="department-picker">
+        <label for="departmentSelect">
+          <span>Department</span>
+          <select id="departmentSelect" disabled>
+            <option>Loading 2026 departments…</option>
+          </select>
+        </label>
+        <div class="picker-note">Departments are loaded directly from the 2026 Budget Recommendations — Appropriations API. Historical matching uses department codes first, then conservative name normalization for older schemas.</div>
+      </div>
+    </header>
+
+    <div id="status" class="status" role="status" aria-live="polite">Loading City of Chicago budget data…</div>
+    <div id="chart" class="chart-wrap">
+      <div id="tooltip" class="tooltip" role="tooltip"></div>
+    </div>
+
+    <div class="toolbar">
+      <button id="retry" type="button">Reload data</button>
+      <button id="downloadSvg" type="button" hidden>Download SVG</button>
+    </div>
+
+    <footer class="foot">Source: City of Chicago Budget Ordinance appropriations datasets, 2011–2025, and 2026 Budget Recommendations — Appropriations. Years without a row for the selected department are left blank rather than estimated.</footer>
+
+    <details>
+      <summary>Data &amp; API details</summary>
+      <div id="details"></div>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="localFundsTitle">
+    <header>
+      <div class="eyebrow">Local funds</div>
+      <h1 id="localFundsTitle">Department Local Fund Actuals, 2022–2024</h1>
+      <p class="sub">Budget spent and unspent from local funds, in millions · last three complete budget years</p>
+    </header>
+
+    <div id="localFundsStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
+    <div id="localFundsChart" class="chart-wrap">
+      <div id="localFundsTooltip" class="tooltip" role="tooltip"></div>
+    </div>
+    <div class="legend" aria-hidden="true">
+      <span><i style="background:var(--primary)"></i>Budget spent</span>
+      <span><i style="background:#C3D5E0"></i>Budget unspent</span>
+    </div>
+
+    <div class="toolbar">
+      <button id="downloadLocalFundsSvg" type="button" hidden>Download SVG</button>
+    </div>
+
+    <footer class="foot">Source: City of Chicago budget APIs for local-fund budgets and BGA actuals/encumbrances extract for spending. Budget spent is actuals plus encumbrances, capped at the local-fund budget; budget unspent is shown at the top of each column.</footer>
+
+    <details>
+      <summary>Data &amp; API details</summary>
+      <div id="localFundsDetails"></div>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="workforceTitle">
+    <header>
+      <div class="eyebrow">Historical context</div>
+      <h1 id="workforceTitle">Department Budgeted Workforce, 2011–2026 (Proposed)</h1>
+      <p class="sub">Budgeted positions and FTEs · missing City API years are shown as gaps</p>
+    </header>
+
+    <div id="workforceStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
+    <div id="workforceChart" class="chart-wrap">
+      <div id="workforceTooltip" class="tooltip" role="tooltip"></div>
+    </div>
+
+    <div class="toolbar">
+      <button id="downloadWorkforceSvg" type="button" hidden>Download SVG</button>
+    </div>
+
+    <footer class="foot">Source: City of Chicago Budget Ordinance positions and salaries datasets, 2011–2025, and 2026 Budget Recommendations — Positions and Salaries. Years without a row for the selected department are left blank rather than estimated.</footer>
+
+    <details>
+      <summary>Data &amp; API details</summary>
+      <div id="workforceDetails"></div>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="vacanciesTitle">
+    <header>
+      <div class="eyebrow">Vacancies</div>
+      <h1 id="vacanciesTitle">Department Vacancies, February–September 2025</h1>
+      <p class="sub">Filled positions, persistent vacancies and nonpersistent vacancies · retained monthly vacancy aggregates</p>
+    </header>
+
+    <div id="vacanciesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
+    <div id="vacanciesChart" class="chart-wrap">
+      <div id="vacanciesTooltip" class="tooltip" role="tooltip"></div>
+    </div>
+    <div class="legend" aria-hidden="true">
+      <span><i style="background:var(--primary)"></i>Filled positions</span>
+      <span><i style="background:var(--accent)"></i>Persistent vacancies</span>
+      <span><i style="background:#C3D5E0"></i>Nonpersistent vacancies</span>
+    </div>
+
+    <div class="toolbar">
+      <button id="downloadVacanciesSvg" type="button" hidden>Download SVG</button>
+    </div>
+
+    <footer class="foot">Source: BGA retained vacancy aggregate extract, February–September 2025. Persistent vacancies are supplied as aggregate counts; nonpersistent vacancies are total vacancies minus persistent vacancies.</footer>
+
+    <details>
+      <summary>Data details</summary>
+      <div id="vacanciesDetails"></div>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="persistentVacanciesTitle">
+    <header>
+      <div class="eyebrow">Persistent vacancies</div>
+      <h1 id="persistentVacanciesTitle">Persistent Vacancies by Title, February–September 2025</h1>
+      <p class="sub">Positions vacant in every retained monthly snapshot, grouped by title</p>
+    </header>
+
+    <div id="persistentVacanciesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
+    <div id="persistentVacanciesChart" class="chart-wrap">
+      <div id="persistentVacanciesTooltip" class="tooltip" role="tooltip"></div>
+    </div>
+
+    <div class="toolbar">
+      <button id="downloadPersistentVacanciesSvg" type="button" hidden>Download SVG</button>
+    </div>
+
+    <footer class="foot">Source: BGA retained City Workforce Vacancies snapshots, February–September 2025. Persistent vacancies are title/division/section/subsection vacancy identities present in every loaded month.</footer>
+
+    <details>
+      <summary>Data details</summary>
+      <div id="persistentVacanciesDetails"></div>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="largestAppropriationsTitle">
+    <header>
+      <div class="eyebrow">2026 proposed budget</div>
+      <h1 id="largestAppropriationsTitle">Top 10 Largest Department Appropriations, 2026 Proposed Chicago Budget</h1>
+      <p class="sub">Largest appropriation accounts in the selected department's proposed 2026 budget</p>
+    </header>
+
+    <div id="largestAppropriationsStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
+    <div id="largestAppropriationsChart" class="chart-wrap">
+      <div id="largestAppropriationsTooltip" class="tooltip" role="tooltip"></div>
+    </div>
+
+    <div class="toolbar">
+      <button id="downloadLargestAppropriationsSvg" type="button" hidden>Download SVG</button>
+    </div>
+
+    <footer class="foot">Source: City of Chicago 2026 Budget Recommendations — Appropriations. Rows are grouped by appropriation account and ranked by proposed amount.</footer>
+
+    <details>
+      <summary>Data &amp; API details</summary>
+      <div id="largestAppropriationsDetails"></div>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="budgetFloorTitle">
+    <header>
+      <div class="eyebrow">Budget floor</div>
+      <h1 id="budgetFloorTitle">Budget Floor Graphic Placeholder</h1>
+      <p class="sub">Manual-input placeholder for the future budget-floor graphic</p>
+    </header>
+
+    <div class="status warning">Budget-floor inputs and formula are not wired yet. This placeholder keeps the analysis order stable while we continue building the other graphics.</div>
+
+    <footer class="foot">Source: To be determined. This likely needs analyst-provided floor inputs or a verified manual dataset.</footer>
+  </section>
+
+  <section class="card" aria-labelledby="positionChangesTitle">
+    <header>
+      <div class="eyebrow">Budgeted workforce</div>
+      <h1 id="positionChangesTitle">Net and Percent Position/FTE Changes, 2025 to 2026 (Proposed) Budgets</h1>
+      <p class="sub">Changed position/FTE titles from the 2025 ordinance to the 2026 proposed budget</p>
+    </header>
+
+    <div id="positionChangesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
+    <div id="positionChangesChart" class="chart-wrap">
+      <div id="positionChangesTooltip" class="tooltip" role="tooltip"></div>
+    </div>
+
+    <div class="toolbar">
+      <button id="downloadPositionChangesSvg" type="button" hidden>Download SVG</button>
+    </div>
+
+    <footer class="foot">Source: City of Chicago 2025 Budget Ordinance and 2026 Budget Recommendations positions and salaries datasets. Percent change is net change divided by 2025 positions/FTEs.</footer>
+
+    <details>
+      <summary>Data &amp; API details</summary>
+      <div id="positionChangesDetails"></div>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="appropriationChangesTitle">
+    <header>
+      <div class="eyebrow">Appropriation changes</div>
+      <h1 id="appropriationChangesTitle">Net and Percent Appropriation Changes, 2025 to 2026 (Proposed) Budgets</h1>
+      <p class="sub">Changed appropriation accounts from the 2025 ordinance to the 2026 proposed budget</p>
+    </header>
+
+    <div id="appropriationChangesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
+    <div id="appropriationChangesChart" class="chart-wrap">
+      <div id="appropriationChangesTooltip" class="tooltip" role="tooltip"></div>
+    </div>
+
+    <div class="toolbar">
+      <button id="downloadAppropriationChangesSvg" type="button" hidden>Download SVG</button>
+    </div>
+
+    <footer class="foot">Source: City of Chicago 2025 Budget Ordinance and 2026 Budget Recommendations appropriations datasets. Percent change is net change divided by 2025 budgeted appropriation.</footer>
+
+    <details>
+      <summary>Data &amp; API details</summary>
+      <div id="appropriationChangesDetails"></div>
+    </details>
+  </section>
+</main>
+
+<script>
+(function(){
+'use strict';
+
+const DOMAIN='data.cityofchicago.org';
+const CATALOG='https://api.us.socrata.com/api/catalog/v1';
+const YEARS=Array.from({length:16},(_,i)=>2011+i);
+
+// Official City of Chicago annual appropriations datasets.
+// 2017 is resolved by exact City dataset title at runtime if its ID is not pinned here.
+const PINNED={
+  2011:'drv3-jzqp',
+  2012:'8ix6-nb7q',
+  2013:'b24i-nwag',
+  2014:'ub6s-xy6e',
+  2015:'qnek-cfpp',
+  2016:'36y7-5nnf',
+  2018:'6g7p-xnsy',
+  2019:'h9rt-tsn7',
+  2020:'fyin-2vyd',
+  2021:'6tbx-h7y2',
+  2022:'2cr6-8u6w',
+  2023:'xbjh-7zvh',
+  2024:'x394-e874',
+  2025:'t59y-fr3k',
+  2026:'axxr-vais'
+};
+
+const AGENCY_ALIASES=[
+  'INDEPENDENT POLICE REVIEW AUTHORITY',
+  'CIVILIAN OFFICE OF POLICE ACCOUNTABILITY'
+];
+const COLORS={primary:'#3E7699',dark:'#1F4964',muted:'#8B9096',border:'#E7ECF0',surface:'#FFFFFF',accent:'#F9C468',pale:'#C3D5E0'};
+const statusEl=document.getElementById('status');
+const chartEl=document.getElementById('chart');
+const tooltipEl=document.getElementById('tooltip');
+const detailsEl=document.getElementById('details');
+const retryBtn=document.getElementById('retry');
+const downloadBtn=document.getElementById('downloadSvg');
+const departmentSelect=document.getElementById('departmentSelect');
+const chartTitleEl=document.getElementById('chartTitle');
+const localFundsStatusEl=document.getElementById('localFundsStatus');
+const localFundsChartEl=document.getElementById('localFundsChart');
+const localFundsTooltipEl=document.getElementById('localFundsTooltip');
+const localFundsDetailsEl=document.getElementById('localFundsDetails');
+const downloadLocalFundsBtn=document.getElementById('downloadLocalFundsSvg');
+const workforceStatusEl=document.getElementById('workforceStatus');
+const workforceChartEl=document.getElementById('workforceChart');
+const workforceTooltipEl=document.getElementById('workforceTooltip');
+const workforceDetailsEl=document.getElementById('workforceDetails');
+const downloadWorkforceBtn=document.getElementById('downloadWorkforceSvg');
+const positionChangesStatusEl=document.getElementById('positionChangesStatus');
+const positionChangesChartEl=document.getElementById('positionChangesChart');
+const positionChangesTooltipEl=document.getElementById('positionChangesTooltip');
+const positionChangesDetailsEl=document.getElementById('positionChangesDetails');
+const downloadPositionChangesBtn=document.getElementById('downloadPositionChangesSvg');
+const vacanciesStatusEl=document.getElementById('vacanciesStatus');
+const vacanciesChartEl=document.getElementById('vacanciesChart');
+const vacanciesTooltipEl=document.getElementById('vacanciesTooltip');
+const vacanciesDetailsEl=document.getElementById('vacanciesDetails');
+const downloadVacanciesBtn=document.getElementById('downloadVacanciesSvg');
+const persistentVacanciesStatusEl=document.getElementById('persistentVacanciesStatus');
+const persistentVacanciesChartEl=document.getElementById('persistentVacanciesChart');
+const persistentVacanciesTooltipEl=document.getElementById('persistentVacanciesTooltip');
+const persistentVacanciesDetailsEl=document.getElementById('persistentVacanciesDetails');
+const downloadPersistentVacanciesBtn=document.getElementById('downloadPersistentVacanciesSvg');
+const largestAppropriationsStatusEl=document.getElementById('largestAppropriationsStatus');
+const largestAppropriationsChartEl=document.getElementById('largestAppropriationsChart');
+const largestAppropriationsTooltipEl=document.getElementById('largestAppropriationsTooltip');
+const largestAppropriationsDetailsEl=document.getElementById('largestAppropriationsDetails');
+const downloadLargestAppropriationsBtn=document.getElementById('downloadLargestAppropriationsSvg');
+const appropriationChangesStatusEl=document.getElementById('appropriationChangesStatus');
+const appropriationChangesChartEl=document.getElementById('appropriationChangesChart');
+const appropriationChangesTooltipEl=document.getElementById('appropriationChangesTooltip');
+const appropriationChangesDetailsEl=document.getElementById('appropriationChangesDetails');
+const downloadAppropriationChangesBtn=document.getElementById('downloadAppropriationChangesSvg');
+let lastData=null;
+let lastLocalFundsData=null;
+let lastWorkforceData=null;
+let lastPositionChangesData=null;
+let lastVacanciesData=null;
+let lastPersistentVacanciesData=null;
+let lastLargestAppropriationsData=null;
+let lastAppropriationChangesData=null;
+let resizeTimer=null;
+let departments=[];
+let selectedDepartment=null;
+const rowsCache=new Map();
+const VACANCIES_SOURCE_LABEL='BGA retained City Workforce Vacancies snapshots';
+const INTERNAL_VACANCY_ROWS=[
+  // Paste retained February-September 2025 City Workforce Vacancies rows here, using the City API field names:
+  // department, department_code, division_code, division, section_code, section, sub_section_code,
+  // sub_section, title_code, title, total_positions, employees_in_position, number_of_vacancies, report_date
+];
+const LOCAL_ACTUALS_SOURCE_LABEL='BGA actuals/encumbrances extract';
+const LOCAL_ACTUALS_CSV=String.raw`Department Number,Department Description,2022 Actual,2023 Actual,2024 Actual,2025 Actual,,2022 Encumb,2023 Encumb,2024 Encumb,2025 Encumb,,2022 Actual & Encumb,2023 Actual & Encumb,2024 Actual & Encumb,2025 Actual & Encumb
+1,OFFICE OF THE MAYOR,"$10,743,501","$10,403,455","$11,232,338","12,672,887",,"$2,721.00",$69,$601,"5,736",,"$10,746,222","$10,403,524","$11,232,939","12,678,623"
+3,OFFICE OF INSPECTOR GENERAL,"$12,417,011","$12,285,479","$14,107,232","13,354,183",,"$76,636.00","$1,179","$8,973",0,,"$12,493,647","$12,286,658","$14,116,205","13,354,183"
+5,OBM,"$2,347,338","$2,922,813","$4,144,819","4,505,568",,$21.00,$0,$33,0,,"$2,347,359","$2,922,813","$4,144,852","4,505,568"
+6,DEPARTMENT OF TECHNOLOGY AND INNOVATION,$0,$0,"$44,527,558","47,175,223",,$0.00,$0,"$614,324","136,944",,$0,$0,"$45,141,882","47,312,167"
+15,COUNCIL,"$29,195,893","$29,493,967","$34,795,907","35,816,474",,"$1,084,990.00","$459,355","$10,626","14,150",,"$30,280,883","$29,953,322","$34,806,533","35,830,624"
+21,DOH,"$24,466,727","$35,797,450","$21,889,240","11,235,570",,"$323,719.00","$1,531,663","$116,418","40,021",,"$24,790,446","$37,329,113","$22,005,658","11,275,591"
+23,DCASE,"$23,677,662","$26,956,835","$33,876,931","40,889,650",,"$98,579.00","-$34,721",$0,"342,216",,"$23,776,241","$26,922,114","$33,876,931","41,231,866"
+25,CLERK,"$9,605,876","$10,643,929","$13,706,856","12,990,780",,"$200,533.00","$141,515","$195,982","15,814",,"$9,806,409","$10,785,444","$13,902,838","13,006,594"
+27,DOF,"$76,997,663","$79,610,142","$91,346,071","95,130,947",,"$271,180.00","$324,984","$432,600","203,981",,"$77,268,843","$79,935,126","$91,778,671","95,334,928"
+28,CTO,"$3,957,651","$4,804,838","$5,416,331","5,317,050",,"$2,639.00","$1,181","$11,207","8,930",,"$3,960,290","$4,806,019","$5,427,538","5,325,980"
+30,DOAH,"$6,837,827","$7,010,408","$7,233,849","7,509,886",,"$13,986.00","$4,318","$12,165","6,340",,"$6,851,813","$7,014,726","$7,246,014","7,516,226"
+31,LAW,"$31,207,170","$36,487,185","$41,611,087","44,432,932",,"$61,211.00","$27,582","$16,131","24,457",,"$31,268,381","$36,514,767","$41,627,218","44,457,389"
+33,DHR,"$7,302,756","$8,222,855","$10,512,197","11,226,605",,"$43,671.00",$900,"$6,325","65,001",,"$7,346,427","$8,223,755","$10,518,522","11,291,606"
+35,DPS,"$7,727,507","$9,239,893","$10,522,710","12,106,507",,"$33,257.00","$105,705","$85,799","230,554",,"$7,760,764","$9,345,598","$10,608,509","12,337,061"
+38,FFM/AIS,"$385,102,770","$445,647,715","$444,582,272","448,219,329",,"$19,684,154.00","$2,118,087","$4,936,101","3,008,119",,"$404,786,924","$447,765,802","$449,518,373","451,227,448"
+39,ELECTIONS,"$18,363,939","$41,251,169","$18,802,289","13,413,188",,"$155,819.00","$325,658","$89,557","17,227",,"$18,519,758","$41,576,827","$18,891,846","13,430,415"
+41,CDPH,"$46,647,284","$54,739,477","$63,361,034","75,035,930",,"$4,538,227.00","$4,374,835","4,123,321","1,151,247",,"$51,185,511","$59,114,312","$67,484,355","76,187,177"
+45,CCHR,"$1,007,011","$1,125,938","$1,394,460","1,506,140",,"$2,969.00","$4,605",$422,"1,740",,"$1,009,980","$1,130,543","$1,394,882","1,507,880"
+48,MOPD,"$2,116,052","$2,565,815","$2,856,866","3,205,529",,"$88,992.00",$20,"$4,301","3,231",,"$2,205,044","$2,565,835","$2,861,167","3,208,760"
+50,DFSS,"$92,613,990","$104,101,185","$128,085,129","162,739,873",,"$6,927,669.00","$15,635,383","$7,954,972","3,036,308",,"$99,541,659","$119,736,568","$136,040,101","165,776,181"
+51,PSA,"$106,741,120","$122,363,991","$127,692,835","106,982,281",,"$1,115,973.00","$2,539,048","$179,881","671,312",,"$107,857,093","$124,903,039","$127,872,716","107,653,593"
+54,DPD,"$32,888,546","$17,324,120","$16,358,160","15,014,729",,"$1,828,592.00","$947,221","$183,283","20,191",,"$34,717,138","$18,271,341","$16,541,443","15,034,920"
+55,POLICE BOARD,"$492,190","$553,954","$401,710","422,954",,$772.00,$0,"$1,760","2,080",,"$492,962","$553,954","$403,470","425,034"
+57,CPD,"$1,767,533,254","$1,910,145,209","$1,989,351,457","2,030,559,749",,"$755,600.00","$1,192,935","$2,025,111","167,698",,"$1,768,288,854","$1,911,338,144","$1,991,376,568","2,030,727,447"
+58,OEMC,"$69,083,769","$69,734,110","$72,059,282","72,981,330",,"$232,446.00","$20,467",-$119,"16,847",,"$69,316,215","$69,754,577","$72,059,163","72,998,177"
+59,CFD,"$697,349,160","$661,002,317","$727,316,130","695,756,347",,"$100,627.00","$63,969","$15,531","9,249",,"$697,449,787","$661,066,286","$727,331,661","695,765,596"
+60,COPA,"$12,356,720","$13,475,679","$14,545,850","14,214,591",,"$8,062.00","$66,194","$4,397","6,547",,"$12,364,782","$13,541,873","$14,550,247","14,221,138"
+62,CCPSA,"$356,805","$2,159,881","$2,747,752","3,408,279",,"$5,651.00","3,160","6,387","1,860",,"$362,456","$2,163,041","$2,754,139","3,410,139"
+67,DOB,"$25,695,490","$27,134,660","$34,488,953","35,044,381",,"$65,540.00","$603,274","$28,350",-1,,"$25,761,030","$27,737,934","$34,517,303","35,044,380"
+70,BACP,"$17,771,873","$19,294,246","$21,826,204","30,377,928",,"$528,752.00","$1,037,832","$283,087","81,897",,"$18,300,625","$20,332,078","$22,109,291","30,459,825"
+72,OFFICE OF CLIMATE AND ENVIRONMENTAL EQUITY,$0,"$337,236","$1,094,065","1,801,957",,$0.00,$0,"$52,905",1,,$0,"$337,236","$1,146,970","1,801,958"
+73,CACC,"$6,317,459","$6,453,496","$6,779,104","6,780,515",,"$15,802.00","$2,627","$7,120","8,427",,"$6,333,261","$6,456,123","$6,786,224","6,788,942"
+77,LAC,"$160,082","$149,317","$164,170","167,510",,$0,$0,$0,0,,"$160,082","$149,317","$164,170","167,510"
+78,ETHICS,"$807,232","$866,056","$885,459","702,181",,$600.00,$0,$122,0,,"$807,832","$866,056","$885,581","702,181"
+81,DSS,"$286,054,008","$296,807,963","$327,788,187","335,432,575",,"$1,420,356.00","$408,753","181,522","308,833",,"$287,474,364","$297,216,716","$327,969,709","335,741,408"
+84,CDOT,"$177,430,194","$191,576,253","$218,442,686","214,519,936",,"$2,586,303.00","$6,655,142","$1,089,080","1,403,897",,"$180,016,497","$198,231,395","$219,531,766","215,923,833"
+85,CDA,"$478,869,262","$541,155,532","$630,535,919","697,941,617",,$0,$0,$0,0,,"$478,869,262","$541,155,532","$630,535,919","697,941,617"
+88,DWM,"$288,748,930","$342,658,931","$361,006,305","374,683,198",,$0,$0,$0,0,,"$288,748,930","$342,658,931","$361,006,305","374,683,198"
+91,CPL,"$71,577,905","$79,897,305","$85,175,735","87,559,876",,"$97,812.00","$57,619","$22,099","-17,201",,"$71,675,717","$79,954,924","$85,197,834","87,542,675"
+99,FINANCE GENERAL,"$4,937,235,049","$6,573,997,636","$6,710,855,740","6,419,724,986",,"$42,150,350.00","8,823,305","31,872,580","1,456,199",,"$4,979,385,399","$6,582,820,941","$6,742,728,320","6,421,181,185"`;
+const VACANCY_AGGREGATE_SOURCE_LABEL='BGA retained vacancy aggregate extract';
+const VACANCY_AGGREGATE_CSV=String.raw`Department,2025 Budgeted Annual Positions,Persistent Vacancies Feb-Sept 2025,February 2025 Vacancies,March 2025 Vacancies,April 2025 Vacancies,May 2025 Vacancies,June 2025 Vacancies,July 2025 Vacancies,August 2025 Vacancies,September 2025 Vacancies
+D01 - Office of The Mayor,114,0,8,24,24,24,21,23,22,12
+D03 - Office of Inspector General,121,0,7,11,10,10,12,10,13,11
+D05 - Office of Budget And Management,57,0,5,8,8,10,8,5,7,7
+D06 - Department of Technology and Innovation,145,51,66,68,67,65,62,62,59,57
+D15 - City Council,265,16,19,22,22,26,22,19,20,20
+D21 - Department of Housing,123,9,26,24,23,22,20,19,18,19
+D23 - Department of Cultural Affairs and Special Events,81,9,20,21,21,19,17,18,17,17
+D25 - City Clerk,92,4,9,10,11,11,12,13,13,11
+D27 - Department of Finance,645,32,74,78,75,80,82,81,81,67
+D28 - City Treasurer,43,5,6,8,8,7,7,8,9,9
+D30 - Department of Administrative Hearings,39,6,6,6,6,6,6,8,8,8
+D31 - Department of Law,406,12,44,42,39,37,38,44,45,44
+D33 - Department of Human Resources,122,7,19,20,20,20,19,19,16,15
+D35 - Department of Procurement Services,130,14,39,35,31,31,30,30,27,29
+D38 - Department of Fleet and Facility Management,1042,69,135,134,116,112,105,110,106,112
+D39 - Board of Election Commissioners,122,12,18,18,17,19,19,20,19,20
+D41 - Department of Public Health,1046,214,271,281,287,295,296,314,328,333
+D45 - Commission on Human Relations,20,0,1,1,1,1,1,1,0,0
+D48 - Mayor's Office For People With Disabilities,40,1,3,3,3,5,4,4,4,4
+D50 - Department of Family and Support Services,443,24,50,56,61,54,49,54,52,51
+D51 - Office of Public Safety Administration,383,43,54,87,84,84,85,83,82,81
+D54 - Department of Planning and Development,195,21,31,33,32,35,34,36,35,35
+D55 - Chicago Police Board,2,0,0,0,0,0,0,0,0,0
+D57 - Chicago Police Department,13806,742,893,1156,1163,1238,1232,1278,1293,1263
+D58 - Office of Emergency Management and Communications,983,118,171,150,154,146,155,176,180,177
+D59 - Chicago Fire Department,5145,178,326,345,303,311,311,316,336,351
+D60 - Civilian Office of Police Accountability,154,13,22,23,27,30,32,27,26,30
+D62 - Community Commission for Public Safety and Accountability,28,2,4,6,7,7,7,6,6,5
+D67 - Department of Buildings,280,19,33,33,35,32,27,33,29,29
+D70 - Department of Business Affairs and Consumer Protection,212,7,12,13,13,14,15,19,19,20
+D72 - Department of Environment,14,1,3,3,3,2,2,2,1,1
+D73 - Chicago Animal Care and Control,79,2,7,7,7,7,7,9,9,8
+D77 - License Appeal Commission,1,0,0,0,0,0,0,0,0,0
+D78 - Board of Ethics,8,2,2,3,3,3,3,3,3,3
+D81 - Department of Streets and Sanitation,2256,31,51,167,184,190,186,222,231,236
+D84 - Chicago Department of Transportation,1576,104,188,235,183,173,162,171,178,175
+D85 - Department of Aviation,2392,158,289,364,344,353,351,353,351,347
+D88 - Department of Water Management,2492,240,319,331,326,326,320,333,324,321
+D91 - Chicago Public Library,1102,52,82,92,96,99,89,91,93,94`;
+const VACANCY_MONTHS=[
+  {label:'February',short:'Feb',month:1,year:2025},
+  {label:'March',short:'Mar',month:2,year:2025},
+  {label:'April',short:'Apr',month:3,year:2025},
+  {label:'May',short:'May',month:4,year:2025},
+  {label:'June',short:'Jun',month:5,year:2025},
+  {label:'July',short:'Jul',month:6,year:2025},
+  {label:'August',short:'Aug',month:7,year:2025},
+  {label:'September',short:'Sep',month:8,year:2025}
+];
+const POSITION_PINNED={
+  2011:'g398-fhbm',
+  2012:'4n2t-us8h',
+  2013:'78az-bt2s',
+  2014:'etzw-ycze',
+  2015:'f338-e9ns',
+  2016:'ipsp-k4xh',
+  2017:'vcfx-7p4u',
+  2018:'9d7d-7f2b',
+  2019:'7zkb-yr4j',
+  2020:'txys-725h',
+  2021:'gcwx-xm5a',
+  2022:'v2mx-icwv',
+  2023:'pkjy-hzin',
+  2024:'jeta-egyx',
+  2025:'2bp7-w85v',
+  2026:'wd4x-2xf8'
+};
+
+function normalize(value){
+  return String(value??'').trim().toUpperCase().replace(/&/g,'AND').replace(/[^A-Z0-9]+/g,' ').replace(/\s+/g,' ');
+}
+function escapeHtml(value){
+  return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function datasetTitle(year){
+  return year===2026?'Budget - 2026 Budget Recommendations - Appropriations':`Budget - ${year} Budget Ordinance - Appropriations`;
+}
+function positionDatasetTitle(year){
+  return year===2026?'Budget - 2026 Budget Recommendations - Positions and Salaries':`Budget - ${year} Budget Ordinance - Positions and Salaries`;
+}
+function stage(year){return year===2026?'Recommendation':'Ordinance'}
+function numberValue(value){
+  const n=Number(String(value??'').replace(/[$,%]/g,'').replace(/,/g,'').trim());
+  return Number.isFinite(n)?n:null;
+}
+function parseCsv(text){
+  const rows=[];
+  let row=[],cell='',quoted=false;
+  for(let i=0;i<text.length;i++){
+    const char=text[i],next=text[i+1];
+    if(quoted){
+      if(char==='"'&&next==='"'){cell+='"';i++;}
+      else if(char==='"') quoted=false;
+      else cell+=char;
+    }else if(char==='"'){
+      quoted=true;
+    }else if(char===','){
+      row.push(cell);
+      cell='';
+    }else if(char==='\n'){
+      row.push(cell);
+      rows.push(row);
+      row=[];
+      cell='';
+    }else if(char!=='\r'){
+      cell+=char;
+    }
+  }
+  if(cell.length||row.length){
+    row.push(cell);
+    rows.push(row);
+  }
+  return rows;
+}
+function csvMoney(value){return numberValue(value)||0}
+function dateValue(value){
+  const d=new Date(String(value??''));
+  return Number.isNaN(d.getTime())?null:d;
+}
+function vacancyDateKey(date){
+  return date.toISOString().slice(0,10);
+}
+function vacancyMonthLabel(date){
+  const label=date.toLocaleString('en-US',{month:'long',timeZone:'UTC'});
+  return {label,short:label.slice(0,3),month:date.getUTCMonth(),year:date.getUTCFullYear(),dateKey:vacancyDateKey(date)};
+}
+async function fetchJson(url){
+  const r=await fetch(url,{cache:'no-store'});
+  if(!r.ok) throw new Error(`${r.status} ${r.statusText}`);
+  return r.json();
+}
+async function resolveDataset(year){
+  if(PINNED[year]) return {id:PINNED[year],title:datasetTitle(year),resolvedBy:'pinned'};
+
+  const expected=datasetTitle(year);
+  const url=`${CATALOG}?search_context=${DOMAIN}&q=${encodeURIComponent(expected)}&limit=50`;
+  const result=await fetchJson(url);
+  const exact=(result.results||[]).find(item=>{
+    const name=String(item.resource&&item.resource.name||'').trim();
+    const lowered=name.toLowerCase();
+    return lowered===expected.toLowerCase()&&!lowered.includes('chart')&&!lowered.includes('graph');
+  });
+  if(!exact||!exact.resource||!exact.resource.id) throw new Error(`Could not resolve official City dataset for ${year}.`);
+  return {id:exact.resource.id,title:exact.resource.name,resolvedBy:'exact City catalog title'};
+}
+async function resolvePositionDataset(year){
+  if(POSITION_PINNED[year]) return {id:POSITION_PINNED[year],title:positionDatasetTitle(year),resolvedBy:'pinned'};
+
+  const expected=positionDatasetTitle(year);
+  const url=`${CATALOG}?search_context=${DOMAIN}&q=${encodeURIComponent(expected)}&limit=50`;
+  const result=await fetchJson(url);
+  const exact=(result.results||[]).find(item=>{
+    const name=String(item.resource&&item.resource.name||'').trim();
+    const lowered=name.toLowerCase();
+    return lowered===expected.toLowerCase()&&!lowered.includes('chart')&&!lowered.includes('graph');
+  });
+  if(!exact||!exact.resource||!exact.resource.id) throw new Error(`Could not resolve official City positions dataset for ${year}.`);
+  return {id:exact.resource.id,title:exact.resource.name,resolvedBy:'exact City catalog title'};
+}
+async function fetchAllRows(id){
+  if(rowsCache.has(id)) return rowsCache.get(id);
+  const out=[];
+  const limit=50000;
+  for(let offset=0;;offset+=limit){
+    const url=`https://${DOMAIN}/resource/${id}.json?$limit=${limit}&$offset=${offset}`;
+    const rows=await fetchJson(url);
+    out.push(...rows);
+    if(rows.length<limit) break;
+  }
+  rowsCache.set(id,out);
+  return out;
+}
+function normalizedKey(value){
+  return String(value??'').trim().toLowerCase().replace(/[^a-z0-9]+/g,'_').replace(/^_+|_+$/g,'');
+}
+function looksLikeDepartmentCode(value){
+  const raw=String(value??'').trim();
+  return /^D?\s*0*\d{1,4}$/i.test(raw);
+}
+function parseDepartmentCode(value){
+  const raw=String(value??'').trim();
+  const direct=raw.match(/^D?\s*0*(\d{1,4})$/i);
+  if(direct) return String(Number(direct[1]));
+  const leading=raw.match(/^D?\s*0*(\d{1,4})\s*[-–—:|]/i);
+  if(leading) return String(Number(leading[1]));
+  return '';
+}
+function departmentDescription(row){
+  const entries=Object.entries(row||{});
+  const preferredKeys=[
+    'department_description','department_desc','department_name',
+    'dept_description','dept_desc','dept_name','agency_description','agency_name'
+  ];
+  for(const wanted of preferredKeys){
+    const found=entries.find(([k])=>normalizedKey(k)===wanted);
+    if(found && String(found[1]??'').trim()) return String(found[1]).trim();
+  }
+
+  // Several older City budget files simply call this field "Department".
+  // Treat it as a name only when the value is clearly textual rather than a code.
+  const generic=entries.find(([k])=>['department','dept','agency'].includes(normalizedKey(k)));
+  if(generic){
+    const raw=String(generic[1]??'').trim();
+    if(raw && !looksLikeDepartmentCode(raw)){
+      // Handle combined values such as "39 - CITY CLERK" without losing the name.
+      return raw.replace(/^D?\s*0*\d{1,4}\s*[-–—:|]\s*/i,'').trim();
+    }
+  }
+  return '';
+}
+function departmentCode(row){
+  const entries=Object.entries(row||{});
+  const preferredKeys=[
+    'department_code','department_number','department_no','department_num',
+    'dept_code','dept_number','dept_no','agency_code','agency_number'
+  ];
+  for(const wanted of preferredKeys){
+    const found=entries.find(([k])=>normalizedKey(k)===wanted);
+    if(found){
+      const code=parseDepartmentCode(found[1]);
+      if(code) return code;
+    }
+  }
+
+  // Older schemas sometimes use a generic Department field for either the code
+  // or a combined "code - name" value.
+  const generic=entries.find(([k])=>['department','dept','agency'].includes(normalizedKey(k)));
+  if(generic){
+    const code=parseDepartmentCode(generic[1]);
+    if(code) return code;
+  }
+  return '';
+}
+function departmentCoreName(value){
+  const tokens=normalize(value)
+    .split(' ')
+    .filter(Boolean)
+    .filter(token=>!new Set(['CITY','CHICAGO','OFFICE','DEPARTMENT','DEPT','THE','OF','S']).has(token));
+  return tokens.sort().join(' ');
+}
+function compactCode(value){
+  const code=parseDepartmentCode(value);
+  return code?`D${code.padStart(2,'0')}`:'';
+}
+function titleCaseDepartment(value){
+  const raw=String(value||'').trim();
+  if(!raw) return '';
+  if(raw!==raw.toUpperCase()) return raw;
+  const small=new Set(['of','the','and','for','to','in','on','at']);
+  return raw.toLowerCase().split(/\s+/).map((word,i)=>{
+    if(i>0&&small.has(word)) return word;
+    return word.replace(/^[a-z]/,m=>m.toUpperCase());
+  }).join(' ')
+    .replace(/\bCopa\b/g,'COPA')
+    .replace(/\bCpd\b/g,'CPD')
+    .replace(/\bOemc\b/g,'OEMC');
+}
+function displayDepartmentName(department){
+  if(department&&department.code==='60') return 'IPRA/COPA';
+  return titleCaseDepartment(department&&department.name||'Department');
+}
+function localActualsRows(){
+  return parseCsv(LOCAL_ACTUALS_CSV).slice(1).map(row=>({
+    code:String(Number(row[0]||'')),
+    name:row[1]||'',
+    actuals:{2022:csvMoney(row[2]),2023:csvMoney(row[3]),2024:csvMoney(row[4]),2025:csvMoney(row[5])},
+    encumbrances:{2022:csvMoney(row[7]),2023:csvMoney(row[8]),2024:csvMoney(row[9]),2025:csvMoney(row[10])},
+    actualSpend:{2022:csvMoney(row[12]),2023:csvMoney(row[13]),2024:csvMoney(row[14]),2025:csvMoney(row[15])}
+  })).filter(row=>row.code&&row.code!=='NaN');
+}
+function vacancyAggregateRows(){
+  return parseCsv(VACANCY_AGGREGATE_CSV).slice(1).map(row=>{
+    const match=String(row[0]||'').match(/^D\s*0*(\d+)\s*-\s*(.+)$/i);
+    if(!match) return null;
+    return {
+      code:String(Number(match[1])),
+      name:match[2],
+      budgeted:csvMoney(row[1]),
+      persistent:csvMoney(row[2]),
+      vacancies:{
+        February:csvMoney(row[3]),
+        March:csvMoney(row[4]),
+        April:csvMoney(row[5]),
+        May:csvMoney(row[6]),
+        June:csvMoney(row[7]),
+        July:csvMoney(row[8]),
+        August:csvMoney(row[9]),
+        September:csvMoney(row[10])
+      }
+    };
+  }).filter(Boolean);
+}
+const LOCAL_ACTUALS_ROWS=localActualsRows();
+const VACANCY_AGGREGATE_ROWS=vacancyAggregateRows();
+function localActualsForDepartment(department){
+  if(!department) return null;
+  const byCode=LOCAL_ACTUALS_ROWS.find(row=>department.code&&row.code===String(Number(department.code)));
+  if(byCode) return byCode;
+  const target=departmentCoreName(department.name);
+  return LOCAL_ACTUALS_ROWS.find(row=>departmentCoreName(row.name)===target)||null;
+}
+function vacancyAggregateForDepartment(department){
+  if(!department) return null;
+  const byCode=VACANCY_AGGREGATE_ROWS.find(row=>department.code&&row.code===String(Number(department.code)));
+  if(byCode) return byCode;
+  const target=departmentCoreName(department.name);
+  return VACANCY_AGGREGATE_ROWS.find(row=>departmentCoreName(row.name)===target)||null;
+}
+function departmentMatch(row,department){
+  if(!department) return {matched:false,by:''};
+
+  // Strongest match: stable department code, regardless of which annual schema field contains it.
+  const rowCode=departmentCode(row);
+  if(department.code && rowCode && rowCode===department.code) return {matched:true,by:'department code'};
+
+  const rowName=departmentDescription(row);
+  const normalizedRowName=normalize(rowName);
+  const normalizedSelectedName=normalize(department.name);
+
+  // COPA's historical predecessor was IPRA. This alias must work even in years where
+  // a usable department-code field is absent.
+  if(department.code==='60' && AGENCY_ALIASES.some(alias=>normalizedRowName===normalize(alias) || normalizedRowName.includes(normalize(alias)))){
+    return {matched:true,by:'IPRA/COPA historical alias'};
+  }
+
+  // Exact name when annual naming is unchanged.
+  if(normalizedRowName && normalizedRowName===normalizedSelectedName) return {matched:true,by:'exact department name'};
+
+  // Conservative historical-name normalization for changes like
+  // "Office of the City Clerk" ↔ "City Clerk" and "Department of Police" ↔ "Police Department".
+  const rowCore=departmentCoreName(rowName);
+  const selectedCore=departmentCoreName(department.name);
+  if(rowCore && selectedCore && rowCore===selectedCore) return {matched:true,by:'normalized historical name'};
+
+  return {matched:false,by:''};
+}
+function vacancyDepartmentMatch(row,department){
+  if(!department) return {matched:false,by:''};
+  const entries=Object.entries(row||{});
+  const selectedCode=compactCode(department.code);
+  const codeCandidates=entries.filter(([k])=>['department','department_code','dept','dept_code'].includes(normalizedKey(k)));
+  for(const [,value] of codeCandidates){
+    const raw=String(value??'').trim();
+    if(selectedCode && normalize(raw).split(' ').includes(selectedCode)) return {matched:true,by:'department code'};
+    if(selectedCode && compactCode(raw)===selectedCode) return {matched:true,by:'department code'};
+  }
+
+  const nameCandidates=entries
+    .filter(([k])=>normalizedKey(k).includes('department'))
+    .map(([,v])=>String(v??'').replace(/^D?\s*0*\d{1,4}\s*[-–—:|]\s*/i,'').trim())
+    .filter(Boolean);
+  const selectedName=normalize(department.name);
+  for(const name of nameCandidates){
+    const normalizedName=normalize(name);
+    if(normalizedName===selectedName) return {matched:true,by:'exact department name'};
+    if(departmentCoreName(name)&&departmentCoreName(name)===departmentCoreName(department.name)) return {matched:true,by:'normalized department name'};
+  }
+  if(department.code==='60' && nameCandidates.some(name=>AGENCY_ALIASES.some(alias=>normalize(name).includes(normalize(alias))))){
+    return {matched:true,by:'IPRA/COPA historical alias'};
+  }
+  return {matched:false,by:''};
+}
+function isDepartmentRow(row,department){
+  return departmentMatch(row,department).matched;
+}
+function collectDepartments(rows){
+  const map=new Map();
+  for(const row of rows){
+    const name=departmentDescription(row).trim();
+    const code=departmentCode(row);
+    if(!name) continue;
+    const key=code?`code:${code}`:`name:${normalize(name)}`;
+    if(!map.has(key)) map.set(key,{key,code,name});
+  }
+  return [...map.values()].sort((a,b)=>{
+    const an=Number(a.code), bn=Number(b.code);
+    if(Number.isFinite(an)&&Number.isFinite(bn)&&an!==bn) return an-bn;
+    return titleCaseDepartment(a.name).localeCompare(titleCaseDepartment(b.name));
+  });
+}
+function populateDepartmentSelect(){
+  departmentSelect.innerHTML=departments.map((d,i)=>{
+    const code=d.code?String(d.code).padStart(2,'0'):'—';
+    return `<option value="${i}">${escapeHtml(code)} — ${escapeHtml(titleCaseDepartment(d.name))}</option>`;
+  }).join('');
+  const copaIndex=departments.findIndex(d=>d.code==='60'||/CIVILIAN OFFICE OF POLICE ACCOUNTABILITY/i.test(d.name));
+  departmentSelect.value=String(copaIndex>=0?copaIndex:0);
+  selectedDepartment=departments[Number(departmentSelect.value)]||departments[0]||null;
+  departmentSelect.disabled=!selectedDepartment;
+}
+function findAmountField(row,year){
+  const wanted=year===2026?['recommend','proposed']:['ordinance'];
+  const candidates=Object.keys(row||{}).filter(key=>{
+    const k=key.toLowerCase();
+    if(/code|description|authority|account|fund|department|year|number/.test(k)) return false;
+    if(numberValue(row[key])===null) return false;
+    return wanted.some(word=>k.includes(word))||k.includes('amount');
+  }).sort((a,b)=>score(b)-score(a));
+
+  function score(key){
+    const k=key.toLowerCase();
+    let s=0;
+    if(wanted.some(word=>k.includes(word))) s+=10;
+    if(k.includes('amount')) s+=4;
+    if(k.includes(String(year))) s+=2;
+    return s;
+  }
+
+  if(!candidates.length) throw new Error(`Could not identify appropriation amount field for ${year}.`);
+  return candidates[0];
+}
+function findPositionField(row){
+  const candidates=Object.keys(row||{}).filter(key=>{
+    const k=key.toLowerCase();
+    if(/code|description|department|fund|organization|division|section|title|grade|unit|pay|amount|rate|control|number/.test(k) && !k.includes('budgeted_unit')) return false;
+    if(numberValue(row[key])===null) return false;
+    return k.includes('budgeted_unit') || k.includes('fte') || k.includes('position');
+  }).sort((a,b)=>score(b)-score(a));
+
+  function score(key){
+    const k=key.toLowerCase();
+    let s=0;
+    if(k==='budgeted_unit') s+=20;
+    if(k.includes('budgeted_unit')&&!k.includes('total')) s+=18;
+    if(k==='total_budgeted_unit') s+=8;
+    if(k.includes('total_budgeted_unit')) s+=6;
+    if(k.includes('fte')) s+=4;
+    if(k.includes('position')) s+=2;
+    return s;
+  }
+
+  if(!candidates.length) throw new Error('Could not identify budgeted position/FTE field.');
+  return candidates[0];
+}
+function findActualsField(row){
+  const candidates=Object.keys(row||{}).filter(key=>{
+    const k=key.toLowerCase();
+    if(/code|description|department|fund|account|year|number|variance|budget/.test(k)) return false;
+    if(numberValue(row[key])===null) return false;
+    return k.includes('actual');
+  });
+  if(!candidates.length) return '';
+  return candidates.sort((a,b)=>score(b)-score(a))[0];
+
+  function score(key){
+    const k=key.toLowerCase();
+    let s=0;
+    if(k==='actuals'||k==='actual') s+=10;
+    if(k.includes('actuals')) s+=6;
+    if(k.includes('amount')) s+=2;
+    return s;
+  }
+}
+function findEncumbrancesField(row){
+  const candidates=Object.keys(row||{}).filter(key=>{
+    const k=key.toLowerCase();
+    if(/code|description|department|fund|account|year|number|variance|budget/.test(k)) return false;
+    if(numberValue(row[key])===null) return false;
+    return k.includes('encumbr');
+  });
+  if(!candidates.length) return '';
+  return candidates.sort((a,b)=>score(b)-score(a))[0];
+
+  function score(key){
+    const k=key.toLowerCase();
+    let s=0;
+    if(k==='encumbrances'||k==='encumbrance') s+=10;
+    if(k.includes('encumbrances')) s+=6;
+    if(k.includes('amount')) s+=2;
+    return s;
+  }
+}
+function isLocalFundRow(row){
+  const entries=Object.entries(row||{});
+  const fundType=entries.find(([k])=>normalizedKey(k)==='fund_type');
+  if(fundType){
+    const value=normalize(fundType[1]);
+    return value==='LOCAL' || value==='LOCAL FUNDS' || value==='LOCAL FUND';
+  }
+  const fundDesc=entries.find(([k])=>['fund_description','fund_desc','fund_name'].includes(normalizedKey(k)));
+  if(fundDesc){
+    const value=normalize(fundDesc[1]);
+    return value.includes('CORPORATE FUND') || value.includes('LOCAL');
+  }
+  return false;
+}
+function fieldValue(row,names){
+  const entries=Object.entries(row||{});
+  for(const wanted of names){
+    const found=entries.find(([k])=>normalizedKey(k)===wanted);
+    if(found) return found[1];
+  }
+  return null;
+}
+function vacancyIdentity(row){
+  return [
+    fieldValue(row,['division_code','division_description','division']),
+    fieldValue(row,['section_code','section_description','section']),
+    fieldValue(row,['sub_section_code','subsection_code','sub_section_description','subsection_description','subsection','sub_section']),
+    fieldValue(row,['title_code','title_description','title'])
+  ].map(value=>normalize(value)).join('|');
+}
+function vacancyTitle(row){
+  return String(fieldValue(row,['title_description','title'])||'Vacancy').trim();
+}
+async function loadYear(year,department){
+  let source=null;
+  try{
+    source=await resolveDataset(year);
+    const rows=await fetchAllRows(source.id);
+    const matchedRows=rows.map(row=>({row,match:departmentMatch(row,department)})).filter(item=>item.match.matched);
+    const matches=matchedRows.map(item=>item.row);
+
+    if(!matches.length){
+      const availableNames=[...new Set(rows.map(departmentDescription).filter(Boolean))];
+      const targetCore=departmentCoreName(department.name);
+      const related=availableNames.filter(name=>{
+        const core=departmentCoreName(name);
+        if(!core || !targetCore) return false;
+        const a=new Set(core.split(' '));
+        const b=new Set(targetCore.split(' '));
+        const overlap=[...a].filter(token=>b.has(token)).length;
+        return overlap>=Math.max(1,Math.min(a.size,b.size)-1);
+      }).slice(0,6);
+      return {
+        year,
+        available:false,
+        datasetId:source.id,
+        datasetTitle:source.title,
+        resolvedBy:source.resolvedBy,
+        stage:stage(year),
+        reason:`No rows matched ${displayDepartmentName(department)} in this annual City dataset.${related.length?` Related department names: ${related.join('; ')}.`:''}`
+      };
+    }
+
+    const amountField=findAmountField(matches[0],year);
+    const amount=matches.reduce((sum,row)=>sum+(numberValue(row[amountField])||0),0);
+    if(!Number.isFinite(amount)||amount<=0){
+      return {
+        year,
+        available:false,
+        datasetId:source.id,
+        datasetTitle:source.title,
+        resolvedBy:source.resolvedBy,
+        stage:stage(year),
+        reason:`Rows for ${displayDepartmentName(department)} were found, but the appropriation total could not be read reliably.`
+      };
+    }
+
+    return {
+      year,
+      available:true,
+      amount,
+      datasetId:source.id,
+      datasetTitle:source.title,
+      resolvedBy:source.resolvedBy,
+      amountField,
+      rowCount:matches.length,
+      stage:stage(year),
+      departmentNames:[...new Set(matches.map(departmentDescription).filter(Boolean))],
+      matchedBy:[...new Set(matchedRows.map(item=>item.match.by).filter(Boolean))].join(' + ')
+    };
+  }catch(error){
+    return {
+      year,
+      available:false,
+      datasetId:source?.id||'',
+      datasetTitle:source?.title||datasetTitle(year),
+      resolvedBy:source?.resolvedBy||'',
+      stage:stage(year),
+      reason:error.message
+    };
+  }
+}
+function appropriationAccountCode(row){
+  return String(fieldValue(row,['account_code','appropriation_account_code','appropriation_code','account_number','account'])||'').trim();
+}
+function appropriationAccountLabel(row){
+  const direct=fieldValue(row,[
+    'appropriation_account_description',
+    'account_description',
+    'appropriation_description',
+    'appropriation_account',
+    'description',
+    'account_name',
+    'account'
+  ]);
+  if(direct && !/^\d+(\.0+)?$/.test(String(direct).trim())) return String(direct).trim();
+  const candidates=Object.entries(row||{})
+    .filter(([key,value])=>{
+      const k=normalizedKey(key);
+      if(/department|fund|organization|division|section|sub_section|code|number|year|amount|budget/.test(k)) return false;
+      if(!(k.includes('account')||k.includes('appropriation')||k.includes('description'))) return false;
+      const text=String(value??'').trim();
+      return text && !/^\d+(\.0+)?$/.test(text);
+    })
+    .map(([,value])=>String(value).trim())
+    .sort((a,b)=>b.length-a.length);
+  return candidates[0]||'Unlabeled appropriation';
+}
+async function loadLargestAppropriations(department){
+  const source=await resolveDataset(2026);
+  const rows=await fetchAllRows(source.id);
+  const matchedRows=rows.map(row=>({row,match:departmentMatch(row,department)})).filter(item=>item.match.matched);
+  if(!matchedRows.length) throw new Error(`No rows matched ${displayDepartmentName(department)} in the 2026 City appropriations dataset.`);
+  const amountField=findAmountField(matchedRows[0].row,2026);
+  const groups=new Map();
+  for(const item of matchedRows){
+    const code=appropriationAccountCode(item.row);
+    const label=appropriationAccountLabel(item.row);
+    const key=JSON.stringify([code,normalize(label)]);
+    if(!groups.has(key)){
+      groups.set(key,{key,code,label,amount:0,rowCount:0});
+    }
+    const group=groups.get(key);
+    group.amount+=numberValue(item.row[amountField])||0;
+    group.rowCount+=1;
+  }
+  const rowsOut=[...groups.values()]
+    .filter(row=>row.amount>0)
+    .sort((a,b)=>b.amount-a.amount||a.label.localeCompare(b.label))
+    .slice(0,10);
+  if(!rowsOut.length) throw new Error(`Rows for ${displayDepartmentName(department)} were found, but no positive 2026 appropriation amounts could be read.`);
+  return {
+    rows:rowsOut,
+    source,
+    amountField,
+    rowCount:matchedRows.length,
+    matchedBy:[...new Set(matchedRows.map(item=>item.match.by).filter(Boolean))].join(' + '),
+    departmentNames:[...new Set(matchedRows.map(item=>departmentDescription(item.row)).filter(Boolean))]
+  };
+}
+async function loadAppropriationChangeYear(year,department){
+  const source=await resolveDataset(year);
+  const rows=await fetchAllRows(source.id);
+  const matchedRows=rows.map(row=>({row,match:departmentMatch(row,department)})).filter(item=>item.match.matched);
+  if(!matchedRows.length) throw new Error(`No rows matched ${displayDepartmentName(department)} in the ${year} City appropriations dataset.`);
+  const amountField=findAmountField(matchedRows[0].row,year);
+  const groups=new Map();
+  for(const item of matchedRows){
+    const code=appropriationAccountCode(item.row);
+    const label=appropriationAccountLabel(item.row);
+    const key=JSON.stringify([code,normalize(label)]);
+    if(!groups.has(key)){
+      groups.set(key,{key,code,label,amount:0,rowCount:0});
+    }
+    const group=groups.get(key);
+    group.amount+=numberValue(item.row[amountField])||0;
+    group.rowCount+=1;
+  }
+  return {
+    year,
+    source,
+    amountField,
+    groups,
+    rowCount:matchedRows.length,
+    matchedBy:[...new Set(matchedRows.map(item=>item.match.by).filter(Boolean))].join(' + '),
+    departmentNames:[...new Set(matchedRows.map(item=>departmentDescription(item.row)).filter(Boolean))]
+  };
+}
+async function loadAppropriationChanges(department){
+  const previous=await loadAppropriationChangeYear(2025,department);
+  const current=await loadAppropriationChangeYear(2026,department);
+  const keys=[...new Set([...previous.groups.keys(),...current.groups.keys()])];
+  const rows=keys.map(key=>{
+    const prev=previous.groups.get(key);
+    const curr=current.groups.get(key);
+    const previousAmount=prev?.amount||0;
+    const currentAmount=curr?.amount||0;
+    const net=currentAmount-previousAmount;
+    return {
+      key,
+      code:(curr||prev).code,
+      label:(curr||prev).label,
+      previous:previousAmount,
+      current:currentAmount,
+      net,
+      percent:previousAmount?net/previousAmount:null,
+      previousRows:prev?.rowCount||0,
+      currentRows:curr?.rowCount||0
+    };
+  })
+    .filter(row=>Math.abs(row.net)>.49)
+    .sort((a,b)=>b.net-a.net||a.label.localeCompare(b.label));
+  return {rows,previous,current};
+}
+async function loadLocalFundsYear(year,department){
+  let source=null;
+  try{
+    source=await resolveDataset(year);
+    const rows=await fetchAllRows(source.id);
+    const matchedRows=rows.map(row=>({row,match:departmentMatch(row,department)})).filter(item=>item.match.matched);
+    const localRows=matchedRows.filter(item=>isLocalFundRow(item.row));
+    const matches=localRows.map(item=>item.row);
+    if(!matches.length){
+      return {
+        year,
+        available:false,
+        datasetId:source.id,
+        datasetTitle:source.title,
+        resolvedBy:source.resolvedBy,
+        stage:stage(year),
+        reason:`No local-fund rows matched ${displayDepartmentName(department)} in this annual City dataset.`
+      };
+    }
+    const amountField=findAmountField(matches[0],year);
+    const amount=matches.reduce((sum,row)=>sum+(numberValue(row[amountField])||0),0);
+    const actualRow=localActualsForDepartment(department);
+    const actuals=actualRow?actualRow.actuals[year]:null;
+    const encumbrances=actualRow?actualRow.encumbrances[year]:0;
+    const hasActuals=actuals!==null;
+    const actualSpend=hasActuals?actualRow.actualSpend[year]||actuals+encumbrances:0;
+    const budgetSpent=hasActuals?Math.min(actualSpend,amount):0;
+    const unspent=hasActuals?Math.max(amount-actualSpend,0):amount;
+    return {
+      year,
+      available:Number.isFinite(amount)&&amount>0,
+      amount,
+      actuals,
+      encumbrances,
+      actualSpend,
+      budgetSpent,
+      unspent,
+      hasActuals,
+      datasetId:source.id,
+      datasetTitle:source.title,
+      resolvedBy:source.resolvedBy,
+      amountField,
+      actualsField:actualRow?'embedded actuals extract':'',
+      encumbrancesField:actualRow?'embedded encumbrances extract':'',
+      rowCount:matches.length,
+      stage:stage(year),
+      departmentNames:[...new Set(matches.map(departmentDescription).filter(Boolean))],
+      matchedBy:[...new Set(localRows.map(item=>item.match.by).filter(Boolean))].join(' + '),
+      reason:Number.isFinite(amount)&&amount>0
+        ? hasActuals?`${LOCAL_ACTUALS_SOURCE_LABEL}: ${actualRow.name}`:'Local-fund rows were found; no matching actuals/encumbrances row was found in the embedded extract.'
+        :'Local-fund rows were found, but the budget total could not be read reliably.'
+    };
+  }catch(error){
+    return {
+      year,
+      available:false,
+      datasetId:source?.id||'',
+      datasetTitle:source?.title||datasetTitle(year),
+      resolvedBy:source?.resolvedBy||'',
+      stage:stage(year),
+      reason:error.message
+    };
+  }
+}
+async function loadWorkforceYear(year,department){
+  let source=null;
+  try{
+    source=await resolvePositionDataset(year);
+    const rows=await fetchAllRows(source.id);
+    const matchedRows=rows.map(row=>({row,match:departmentMatch(row,department)})).filter(item=>item.match.matched);
+    const matches=matchedRows.map(item=>item.row);
+
+    if(!matches.length){
+      return {
+        year,
+        available:false,
+        datasetId:source.id,
+        datasetTitle:source.title,
+        resolvedBy:source.resolvedBy,
+        stage:stage(year),
+        reason:`No rows matched ${displayDepartmentName(department)} in this annual City positions dataset.`
+      };
+    }
+
+    const positionField=findPositionField(matches[0]);
+    const positions=matches.reduce((sum,row)=>sum+(numberValue(row[positionField])||0),0);
+    if(!Number.isFinite(positions)||positions<=0){
+      return {
+        year,
+        available:false,
+        datasetId:source.id,
+        datasetTitle:source.title,
+        resolvedBy:source.resolvedBy,
+        stage:stage(year),
+        reason:`Rows for ${displayDepartmentName(department)} were found, but the budgeted workforce total could not be read reliably.`
+      };
+    }
+
+    return {
+      year,
+      available:true,
+      positions,
+      datasetId:source.id,
+      datasetTitle:source.title,
+      resolvedBy:source.resolvedBy,
+      positionField,
+      rowCount:matches.length,
+      stage:stage(year),
+      departmentNames:[...new Set(matches.map(departmentDescription).filter(Boolean))],
+      matchedBy:[...new Set(matchedRows.map(item=>item.match.by).filter(Boolean))].join(' + ')
+    };
+  }catch(error){
+    return {
+      year,
+      available:false,
+      datasetId:source?.id||'',
+      datasetTitle:source?.title||positionDatasetTitle(year),
+      resolvedBy:source?.resolvedBy||'',
+      stage:stage(year),
+      reason:error.message
+    };
+  }
+}
+function positionUnitValue(row){
+  const totalUnits=numberValue(fieldValue(row,['total_budgeted_unit','budgeted_positions','positions','position_count']));
+  const budgetUnit=String(fieldValue(row,['budgeted_unit','unit'])||'').trim();
+  const controlValue=String(fieldValue(row,['position_control','position_controlled','controlled'])||'').trim();
+  const controlled=controlValue==='1'||normalize(controlValue)==='YES'||normalize(controlValue)==='TRUE';
+  const normalizedUnit=normalize(budgetUnit);
+  if(totalUnits!==null && normalizedUnit){
+    if(normalizedUnit==='MONTHLY'&&!controlled) return totalUnits/12;
+    if(normalizedUnit==='HOURLY'&&!controlled) return totalUnits/2080;
+    return totalUnits;
+  }
+  const fallbackField=findPositionField(row);
+  return numberValue(row[fallbackField])||0;
+}
+function positionTitleLabel(row){
+  return titleCaseDepartment(fieldValue(row,['title_description','title'])||'Untitled Position/FTE');
+}
+function positionTitleKey(row,department){
+  const code=String(fieldValue(row,['title_code','title_number'])||'').trim();
+  const title=normalize(fieldValue(row,['title_description','title'])||'');
+  return JSON.stringify([departmentCode(row)||department.code||'',code,title]);
+}
+async function loadPositionChangeYear(year,department){
+  const source=await resolvePositionDataset(year);
+  const rows=await fetchAllRows(source.id);
+  const matchedRows=rows.map(row=>({row,match:departmentMatch(row,department)})).filter(item=>item.match.matched);
+  if(!matchedRows.length){
+    throw new Error(`No rows matched ${displayDepartmentName(department)} in the ${year} City positions dataset.`);
+  }
+  const groups=new Map();
+  for(const item of matchedRows){
+    const key=positionTitleKey(item.row,department);
+    if(!groups.has(key)){
+      groups.set(key,{
+        key,
+        title:positionTitleLabel(item.row),
+        titleCode:String(fieldValue(item.row,['title_code','title_number'])||'').trim(),
+        positions:0,
+        rowCount:0
+      });
+    }
+    const group=groups.get(key);
+    group.positions+=positionUnitValue(item.row);
+    group.rowCount+=1;
+  }
+  return {
+    year,
+    source,
+    groups,
+    rowCount:matchedRows.length,
+    matchedBy:[...new Set(matchedRows.map(item=>item.match.by).filter(Boolean))].join(' + '),
+    departmentNames:[...new Set(matchedRows.map(item=>departmentDescription(item.row)).filter(Boolean))]
+  };
+}
+async function loadPositionChanges(department){
+  const previous=await loadPositionChangeYear(2025,department);
+  const current=await loadPositionChangeYear(2026,department);
+  const keys=[...new Set([...previous.groups.keys(),...current.groups.keys()])];
+  const rows=keys.map(key=>{
+    const prev=previous.groups.get(key);
+    const curr=current.groups.get(key);
+    const previousPositions=prev?.positions||0;
+    const currentPositions=curr?.positions||0;
+    const net=currentPositions-previousPositions;
+    return {
+      key,
+      title:(curr||prev).title,
+      titleCode:(curr||prev).titleCode,
+      previous:previousPositions,
+      current:currentPositions,
+      net,
+      percent:previousPositions?net/previousPositions:null,
+      previousRows:prev?.rowCount||0,
+      currentRows:curr?.rowCount||0
+    };
+  })
+    .filter(row=>Math.abs(row.net)>1e-9)
+    .sort((a,b)=>b.net-a.net||a.title.localeCompare(b.title));
+  return {rows,previous,current};
+}
+async function loadVacancies(department){
+  const aggregate=vacancyAggregateForDepartment(department);
+  if(aggregate){
+    const data=VACANCY_MONTHS.map(month=>{
+      const vacancies=aggregate.vacancies[month.label]||0;
+      const persistent=Math.min(aggregate.persistent,vacancies);
+      const nonpersistent=Math.max(vacancies-persistent,0);
+      const filled=Math.max(aggregate.budgeted-vacancies,0);
+      return {
+        ...month,
+        dateKey:`${month.year}-${String(month.month+1).padStart(2,'0')}-01`,
+        available:true,
+        budgeted:aggregate.budgeted,
+        filled,
+        persistent,
+        nonpersistent,
+        vacancies,
+        vacancyRate:aggregate.budgeted?vacancies/aggregate.budgeted:null,
+        rowCount:1,
+        departmentNames:[aggregate.name],
+        matchedBy:'department code',
+        reason:''
+      };
+    });
+    const avgVacancyRate=data.reduce((sum,d)=>sum+(d.vacancyRate||0),0)/data.length;
+    const rangeLabel=`${VACANCY_MONTHS[0].label}–${VACANCY_MONTHS.at(-1).label} ${VACANCY_MONTHS[0].year}`;
+    return {
+      data,
+      avgVacancyRate,
+      persistentCount:aggregate.persistent,
+      persistentTitles:[],
+      persistentTitleData:[],
+      sourceLabel:VACANCY_AGGREGATE_SOURCE_LABEL,
+      sourceType:'aggregate',
+      rangeLabel,
+      availableDateKeys:data.map(d=>d.dateKey)
+    };
+  }
+
+  const rows=INTERNAL_VACANCY_ROWS;
+  if(!rows.length){
+    throw new Error('No aggregate vacancy row or internal vacancy snapshot rows are embedded yet for this department.');
+  }
+  const matchedRows=rows.map(row=>({row,match:vacancyDepartmentMatch(row,department)})).filter(item=>item.match.matched);
+  const datedRows=matchedRows.map(item=>({item,date:dateValue(fieldValue(item.row,['report_date','date']))})).filter(item=>item.date);
+  const availableDateKeys=[...new Set(datedRows.map(item=>vacancyDateKey(item.date)))].sort();
+  const selectedMonths=VACANCY_MONTHS.map(month=>({
+    ...month,
+    dateKey:[...availableDateKeys].find(key=>key.startsWith(`${month.year}-${String(month.month+1).padStart(2,'0')}`)) || `${month.year}-${String(month.month+1).padStart(2,'0')}-01`
+  }));
+  const rowsByMonth=new Map(selectedMonths.map(m=>[m.dateKey,[]]));
+
+  for(const {item,date} of datedRows){
+    const key=vacancyDateKey(date);
+    if(!rowsByMonth.has(key)) continue;
+    rowsByMonth.get(key).push(item);
+  }
+
+  const identityMonths=new Map();
+  for(const [dateKey,items] of rowsByMonth.entries()){
+    for(const item of items){
+      const vacancies=numberValue(fieldValue(item.row,['number_of_vacancies','vacancies','positions_vacant']))||0;
+      if(vacancies<=0) continue;
+      const identity=vacancyIdentity(item.row);
+      if(!identityMonths.has(identity)){
+        identityMonths.set(identity,{months:new Map(),title:vacancyTitle(item.row)});
+      }
+      identityMonths.get(identity).months.set(dateKey,(identityMonths.get(identity).months.get(dateKey)||0)+vacancies);
+    }
+  }
+
+  const persistentIdentities=[...identityMonths.values()]
+    .filter(item=>selectedMonths.length>1&&selectedMonths.every(month=>item.months.has(month.dateKey)))
+    .map(item=>({
+      ...item,
+      persistentVacancies:Math.min(...selectedMonths.map(month=>item.months.get(month.dateKey)||0))
+    }))
+    .filter(item=>item.persistentVacancies>0);
+  const persistentByTitle=new Map();
+  for(const item of persistentIdentities){
+    const title=item.title||'Vacancy';
+    if(!persistentByTitle.has(title)){
+      persistentByTitle.set(title,{title,persistentVacancies:0,identityCount:0});
+    }
+    const current=persistentByTitle.get(title);
+    current.persistentVacancies+=item.persistentVacancies;
+    current.identityCount+=1;
+  }
+  const persistentTitleData=[...persistentByTitle.values()]
+    .sort((a,b)=>b.persistentVacancies-a.persistentVacancies||a.title.localeCompare(b.title));
+  const data=selectedMonths.map(month=>{
+    const items=rowsByMonth.get(month.dateKey)||[];
+    const totalPositions=items.reduce((sum,item)=>sum+(numberValue(fieldValue(item.row,['total_positions','budgeted_positions','positions']))||0),0);
+    const employees=items.reduce((sum,item)=>sum+(numberValue(fieldValue(item.row,['employees_in_position','employees','filled_positions']))||0),0);
+    const vacancies=items.reduce((sum,item)=>sum+(numberValue(fieldValue(item.row,['number_of_vacancies','vacancies','positions_vacant']))||0),0);
+    const persistent=persistentIdentities.reduce((sum,item)=>sum+item.persistentVacancies,0);
+    const budgeted=totalPositions||employees+vacancies;
+    const filled=Math.max(budgeted-vacancies,0);
+    const nonpersistent=Math.max(vacancies-persistent,0);
+    return {
+      ...month,
+      available:items.length>0,
+      budgeted,
+      filled,
+      persistent,
+      nonpersistent,
+      vacancies,
+      vacancyRate:budgeted?vacancies/budgeted:null,
+      rowCount:items.length,
+      departmentNames:[...new Set(items.map(item=>String(fieldValue(item.row,['department_code','department'])||'').trim()).filter(Boolean))],
+      matchedBy:[...new Set(items.map(item=>item.match.by).filter(Boolean))].join(' + '),
+      reason:items.length?'':'No vacancy rows matched this department and month.'
+    };
+  });
+
+  const available=data.filter(d=>d.available);
+  const avgVacancyRate=available.length?available.reduce((sum,d)=>sum+(d.vacancyRate||0),0)/available.length:null;
+  const rangeLabel=selectedMonths.length
+    ? selectedMonths[0].year===selectedMonths.at(-1).year
+      ? `${selectedMonths[0].label}${selectedMonths.length>1?`–${selectedMonths.at(-1).label}`:''} ${selectedMonths[0].year}`
+      : `${selectedMonths[0].label} ${selectedMonths[0].year}–${selectedMonths.at(-1).label} ${selectedMonths.at(-1).year}`
+    : 'No report dates';
+  return {
+    data,
+    avgVacancyRate,
+    persistentCount:persistentIdentities.length,
+    persistentTitles:persistentIdentities.map(item=>item.title).sort(),
+    persistentTitleData,
+    sourceLabel:VACANCIES_SOURCE_LABEL,
+    rangeLabel,
+    availableDateKeys
+  };
+}
+async function mapLimit(items,limit,worker){
+  const out=new Array(items.length);
+  let next=0;
+  async function runner(){
+    while(next<items.length){
+      const i=next++;
+      out[i]=await worker(items[i]);
+    }
+  }
+  await Promise.all(Array.from({length:Math.min(limit,items.length)},runner));
+  return out;
+}
+function svgEl(name,attrs,text){
+  const el=document.createElementNS('http://www.w3.org/2000/svg',name);
+  Object.entries(attrs||{}).forEach(([k,v])=>el.setAttribute(k,String(v)));
+  if(text!==undefined) el.textContent=text;
+  return el;
+}
+function money(value){return '$'+Math.round(value).toLocaleString('en-US')}
+function moneyM(value){return '$'+(value/1e6).toFixed(2)+'M'}
+function signedMoney(value){
+  const abs=money(Math.abs(value));
+  return value>0?`+${abs}`:value<0?`-${abs}`:abs;
+}
+function signedNumber(value){
+  const rounded=Math.round(value*10)/10;
+  const text=Number.isInteger(rounded)?String(rounded):rounded.toFixed(1);
+  return rounded>0?`+${text}`:text;
+}
+function positionNumber(value){
+  const rounded=Math.round(value*10)/10;
+  return Number.isInteger(rounded)?String(rounded):rounded.toFixed(1);
+}
+function signedPercent(value){
+  if(value===null||!Number.isFinite(value)) return '—';
+  const pct=value*100;
+  return `${pct>0?'+':''}${pct.toFixed(1)}%`;
+}
+function axisMoney(value){
+  const m=value/1e6;
+  return '$'+(Math.abs(m-Math.round(m))<.001?Math.round(m):m.toFixed(1))+'M';
+}
+function niceBounds(min,max){
+  const pad=750000;
+  let lo=Math.floor((min-pad)/1e6)*1e6;
+  let hi=Math.ceil((max+pad)/1e6)*1e6;
+  if(hi-lo<4e6){lo-=1e6;hi+=1e6}
+  return [lo,hi];
+}
+function niceMax(max){
+  const step=5e6;
+  return Math.max(step,Math.ceil(max/step)*step);
+}
+function rowDepartmentLabel(d){
+  if(selectedDepartment?.code==='60'){
+    const names=(d.departmentNames||[]).join(' / ');
+    if(/CIVILIAN OFFICE|COPA/i.test(names)) return 'COPA';
+    if(/INDEPENDENT POLICE REVIEW|IPRA/i.test(names)) return 'IPRA';
+    return 'IPRA/COPA';
+  }
+  const apiName=(d.departmentNames||[])[0];
+  return titleCaseDepartment(apiName||selectedDepartment?.name||'Department');
+}
+function showTooltip(d,cx,cy,W,H){
+  if(d.available){
+    tooltipEl.innerHTML=`<div class="yr">${d.year}${d.year===2026?' · Proposed':''}</div><div class="amt">${moneyM(d.amount)}</div><div class="agency">${escapeHtml(rowDepartmentLabel(d))} · ${money(d.amount)}</div>`;
+  }else{
+    tooltipEl.innerHTML=`<div class="yr">${d.year}</div><div class="amt" style="font-size:16px">No API value</div><div class="agency">${escapeHtml(d.reason||'No usable department rows found.')}</div>`;
+  }
+  const left=Math.max(72,Math.min(W-72,cx));
+  const top=Math.max(60,cy);
+  tooltipEl.style.left=`${left}px`;
+  tooltipEl.style.top=`${top}px`;
+  tooltipEl.classList.add('show');
+}
+function hideTooltip(){tooltipEl.classList.remove('show')}
+function showLocalFundsTooltip(d,cx,cy,W){
+  if(d.available){
+    localFundsTooltipEl.innerHTML=d.hasActuals
+      ? `<div class="yr">${d.year}</div><div class="amt">${((d.actualSpend/d.amount)*100).toFixed(1)}% spent</div><div class="agency">${escapeHtml(rowDepartmentLabel(d))} · ${money(d.actualSpend)} spent of ${money(d.amount)} budget<br>${money(d.unspent)} unspent</div>`
+      : `<div class="yr">${d.year}</div><div class="amt">${moneyM(d.amount)}</div><div class="agency">${escapeHtml(rowDepartmentLabel(d))} local-fund budget loaded<br>Actuals fields not found in this API response yet.</div>`;
+  }else{
+    localFundsTooltipEl.innerHTML=`<div class="yr">${d.year}</div><div class="amt" style="font-size:16px">No API value</div><div class="agency">${escapeHtml(d.reason||'No usable local-fund rows found.')}</div>`;
+  }
+  localFundsTooltipEl.style.left=`${Math.max(72,Math.min(W-72,cx))}px`;
+  localFundsTooltipEl.style.top=`${Math.max(60,cy)}px`;
+  localFundsTooltipEl.classList.add('show');
+}
+function hideLocalFundsTooltip(){localFundsTooltipEl.classList.remove('show')}
+function showWorkforceTooltip(d,cx,cy,W){
+  if(d.available){
+    workforceTooltipEl.innerHTML=`<div class="yr">${d.year}${d.year===2026?' · Proposed':''}</div><div class="amt">${Math.round(d.positions).toLocaleString('en-US')}</div><div class="agency">${escapeHtml(rowDepartmentLabel(d))} · budgeted positions/FTEs</div>`;
+  }else{
+    workforceTooltipEl.innerHTML=`<div class="yr">${d.year}</div><div class="amt" style="font-size:16px">No API value</div><div class="agency">${escapeHtml(d.reason||'No usable workforce rows found.')}</div>`;
+  }
+  workforceTooltipEl.style.left=`${Math.max(72,Math.min(W-72,cx))}px`;
+  workforceTooltipEl.style.top=`${Math.max(60,cy)}px`;
+  workforceTooltipEl.classList.add('show');
+}
+function hideWorkforceTooltip(){workforceTooltipEl.classList.remove('show')}
+function showPositionChangesTooltip(d,cx,cy,W){
+  positionChangesTooltipEl.innerHTML=`<div class="yr">${escapeHtml(d.title)}</div><div class="amt">${signedNumber(d.net)}</div><div class="agency">${positionNumber(d.previous)} in 2025 · ${positionNumber(d.current)} in 2026 · ${signedPercent(d.percent)}</div>`;
+  positionChangesTooltipEl.style.left=`${Math.max(72,Math.min(W-72,cx))}px`;
+  positionChangesTooltipEl.style.top=`${Math.max(60,cy)}px`;
+  positionChangesTooltipEl.classList.add('show');
+}
+function hidePositionChangesTooltip(){positionChangesTooltipEl.classList.remove('show')}
+function showVacanciesTooltip(d,cx,cy,W){
+  if(d.available){
+    vacanciesTooltipEl.innerHTML=`<div class="yr">${d.label} ${d.year}</div><div class="amt">${(d.vacancyRate*100).toFixed(1)}% vacant</div><div class="agency">${Math.round(d.filled).toLocaleString('en-US')} filled · ${Math.round(d.persistent).toLocaleString('en-US')} persistent vacant · ${Math.round(d.nonpersistent).toLocaleString('en-US')} other vacant</div>`;
+  }else{
+    vacanciesTooltipEl.innerHTML=`<div class="yr">${d.label} ${d.year}</div><div class="amt" style="font-size:16px">No retained value</div><div class="agency">${escapeHtml(d.reason||'No usable vacancy rows found.')}</div>`;
+  }
+  vacanciesTooltipEl.style.left=`${Math.max(72,Math.min(W-72,cx))}px`;
+  vacanciesTooltipEl.style.top=`${Math.max(60,cy)}px`;
+  vacanciesTooltipEl.classList.add('show');
+}
+function hideVacanciesTooltip(){vacanciesTooltipEl.classList.remove('show')}
+function showPersistentVacanciesTooltip(d,cx,cy,W){
+  persistentVacanciesTooltipEl.innerHTML=`<div class="yr">${escapeHtml(d.title)}</div><div class="amt">${Math.round(d.persistentVacancies).toLocaleString('en-US')}</div><div class="agency">${Math.round(d.identityCount).toLocaleString('en-US')} persistent vacancy ${d.identityCount===1?'identity':'identities'}</div>`;
+  persistentVacanciesTooltipEl.style.left=`${Math.max(72,Math.min(W-72,cx))}px`;
+  persistentVacanciesTooltipEl.style.top=`${Math.max(60,cy)}px`;
+  persistentVacanciesTooltipEl.classList.add('show');
+}
+function hidePersistentVacanciesTooltip(){persistentVacanciesTooltipEl.classList.remove('show')}
+function showLargestAppropriationsTooltip(d,cx,cy,W){
+  largestAppropriationsTooltipEl.innerHTML=`<div class="yr">${escapeHtml(d.label)}</div><div class="amt">${money(d.amount)}</div><div class="agency">${d.code?`Account ${escapeHtml(d.code)} · `:''}${d.rowCount.toLocaleString('en-US')} source row${d.rowCount===1?'':'s'}</div>`;
+  largestAppropriationsTooltipEl.style.left=`${Math.max(72,Math.min(W-72,cx))}px`;
+  largestAppropriationsTooltipEl.style.top=`${Math.max(60,cy)}px`;
+  largestAppropriationsTooltipEl.classList.add('show');
+}
+function hideLargestAppropriationsTooltip(){largestAppropriationsTooltipEl.classList.remove('show')}
+function showAppropriationChangesTooltip(d,cx,cy,W){
+  appropriationChangesTooltipEl.innerHTML=`<div class="yr">${escapeHtml(d.label)}</div><div class="amt">${signedMoney(d.net)}</div><div class="agency">${money(d.previous)} in 2025 · ${money(d.current)} in 2026 · ${signedPercent(d.percent)}</div>`;
+  appropriationChangesTooltipEl.style.left=`${Math.max(72,Math.min(W-72,cx))}px`;
+  appropriationChangesTooltipEl.style.top=`${Math.max(60,cy)}px`;
+  appropriationChangesTooltipEl.classList.add('show');
+}
+function hideAppropriationChangesTooltip(){appropriationChangesTooltipEl.classList.remove('show')}
+function contiguousSegments(data){
+  const segments=[];
+  let current=[];
+  for(const d of data){
+    if(d.available){
+      if(current.length && d.year!==current.at(-1).year+1){
+        segments.push(current);
+        current=[];
+      }
+      current.push(d);
+    }else if(current.length){
+      segments.push(current);
+      current=[];
+    }
+  }
+  if(current.length)segments.push(current);
+  return segments;
+}
+function renderChart(data){
+  chartEl.querySelector('svg')?.remove();
+
+  const available=data.filter(d=>d.available);
+  if(available.length<2) throw new Error(`Fewer than two usable annual values were found for ${displayDepartmentName(selectedDepartment)}.`);
+
+  const measured=Math.max(320,Math.round(chartEl.getBoundingClientRect().width||700));
+  const W=measured;
+  const H=W<520?300:285;
+  const M={top:30,right:W<520?38:82,bottom:W<520?58:49,left:W<520?50:60};
+  const iw=W-M.left-M.right;
+  const ih=H-M.top-M.bottom;
+  const amounts=available.map(d=>d.amount);
+  const min=Math.min(...amounts);
+  const max=Math.max(...amounts);
+  const [yMin,yMax]=niceBounds(min,max);
+  const minYear=YEARS[0];
+  const maxYear=YEARS.at(-1);
+  const x=year=>M.left+(year-minYear)/(maxYear-minYear)*iw;
+  const y=value=>M.top+ih-(value-yMin)/(yMax-yMin)*ih;
+
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'svgTitle svgDesc',id:'budgetSvg'});
+  svg.append(svgEl('title',{id:'svgTitle'},`${displayDepartmentName(selectedDepartment)} appropriations from 2011 through the proposed 2026 budget`));
+  const missingYears=data.filter(d=>!d.available).map(d=>d.year);
+  svg.append(svgEl('desc',{id:'svgDesc'},`Annual adopted appropriations for ${displayDepartmentName(selectedDepartment)} from 2011 through 2025 and the proposed 2026 appropriation. ${missingYears.length?`No City API value was plotted for ${missingYears.join(', ')}.`:'Every year has a plotted value.'}`));
+
+  const defs=svgEl('defs');
+  const grad=svgEl('linearGradient',{id:'fade',x1:'0',y1:'0',x2:'0',y2:'1'});
+  grad.append(svgEl('stop',{offset:'0%','stop-color':COLORS.primary,'stop-opacity':'.20'}));
+  grad.append(svgEl('stop',{offset:'100%','stop-color':COLORS.primary,'stop-opacity':'0'}));
+  defs.append(grad);
+  svg.append(defs);
+
+  const ticks=5;
+  for(let i=0;i<ticks;i++){
+    const value=yMin+(yMax-yMin)*i/(ticks-1);
+    const yy=y(value);
+    svg.append(svgEl('line',{x1:M.left,x2:W-M.right,y1:yy,y2:yy,stroke:COLORS.border,'stroke-width':'1'}));
+    svg.append(svgEl('text',{x:M.left-9,y:yy+4,'text-anchor':'end',fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'10.5'},axisMoney(value)));
+  }
+
+  const baseline=M.top+ih;
+  const segments=contiguousSegments(data);
+  for(const segment of segments){
+    if(segment.length>=2){
+      const area=segment.map((d,i)=>`${i?'L':'M'} ${x(d.year).toFixed(1)} ${y(d.amount).toFixed(1)}`).join(' ')
+        +` L ${x(segment.at(-1).year).toFixed(1)} ${baseline.toFixed(1)} L ${x(segment[0].year).toFixed(1)} ${baseline.toFixed(1)} Z`;
+      svg.append(svgEl('path',{d:area,fill:'url(#fade)'}));
+      const line=segment.map((d,i)=>`${i?'L':'M'} ${x(d.year).toFixed(1)} ${y(d.amount).toFixed(1)}`).join(' ');
+      svg.append(svgEl('path',{d:line,fill:'none',stroke:COLORS.primary,'stroke-width':'2.5','stroke-linejoin':'miter','stroke-linecap':'square'}));
+    }
+  }
+
+  const compact=W<520;
+  data.forEach((d,i)=>{
+    const cx=x(d.year);
+
+    if(d.available){
+      const cy=y(d.amount);
+      svg.append(svgEl('circle',{cx,cy,r:d.year===2026?4.8:3.4,fill:COLORS.primary,stroke:COLORS.surface,'stroke-width':'2'}));
+      const hit=svgEl('circle',{cx,cy,r:'11',fill:'transparent','data-year':d.year,tabindex:'0','aria-label':`${d.year}: ${money(d.amount)}`});
+      hit.style.cursor='pointer';
+      hit.addEventListener('mouseenter',()=>showTooltip(d,cx,cy,W,H));
+      hit.addEventListener('mouseleave',hideTooltip);
+      hit.addEventListener('focus',()=>showTooltip(d,cx,cy,W,H));
+      hit.addEventListener('blur',hideTooltip);
+      hit.addEventListener('click',()=>showTooltip(d,cx,cy,W,H));
+      svg.append(hit);
+    }else{
+      // A missing year is deliberately represented as a gap, not zero and not an interpolated value.
+      const markerY=baseline-9;
+      svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:markerY-4,y2:markerY+4,stroke:COLORS.muted,'stroke-width':'1.5'}));
+      svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:markerY+4,y2:markerY-4,stroke:COLORS.muted,'stroke-width':'1.5'}));
+      const hit=svgEl('rect',{x:cx-12,y:markerY-18,width:'24',height:'28',fill:'transparent',tabindex:'0','aria-label':`${d.year}: no City API value`});
+      hit.style.cursor='pointer';
+      hit.addEventListener('mouseenter',()=>showTooltip(d,cx,markerY,W,H));
+      hit.addEventListener('mouseleave',hideTooltip);
+      hit.addEventListener('focus',()=>showTooltip(d,cx,markerY,W,H));
+      hit.addEventListener('blur',hideTooltip);
+      hit.addEventListener('click',()=>showTooltip(d,cx,markerY,W,H));
+      svg.append(hit);
+    }
+
+    if(!compact || i%2===0 || d.year===2026){
+      svg.append(svgEl('text',{x:cx,y:H-15,'text-anchor':'middle',fill:d.available?COLORS.muted:'#9da2a7','font-family':'Inter,Arial,sans-serif','font-size':compact?'9':'9.5'},String(d.year)));
+    }
+  });
+
+  // COPA is the one department in this series with an agency-name transition we explicitly annotate.
+  if(selectedDepartment?.code==='60'){
+    const transition=2017;
+    svg.append(svgEl('line',{x1:x(transition),x2:x(transition),y1:M.top,y2:baseline,stroke:COLORS.border,'stroke-width':'1','stroke-dasharray':'3 3'}));
+    svg.append(svgEl('text',{x:x(transition)+5,y:M.top+11,fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'9.5'},'COPA begins'));
+  }
+
+  const latest=available.at(-1);
+  svg.append(svgEl('text',{x:x(latest.year)-5,y:y(latest.amount)-13,'text-anchor':'end',fill:COLORS.primary,'font-family':'Inter,Arial,sans-serif','font-size':'12','font-weight':'700'},moneyM(latest.amount)));
+
+  chartEl.insertBefore(svg,tooltipEl);
+  downloadBtn.hidden=false;
+}
+function renderDetails(data){
+  detailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Year</th><th>Status</th><th>Stage</th><th>Total</th><th>Agency / note</th><th>Matched by</th><th>Dataset</th><th>Resolved by</th><th>Amount field</th></tr></thead><tbody>${data.map(d=>{
+    const dataset=d.datasetId?`<a href="https://${DOMAIN}/d/${d.datasetId}" target="_blank" rel="noopener">${escapeHtml(d.datasetId)}</a>`:'—';
+    return `<tr><td>${d.year}</td><td>${d.available?'Available':'Missing'}</td><td>${escapeHtml(d.stage)}</td><td>${d.available?money(d.amount):'—'}</td><td>${d.available?escapeHtml((d.departmentNames||[]).join(' / ')):escapeHtml(d.reason||'No usable value')}</td><td>${escapeHtml(d.matchedBy||'—')}</td><td>${dataset}</td><td>${escapeHtml(d.resolvedBy||'—')}</td><td>${escapeHtml(d.amountField||'—')}</td></tr>`;
+  }).join('')}</tbody></table></div>`;
+}
+function renderLocalFundsChart(data){
+  localFundsChartEl.querySelector('svg')?.remove();
+  hideLocalFundsTooltip();
+  const available=data.filter(d=>d.available);
+  if(!available.length) throw new Error(`No usable local-fund values were found for ${displayDepartmentName(selectedDepartment)}.`);
+
+  const measured=Math.max(320,Math.round(localFundsChartEl.getBoundingClientRect().width||700));
+  const W=measured;
+  const H=W<520?300:285;
+  const M={top:30,right:W<520?28:52,bottom:50,left:W<520?50:60};
+  const iw=W-M.left-M.right;
+  const ih=H-M.top-M.bottom;
+  const yMax=niceMax(Math.max(...available.map(d=>d.amount)));
+  const y=value=>M.top+ih-(value/yMax)*ih;
+  const barW=Math.min(W<520?54:78,iw/(data.length*1.9));
+  const gap=iw/data.length;
+  const baseline=M.top+ih;
+
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'localSvgTitle localSvgDesc',id:'localFundsSvg'});
+  svg.append(svgEl('title',{id:'localSvgTitle'},`${displayDepartmentName(selectedDepartment)} local-fund actuals, 2022 through 2024`));
+  svg.append(svgEl('desc',{id:'localSvgDesc'},`Annual local-fund budget spent and unspent for ${displayDepartmentName(selectedDepartment)} from 2022 through 2024. Budget spent equals actuals plus encumbrances, capped at the annual budget.`));
+
+  const ticks=5;
+  for(let i=0;i<ticks;i++){
+    const value=yMax*i/(ticks-1);
+    const yy=y(value);
+    svg.append(svgEl('line',{x1:M.left,x2:W-M.right,y1:yy,y2:yy,stroke:COLORS.border,'stroke-width':'1'}));
+    svg.append(svgEl('text',{x:M.left-9,y:yy+4,'text-anchor':'end',fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'10.5'},axisMoney(value)));
+  }
+
+  data.forEach((d,i)=>{
+    const cx=M.left+gap*(i+.5);
+    if(d.available){
+      const x=cx-barW/2;
+      const spentY=y(d.budgetSpent);
+      const budgetY=y(d.amount);
+      const spentPct=d.amount?d.actualSpend/d.amount:0;
+      svg.append(svgEl('rect',{x,y:budgetY,width:barW,height:spentY-budgetY,fill:COLORS.pale}));
+      svg.append(svgEl('rect',{x,y:spentY,width:barW,height:baseline-spentY,fill:COLORS.primary}));
+      svg.append(svgEl('text',{x:cx,y:budgetY-10,'text-anchor':'middle',fill:COLORS.primary,'font-family':'Inter,Arial,sans-serif','font-size':'12','font-weight':'700'},d.hasActuals?`${(spentPct*100).toFixed(1)}%`:moneyM(d.amount)));
+      const hit=svgEl('rect',{x:x-8,y:budgetY-18,width:barW+16,height:baseline-budgetY+28,fill:'transparent',tabindex:'0','aria-label':d.hasActuals?`${d.year}: ${money(d.actualSpend)} spent, ${money(d.unspent)} unspent`:`${d.year}: ${money(d.amount)} local-fund budget`});
+      hit.style.cursor='pointer';
+      hit.addEventListener('mouseenter',()=>showLocalFundsTooltip(d,cx,budgetY,W));
+      hit.addEventListener('mouseleave',hideLocalFundsTooltip);
+      hit.addEventListener('focus',()=>showLocalFundsTooltip(d,cx,budgetY,W));
+      hit.addEventListener('blur',hideLocalFundsTooltip);
+      hit.addEventListener('click',()=>showLocalFundsTooltip(d,cx,budgetY,W));
+      svg.append(hit);
+    }else{
+      const markerY=baseline-9;
+      svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:markerY-4,y2:markerY+4,stroke:COLORS.muted,'stroke-width':'1.5'}));
+      svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:markerY+4,y2:markerY-4,stroke:COLORS.muted,'stroke-width':'1.5'}));
+    }
+    svg.append(svgEl('text',{x:cx,y:H-16,'text-anchor':'middle',fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'10.5'},String(d.year)));
+  });
+
+  localFundsChartEl.insertBefore(svg,localFundsTooltipEl);
+  downloadLocalFundsBtn.hidden=false;
+}
+function renderLocalFundsDetails(data){
+  localFundsDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Year</th><th>Status</th><th>Stage</th><th>Local-fund budget</th><th>Actuals</th><th>Encumbrances</th><th>Budget spent</th><th>Budget unspent</th><th>Percent spent</th><th>Agency / note</th><th>Matched by</th><th>Dataset</th><th>Fields</th><th>Rows</th></tr></thead><tbody>${data.map(d=>{
+    const dataset=d.datasetId?`<a href="https://${DOMAIN}/d/${d.datasetId}" target="_blank" rel="noopener">${escapeHtml(d.datasetId)}</a>`:'—';
+    const fields=[d.amountField&&`budget: ${d.amountField}`,d.actualsField&&`actuals: ${d.actualsField}`,d.encumbrancesField&&`encumbrances: ${d.encumbrancesField}`].filter(Boolean).join(' / ')||'—';
+    return `<tr><td>${d.year}</td><td>${d.available?'Available':'Missing'}</td><td>${escapeHtml(d.stage)}</td><td>${Number.isFinite(d.amount)?money(d.amount):'—'}</td><td>${d.hasActuals?money(d.actuals):'—'}</td><td>${d.hasActuals?money(d.encumbrances):'—'}</td><td>${d.hasActuals?money(d.budgetSpent):'—'}</td><td>${d.hasActuals?money(d.unspent):'—'}</td><td>${d.hasActuals?`${((d.actualSpend/d.amount)*100).toFixed(1)}%`:'—'}</td><td>${d.available?escapeHtml(d.reason||((d.departmentNames||[]).join(' / '))):escapeHtml(d.reason||'No usable value')}</td><td>${escapeHtml(d.matchedBy||'—')}</td><td>${dataset}</td><td>${escapeHtml(fields)}</td><td>${d.rowCount||'—'}</td></tr>`;
+  }).join('')}</tbody></table></div>`;
+}
+function renderWorkforceChart(data){
+  workforceChartEl.querySelector('svg')?.remove();
+  hideWorkforceTooltip();
+  const available=data.filter(d=>d.available);
+  if(!available.length) throw new Error(`No usable workforce values were found for ${displayDepartmentName(selectedDepartment)}.`);
+
+  const measured=Math.max(320,Math.round(workforceChartEl.getBoundingClientRect().width||700));
+  const W=measured;
+  const H=W<520?310:295;
+  const M={top:30,right:W<520?24:44,bottom:W<520?58:49,left:W<520?42:52};
+  const iw=W-M.left-M.right;
+  const ih=H-M.top-M.bottom;
+  const yMax=Math.ceil(Math.max(...available.map(d=>d.positions))*1.12/25)*25;
+  const y=value=>M.top+ih-(value/yMax)*ih;
+  const x=year=>M.left+(year-YEARS[0])/(YEARS.at(-1)-YEARS[0])*iw;
+  const barW=Math.max(8,Math.min(W<520?14:22,iw/YEARS.length*.62));
+  const baseline=M.top+ih;
+
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'workforceSvgTitle workforceSvgDesc',id:'workforceSvg'});
+  svg.append(svgEl('title',{id:'workforceSvgTitle'},`${displayDepartmentName(selectedDepartment)} budgeted workforce from 2011 through the proposed 2026 budget`));
+  const missingYears=data.filter(d=>!d.available).map(d=>d.year);
+  svg.append(svgEl('desc',{id:'workforceSvgDesc'},`Annual budgeted positions and FTEs for ${displayDepartmentName(selectedDepartment)} from 2011 through 2025 and the proposed 2026 budget. ${missingYears.length?`No City API value was plotted for ${missingYears.join(', ')}.`:'Every year has a plotted value.'}`));
+
+  const ticks=5;
+  for(let i=0;i<ticks;i++){
+    const value=yMax*i/(ticks-1);
+    const yy=y(value);
+    svg.append(svgEl('line',{x1:M.left,x2:W-M.right,y1:yy,y2:yy,stroke:COLORS.border,'stroke-width':'1'}));
+    svg.append(svgEl('text',{x:M.left-9,y:yy+4,'text-anchor':'end',fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'10.5'},Math.round(value).toLocaleString('en-US')));
+  }
+
+  const compact=W<520;
+  data.forEach((d,i)=>{
+    const cx=x(d.year);
+    if(d.available){
+      const yy=y(d.positions);
+      const fill=d.year===2026?COLORS.primary:COLORS.pale;
+      svg.append(svgEl('rect',{x:cx-barW/2,y:yy,width:barW,height:baseline-yy,fill}));
+      const hit=svgEl('rect',{x:cx-barW/2-5,y:yy-18,width:barW+10,height:baseline-yy+28,fill:'transparent',tabindex:'0','aria-label':`${d.year}: ${Math.round(d.positions).toLocaleString('en-US')} budgeted positions/FTEs`});
+      hit.style.cursor='pointer';
+      hit.addEventListener('mouseenter',()=>showWorkforceTooltip(d,cx,yy,W));
+      hit.addEventListener('mouseleave',hideWorkforceTooltip);
+      hit.addEventListener('focus',()=>showWorkforceTooltip(d,cx,yy,W));
+      hit.addEventListener('blur',hideWorkforceTooltip);
+      hit.addEventListener('click',()=>showWorkforceTooltip(d,cx,yy,W));
+      svg.append(hit);
+    }else{
+      const markerY=baseline-9;
+      svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:markerY-4,y2:markerY+4,stroke:COLORS.muted,'stroke-width':'1.5'}));
+      svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:markerY+4,y2:markerY-4,stroke:COLORS.muted,'stroke-width':'1.5'}));
+    }
+    if(!compact || i%2===0 || d.year===2026){
+      svg.append(svgEl('text',{x:cx,y:H-15,'text-anchor':'middle',fill:d.available?COLORS.muted:'#9da2a7','font-family':'Inter,Arial,sans-serif','font-size':compact?'9':'9.5'},String(d.year)));
+    }
+  });
+
+  if(selectedDepartment?.code==='60'){
+    const transition=2017;
+    svg.append(svgEl('line',{x1:x(transition),x2:x(transition),y1:M.top,y2:baseline,stroke:COLORS.border,'stroke-width':'1','stroke-dasharray':'3 3'}));
+    svg.append(svgEl('text',{x:x(transition)+5,y:M.top+11,fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'9.5'},'COPA begins'));
+  }
+
+  const latest=available.at(-1);
+  svg.append(svgEl('text',{x:x(latest.year)-5,y:y(latest.positions)-13,'text-anchor':'end',fill:COLORS.primary,'font-family':'Inter,Arial,sans-serif','font-size':'12','font-weight':'700'},Math.round(latest.positions).toLocaleString('en-US')));
+
+  workforceChartEl.insertBefore(svg,workforceTooltipEl);
+  downloadWorkforceBtn.hidden=false;
+}
+function renderWorkforceDetails(data){
+  workforceDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Year</th><th>Status</th><th>Stage</th><th>Budgeted positions/FTEs</th><th>Agency / note</th><th>Matched by</th><th>Dataset</th><th>Resolved by</th><th>Position field</th><th>Rows</th></tr></thead><tbody>${data.map(d=>{
+    const dataset=d.datasetId?`<a href="https://${DOMAIN}/d/${d.datasetId}" target="_blank" rel="noopener">${escapeHtml(d.datasetId)}</a>`:'—';
+    return `<tr><td>${d.year}</td><td>${d.available?'Available':'Missing'}</td><td>${escapeHtml(d.stage)}</td><td>${d.available?Math.round(d.positions).toLocaleString('en-US'):'—'}</td><td>${d.available?escapeHtml((d.departmentNames||[]).join(' / ')):escapeHtml(d.reason||'No usable value')}</td><td>${escapeHtml(d.matchedBy||'—')}</td><td>${dataset}</td><td>${escapeHtml(d.resolvedBy||'—')}</td><td>${escapeHtml(d.positionField||'—')}</td><td>${d.rowCount||'—'}</td></tr>`;
+  }).join('')}</tbody></table></div>`;
+}
+function renderPositionChangesChart(result){
+  positionChangesChartEl.querySelector('svg')?.remove();
+  positionChangesChartEl.querySelector('.position-changes-empty')?.remove();
+  hidePositionChangesTooltip();
+  const data=result.rows||[];
+  if(!data.length){
+    const note=document.createElement('p');
+    note.className='status position-changes-empty';
+    note.textContent='No changed position/FTE titles were found between the 2025 ordinance and 2026 proposed budgets.';
+    positionChangesChartEl.insertBefore(note,positionChangesTooltipEl);
+    downloadPositionChangesBtn.hidden=true;
+    return;
+  }
+
+  const measured=Math.max(340,Math.round(positionChangesChartEl.getBoundingClientRect().width||700));
+  const W=measured;
+  const rowH=30;
+  const H=78+data.length*rowH;
+  const titleX=18;
+  const prevX=W<560?W*.47:W*.50;
+  const currX=W<560?W*.61:W*.64;
+  const netX=W<560?W*.76:W*.78;
+  const pctX=W-20;
+  const titleLimit=W<560?22:38;
+  const label=value=>{
+    const text=String(value||'');
+    return text.length>titleLimit?`${text.slice(0,titleLimit-1)}…`:text;
+  };
+
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'positionChangesSvgTitle positionChangesSvgDesc',id:'positionChangesSvg'});
+  svg.append(svgEl('title',{id:'positionChangesSvgTitle'},`${displayDepartmentName(selectedDepartment)} net and percent position/FTE changes, 2025 to 2026 proposed budgets`));
+  svg.append(svgEl('desc',{id:'positionChangesSvgDesc'},`Changed position/FTE titles for ${displayDepartmentName(selectedDepartment)} from the 2025 ordinance to the 2026 proposed budget.`));
+  svg.append(svgEl('rect',{x:0,y:0,width:W,height:H,fill:COLORS.surface}));
+  svg.append(svgEl('text',{x:titleX,y:25,fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'TITLE'));
+  svg.append(svgEl('text',{x:prevX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'2025'));
+  svg.append(svgEl('text',{x:currX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'2026'));
+  svg.append(svgEl('text',{x:netX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'NET'));
+  svg.append(svgEl('text',{x:pctX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'%'));
+  svg.append(svgEl('line',{x1:0,x2:W,y1:40,y2:40,stroke:COLORS.border,'stroke-width':'1'}));
+
+  data.forEach((d,i)=>{
+    const y=56+i*rowH;
+    const fill=d.net>0?COLORS.primary:COLORS.negative;
+    if(i%2===1) svg.append(svgEl('rect',{x:0,y:y-18,width:W,height:rowH,fill:'#F7FAFC'}));
+    svg.append(svgEl('text',{x:titleX,y,fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':W<560?'10':'11','font-weight':'600'},label(d.title)));
+    svg.append(svgEl('text',{x:prevX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'11'},positionNumber(d.previous)));
+    svg.append(svgEl('text',{x:currX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'11'},positionNumber(d.current)));
+    svg.append(svgEl('text',{x:netX,y,'text-anchor':'end',fill,'font-family':'Inter,Arial,sans-serif','font-size':'11','font-weight':'800'},signedNumber(d.net)));
+    svg.append(svgEl('text',{x:pctX,y,'text-anchor':'end',fill,'font-family':'Inter,Arial,sans-serif','font-size':'11','font-weight':'800'},signedPercent(d.percent)));
+    const hit=svgEl('rect',{x:0,y:y-20,width:W,height:rowH,fill:'transparent',tabindex:'0','aria-label':`${d.title}: ${signedNumber(d.net)} positions/FTEs, ${signedPercent(d.percent)}`});
+    hit.style.cursor='pointer';
+    hit.addEventListener('mouseenter',()=>showPositionChangesTooltip(d,W/2,y,W));
+    hit.addEventListener('mouseleave',hidePositionChangesTooltip);
+    hit.addEventListener('focus',()=>showPositionChangesTooltip(d,W/2,y,W));
+    hit.addEventListener('blur',hidePositionChangesTooltip);
+    hit.addEventListener('click',()=>showPositionChangesTooltip(d,W/2,y,W));
+    svg.append(hit);
+  });
+
+  positionChangesChartEl.insertBefore(svg,positionChangesTooltipEl);
+  downloadPositionChangesBtn.hidden=false;
+}
+function renderPositionChangesDetails(result){
+  const rows=result.rows||[];
+  const previousDataset=`<a href="https://${DOMAIN}/d/${result.previous.source.id}" target="_blank" rel="noopener">${escapeHtml(result.previous.source.id)}</a>`;
+  const currentDataset=`<a href="https://${DOMAIN}/d/${result.current.source.id}" target="_blank" rel="noopener">${escapeHtml(result.current.source.id)}</a>`;
+  positionChangesDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Title</th><th>2025 positions/FTEs</th><th>2026 positions/FTEs</th><th>Net change</th><th>Percent change</th><th>2025 rows</th><th>2026 rows</th></tr></thead><tbody>${rows.length?rows.map(d=>`<tr><td>${escapeHtml(d.title)}</td><td>${positionNumber(d.previous)}</td><td>${positionNumber(d.current)}</td><td>${signedNumber(d.net)}</td><td>${signedPercent(d.percent)}</td><td>${d.previousRows}</td><td>${d.currentRows}</td></tr>`).join(''):`<tr><td colspan="7">No changed position/FTE titles were found.</td></tr>`}</tbody></table></div><p>Datasets: 2025 ${previousDataset}; 2026 ${currentDataset}. Matched by: 2025 ${escapeHtml(result.previous.matchedBy||'—')}; 2026 ${escapeHtml(result.current.matchedBy||'—')}.</p>`;
+}
+function renderAppropriationChangesChart(result){
+  appropriationChangesChartEl.querySelector('svg')?.remove();
+  appropriationChangesChartEl.querySelector('.appropriation-changes-empty')?.remove();
+  hideAppropriationChangesTooltip();
+  const data=result.rows||[];
+  if(!data.length){
+    const note=document.createElement('p');
+    note.className='status appropriation-changes-empty';
+    note.textContent='No changed appropriation accounts were found between the 2025 ordinance and 2026 proposed budgets.';
+    appropriationChangesChartEl.insertBefore(note,appropriationChangesTooltipEl);
+    downloadAppropriationChangesBtn.hidden=true;
+    return;
+  }
+
+  const measured=Math.max(340,Math.round(appropriationChangesChartEl.getBoundingClientRect().width||700));
+  const W=measured;
+  const rowH=30;
+  const H=78+data.length*rowH;
+  const labelX=18;
+  const prevX=W<600?W*.45:W*.48;
+  const currX=W<600?W*.61:W*.63;
+  const netX=W<600?W*.78:W*.79;
+  const pctX=W-20;
+  const titleLimit=W<600?21:38;
+  const label=value=>{
+    const text=String(value||'');
+    return text.length>titleLimit?`${text.slice(0,titleLimit-1)}…`:text;
+  };
+
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'appropriationChangesSvgTitle appropriationChangesSvgDesc',id:'appropriationChangesSvg'});
+  svg.append(svgEl('title',{id:'appropriationChangesSvgTitle'},`${displayDepartmentName(selectedDepartment)} net and percent appropriation changes, 2025 to 2026 proposed budgets`));
+  svg.append(svgEl('desc',{id:'appropriationChangesSvgDesc'},`Changed appropriation accounts for ${displayDepartmentName(selectedDepartment)} from the 2025 ordinance to the 2026 proposed budget.`));
+  svg.append(svgEl('rect',{x:0,y:0,width:W,height:H,fill:COLORS.surface}));
+  svg.append(svgEl('text',{x:labelX,y:25,fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'APPROPRIATION'));
+  svg.append(svgEl('text',{x:prevX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'2025'));
+  svg.append(svgEl('text',{x:currX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'2026'));
+  svg.append(svgEl('text',{x:netX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'NET'));
+  svg.append(svgEl('text',{x:pctX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'%'));
+  svg.append(svgEl('line',{x1:0,x2:W,y1:40,y2:40,stroke:COLORS.border,'stroke-width':'1'}));
+
+  data.forEach((d,i)=>{
+    const y=56+i*rowH;
+    const fill=d.net>0?COLORS.primary:COLORS.negative;
+    if(i%2===1) svg.append(svgEl('rect',{x:0,y:y-18,width:W,height:rowH,fill:'#F7FAFC'}));
+    svg.append(svgEl('text',{x:labelX,y,fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':W<600?'9.5':'10.5','font-weight':'600'},label(d.label)));
+    svg.append(svgEl('text',{x:prevX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'10.5'},money(d.previous)));
+    svg.append(svgEl('text',{x:currX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'10.5'},money(d.current)));
+    svg.append(svgEl('text',{x:netX,y,'text-anchor':'end',fill,'font-family':'Inter,Arial,sans-serif','font-size':'10.5','font-weight':'800'},signedMoney(d.net)));
+    svg.append(svgEl('text',{x:pctX,y,'text-anchor':'end',fill,'font-family':'Inter,Arial,sans-serif','font-size':'10.5','font-weight':'800'},signedPercent(d.percent)));
+    const hit=svgEl('rect',{x:0,y:y-20,width:W,height:rowH,fill:'transparent',tabindex:'0','aria-label':`${d.label}: ${signedMoney(d.net)}, ${signedPercent(d.percent)}`});
+    hit.style.cursor='pointer';
+    hit.addEventListener('mouseenter',()=>showAppropriationChangesTooltip(d,W/2,y,W));
+    hit.addEventListener('mouseleave',hideAppropriationChangesTooltip);
+    hit.addEventListener('focus',()=>showAppropriationChangesTooltip(d,W/2,y,W));
+    hit.addEventListener('blur',hideAppropriationChangesTooltip);
+    hit.addEventListener('click',()=>showAppropriationChangesTooltip(d,W/2,y,W));
+    svg.append(hit);
+  });
+
+  appropriationChangesChartEl.insertBefore(svg,appropriationChangesTooltipEl);
+  downloadAppropriationChangesBtn.hidden=false;
+}
+function renderAppropriationChangesDetails(result){
+  const rows=result.rows||[];
+  const previousDataset=`<a href="https://${DOMAIN}/d/${result.previous.source.id}" target="_blank" rel="noopener">${escapeHtml(result.previous.source.id)}</a>`;
+  const currentDataset=`<a href="https://${DOMAIN}/d/${result.current.source.id}" target="_blank" rel="noopener">${escapeHtml(result.current.source.id)}</a>`;
+  appropriationChangesDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Appropriation account</th><th>Account code</th><th>2025 budgeted</th><th>2026 proposed</th><th>Net change</th><th>Percent change</th><th>2025 rows</th><th>2026 rows</th></tr></thead><tbody>${rows.length?rows.map(d=>`<tr><td>${escapeHtml(d.label)}</td><td>${escapeHtml(d.code||'—')}</td><td>${money(d.previous)}</td><td>${money(d.current)}</td><td>${signedMoney(d.net)}</td><td>${signedPercent(d.percent)}</td><td>${d.previousRows}</td><td>${d.currentRows}</td></tr>`).join(''):`<tr><td colspan="8">No changed appropriation accounts were found.</td></tr>`}</tbody></table></div><p>Datasets: 2025 ${previousDataset}; 2026 ${currentDataset}. Amount fields: 2025 ${escapeHtml(result.previous.amountField)}; 2026 ${escapeHtml(result.current.amountField)}. Matched by: 2025 ${escapeHtml(result.previous.matchedBy||'—')}; 2026 ${escapeHtml(result.current.matchedBy||'—')}.</p>`;
+}
+function renderVacanciesChart(result){
+  vacanciesChartEl.querySelector('svg')?.remove();
+  hideVacanciesTooltip();
+  const data=result.data;
+  const available=data.filter(d=>d.available);
+  if(!available.length) throw new Error(`No usable vacancy values were found for ${displayDepartmentName(selectedDepartment)}.`);
+
+  const measured=Math.max(320,Math.round(vacanciesChartEl.getBoundingClientRect().width||700));
+  const W=measured;
+  const H=W<520?320:305;
+  const M={top:30,right:W<520?22:38,bottom:50,left:W<520?42:52};
+  const iw=W-M.left-M.right;
+  const ih=H-M.top-M.bottom;
+  const yMax=Math.ceil(Math.max(...available.map(d=>d.budgeted))*1.08/25)*25;
+  const y=value=>M.top+ih-(value/yMax)*ih;
+  const barW=Math.max(18,Math.min(W<520?34:46,iw/data.length*.55));
+  const gap=iw/data.length;
+  const baseline=M.top+ih;
+
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'vacanciesSvgTitle vacanciesSvgDesc',id:'vacanciesSvg'});
+  svg.append(svgEl('title',{id:'vacanciesSvgTitle'},`${displayDepartmentName(selectedDepartment)} vacancies, ${result.rangeLabel}`));
+  svg.append(svgEl('desc',{id:'vacanciesSvgDesc'},`Filled positions, persistent vacancies and nonpersistent vacancies for ${displayDepartmentName(selectedDepartment)}, ${result.rangeLabel}.`));
+
+  const ticks=5;
+  for(let i=0;i<ticks;i++){
+    const value=yMax*i/(ticks-1);
+    const yy=y(value);
+    svg.append(svgEl('line',{x1:M.left,x2:W-M.right,y1:yy,y2:yy,stroke:COLORS.border,'stroke-width':'1'}));
+    svg.append(svgEl('text',{x:M.left-9,y:yy+4,'text-anchor':'end',fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'10.5'},Math.round(value).toLocaleString('en-US')));
+  }
+
+  data.forEach((d,i)=>{
+    const cx=M.left+gap*(i+.5);
+    if(d.available){
+      const x=cx-barW/2;
+      let top=baseline;
+      const filledY=y(d.filled);
+      svg.append(svgEl('rect',{x,y:filledY,width:barW,height:top-filledY,fill:COLORS.primary}));
+      top=filledY;
+      const persistentY=y(d.filled+d.persistent);
+      svg.append(svgEl('rect',{x,y:persistentY,width:barW,height:top-persistentY,fill:COLORS.accent}));
+      top=persistentY;
+      const nonpersistentY=y(d.filled+d.persistent+d.nonpersistent);
+      svg.append(svgEl('rect',{x,y:nonpersistentY,width:barW,height:top-nonpersistentY,fill:COLORS.pale}));
+      svg.append(svgEl('text',{x:cx,y:nonpersistentY-10,'text-anchor':'middle',fill:COLORS.primary,'font-family':'Inter,Arial,sans-serif','font-size':'11.5','font-weight':'700'},`${(d.vacancyRate*100).toFixed(1)}%`));
+      const hit=svgEl('rect',{x:x-8,y:nonpersistentY-18,width:barW+16,height:baseline-nonpersistentY+28,fill:'transparent',tabindex:'0','aria-label':`${d.label} ${d.year}: ${(d.vacancyRate*100).toFixed(1)} percent vacant`});
+      hit.style.cursor='pointer';
+      hit.addEventListener('mouseenter',()=>showVacanciesTooltip(d,cx,nonpersistentY,W));
+      hit.addEventListener('mouseleave',hideVacanciesTooltip);
+      hit.addEventListener('focus',()=>showVacanciesTooltip(d,cx,nonpersistentY,W));
+      hit.addEventListener('blur',hideVacanciesTooltip);
+      hit.addEventListener('click',()=>showVacanciesTooltip(d,cx,nonpersistentY,W));
+      svg.append(hit);
+    }else{
+      const markerY=baseline-9;
+      svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:markerY-4,y2:markerY+4,stroke:COLORS.muted,'stroke-width':'1.5'}));
+      svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:markerY+4,y2:markerY-4,stroke:COLORS.muted,'stroke-width':'1.5'}));
+    }
+    svg.append(svgEl('text',{x:cx,y:H-16,'text-anchor':'middle',fill:d.available?COLORS.muted:'#9da2a7','font-family':'Inter,Arial,sans-serif','font-size':'10.5'},data.length===1?`${d.short} ${String(d.year).slice(2)}`:d.short));
+  });
+
+  vacanciesChartEl.insertBefore(svg,vacanciesTooltipEl);
+  downloadVacanciesBtn.hidden=false;
+}
+function renderVacanciesDetails(result){
+  const data=result.data;
+  const persistentNote=result.sourceType==='aggregate'
+    ? `Persistent vacancies in aggregate extract: ${result.persistentCount.toLocaleString('en-US')}.`
+    : `Persistent vacancy identities found in all loaded months: ${result.persistentCount.toLocaleString('en-US')}.`;
+  vacanciesDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Month</th><th>Status</th><th>Budgeted positions</th><th>Filled positions</th><th>Persistent vacancies</th><th>Nonpersistent vacancies</th><th>Total vacancies</th><th>Vacancy rate</th><th>Rows</th><th>Matched by</th><th>Department values / note</th></tr></thead><tbody>${data.map(d=>`<tr><td>${escapeHtml(`${d.label} ${d.year}`)}</td><td>${d.available?'Available':'Missing'}</td><td>${d.available?Math.round(d.budgeted).toLocaleString('en-US'):'—'}</td><td>${d.available?Math.round(d.filled).toLocaleString('en-US'):'—'}</td><td>${d.available?Math.round(d.persistent).toLocaleString('en-US'):'—'}</td><td>${d.available?Math.round(d.nonpersistent).toLocaleString('en-US'):'—'}</td><td>${d.available?Math.round(d.vacancies).toLocaleString('en-US'):'—'}</td><td>${d.available&&d.vacancyRate!==null?`${(d.vacancyRate*100).toFixed(1)}%`:'—'}</td><td>${d.rowCount||'—'}</td><td>${escapeHtml(d.matchedBy||'—')}</td><td>${d.available?escapeHtml((d.departmentNames||[]).join(' / ')):escapeHtml(d.reason||'No usable value')}</td></tr>`).join('')}</tbody></table></div><p>Source: ${escapeHtml(result.sourceLabel||'Retained vacancy snapshots')}. Average vacancy rate: ${result.avgVacancyRate===null?'—':`${(result.avgVacancyRate*100).toFixed(1)}%`}. ${persistentNote}</p>`;
+}
+function renderPersistentVacanciesChart(result){
+  persistentVacanciesChartEl.querySelector('svg')?.remove();
+  hidePersistentVacanciesTooltip();
+  const data=(result.persistentTitleData||[]).filter(d=>d.persistentVacancies>0);
+  if(!data.length) throw new Error(`No persistent vacancy titles were found for ${displayDepartmentName(selectedDepartment)}.`);
+
+  const visible=data.slice(0,12);
+  const measured=Math.max(320,Math.round(persistentVacanciesChartEl.getBoundingClientRect().width||700));
+  const W=measured;
+  const H=Math.max(285,80+visible.length*29);
+  const M={top:28,right:W<520?38:58,bottom:28,left:W<520?128:210};
+  const iw=W-M.left-M.right;
+  const maxValue=Math.max(...visible.map(d=>d.persistentVacancies));
+  const x=value=>M.left+(value/maxValue)*iw;
+  const barH=16;
+  const rowH=29;
+  const titleLimit=W<520?20:34;
+  const label=value=>{
+    const text=String(value||'');
+    return text.length>titleLimit?`${text.slice(0,titleLimit-1)}…`:text;
+  };
+
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'persistentVacanciesSvgTitle persistentVacanciesSvgDesc',id:'persistentVacanciesSvg'});
+  svg.append(svgEl('title',{id:'persistentVacanciesSvgTitle'},`${displayDepartmentName(selectedDepartment)} persistent vacancies by title, ${result.rangeLabel}`));
+  svg.append(svgEl('desc',{id:'persistentVacanciesSvgDesc'},`Persistent vacancy counts by title for ${displayDepartmentName(selectedDepartment)}, ${result.rangeLabel}.`));
+
+  visible.forEach((d,i)=>{
+    const y=M.top+i*rowH;
+    const width=Math.max(2,x(d.persistentVacancies)-M.left);
+    svg.append(svgEl('text',{x:M.left-10,y:y+barH-4,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':W<520?'9.5':'10.5','font-weight':'600'},label(d.title)));
+    svg.append(svgEl('rect',{x:M.left,y,width,height:barH,fill:COLORS.primary}));
+    svg.append(svgEl('text',{x:M.left+width+7,y:y+barH-4,fill:COLORS.primary,'font-family':'Inter,Arial,sans-serif','font-size':'11','font-weight':'700'},Math.round(d.persistentVacancies).toLocaleString('en-US')));
+    const hit=svgEl('rect',{x:M.left-4,y:y-5,width:iw+M.right-8,height:barH+10,fill:'transparent',tabindex:'0','aria-label':`${d.title}: ${Math.round(d.persistentVacancies)} persistent vacancies`});
+    hit.style.cursor='pointer';
+    hit.addEventListener('mouseenter',()=>showPersistentVacanciesTooltip(d,M.left+width,y,W));
+    hit.addEventListener('mouseleave',hidePersistentVacanciesTooltip);
+    hit.addEventListener('focus',()=>showPersistentVacanciesTooltip(d,M.left+width,y,W));
+    hit.addEventListener('blur',hidePersistentVacanciesTooltip);
+    hit.addEventListener('click',()=>showPersistentVacanciesTooltip(d,M.left+width,y,W));
+    svg.append(hit);
+  });
+
+  if(data.length>visible.length){
+    svg.append(svgEl('text',{x:M.left,y:H-9,fill:COLORS.muted,'font-family':'Inter,Arial,sans-serif','font-size':'10.5'},`${data.length-visible.length} more title${data.length-visible.length===1?'':'s'} in data details`));
+  }
+
+  persistentVacanciesChartEl.insertBefore(svg,persistentVacanciesTooltipEl);
+  downloadPersistentVacanciesBtn.hidden=false;
+}
+function renderPersistentVacanciesDetails(result){
+  const rows=result.persistentTitleData||[];
+  persistentVacanciesDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Title</th><th>Persistent vacancies</th><th>Persistent vacancy identities</th></tr></thead><tbody>${rows.map(d=>`<tr><td>${escapeHtml(d.title)}</td><td>${Math.round(d.persistentVacancies).toLocaleString('en-US')}</td><td>${Math.round(d.identityCount).toLocaleString('en-US')}</td></tr>`).join('')}</tbody></table></div><p>Source: ${escapeHtml(result.sourceLabel||'Retained vacancy snapshots')}. Total persistent vacancies: ${rows.reduce((sum,d)=>sum+d.persistentVacancies,0).toLocaleString('en-US')}. Persistent vacancy identities found in all loaded months: ${result.persistentCount.toLocaleString('en-US')}.</p>`;
+}
+function renderLargestAppropriationsChart(result){
+  largestAppropriationsChartEl.querySelector('svg')?.remove();
+  hideLargestAppropriationsTooltip();
+  const data=result.rows||[];
+  if(!data.length) throw new Error(`No positive 2026 appropriations were found for ${displayDepartmentName(selectedDepartment)}.`);
+
+  const measured=Math.max(320,Math.round(largestAppropriationsChartEl.getBoundingClientRect().width||700));
+  const W=measured;
+  const H=Math.max(330,82+data.length*29);
+  const M={top:28,right:W<520?72:98,bottom:28,left:W<520?142:230};
+  const iw=W-M.left-M.right;
+  const maxValue=Math.max(...data.map(d=>d.amount));
+  const x=value=>M.left+(value/maxValue)*iw;
+  const barH=16;
+  const rowH=29;
+  const titleLimit=W<520?22:42;
+  const label=value=>{
+    const text=String(value||'');
+    return text.length>titleLimit?`${text.slice(0,titleLimit-1)}…`:text;
+  };
+
+  const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'largestAppropriationsSvgTitle largestAppropriationsSvgDesc',id:'largestAppropriationsSvg'});
+  svg.append(svgEl('title',{id:'largestAppropriationsSvgTitle'},`${displayDepartmentName(selectedDepartment)} top 10 largest appropriations, 2026 proposed budget`));
+  svg.append(svgEl('desc',{id:'largestAppropriationsSvgDesc'},`Top 10 largest 2026 proposed appropriation accounts for ${displayDepartmentName(selectedDepartment)}.`));
+
+  data.forEach((d,i)=>{
+    const y=M.top+i*rowH;
+    const width=Math.max(2,x(d.amount)-M.left);
+    svg.append(svgEl('text',{x:M.left-10,y:y+barH-4,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':W<520?'9.5':'10.5','font-weight':'600'},label(d.label)));
+    svg.append(svgEl('rect',{x:M.left,y,width,height:barH,fill:COLORS.primary}));
+    svg.append(svgEl('text',{x:M.left+width+7,y:y+barH-4,fill:COLORS.primary,'font-family':'Inter,Arial,sans-serif','font-size':'11','font-weight':'700'},moneyM(d.amount)));
+    const hit=svgEl('rect',{x:M.left-4,y:y-5,width:iw+M.right-8,height:barH+10,fill:'transparent',tabindex:'0','aria-label':`${d.label}: ${money(d.amount)}`});
+    hit.style.cursor='pointer';
+    hit.addEventListener('mouseenter',()=>showLargestAppropriationsTooltip(d,M.left+width,y,W));
+    hit.addEventListener('mouseleave',hideLargestAppropriationsTooltip);
+    hit.addEventListener('focus',()=>showLargestAppropriationsTooltip(d,M.left+width,y,W));
+    hit.addEventListener('blur',hideLargestAppropriationsTooltip);
+    hit.addEventListener('click',()=>showLargestAppropriationsTooltip(d,M.left+width,y,W));
+    svg.append(hit);
+  });
+
+  largestAppropriationsChartEl.insertBefore(svg,largestAppropriationsTooltipEl);
+  downloadLargestAppropriationsBtn.hidden=false;
+}
+function renderLargestAppropriationsDetails(result){
+  const dataset=`<a href="https://${DOMAIN}/d/${result.source.id}" target="_blank" rel="noopener">${escapeHtml(result.source.id)}</a>`;
+  largestAppropriationsDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Rank</th><th>Appropriation</th><th>Account code</th><th>2026 proposed</th><th>Rows</th></tr></thead><tbody>${result.rows.map((d,i)=>`<tr><td>${i+1}</td><td>${escapeHtml(d.label)}</td><td>${escapeHtml(d.code||'—')}</td><td>${money(d.amount)}</td><td>${d.rowCount}</td></tr>`).join('')}</tbody></table></div><p>Dataset: ${dataset}. Amount field: ${escapeHtml(result.amountField)}. Matched by: ${escapeHtml(result.matchedBy||'—')}. Source rows matched: ${result.rowCount.toLocaleString('en-US')}.</p>`;
+}
+async function buildWorkforce(){
+  if(!selectedDepartment) return;
+  workforceChartEl.querySelector('svg')?.remove();
+  workforceDetailsEl.innerHTML='';
+  hideWorkforceTooltip();
+  downloadWorkforceBtn.hidden=true;
+  workforceStatusEl.className='status';
+  workforceStatusEl.textContent=`Loading 2011–2026 budgeted workforce for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('workforceTitle').textContent=`${displayDepartmentName(selectedDepartment)} Budgeted Workforce, 2011–2026 (Proposed)`;
+
+  try{
+    const data=await mapLimit(YEARS,4,year=>loadWorkforceYear(year,selectedDepartment));
+    data.sort((a,b)=>a.year-b.year);
+    const available=data.filter(d=>d.available);
+    const missing=data.filter(d=>!d.available);
+    if(!available.length) throw new Error(`No usable workforce values were returned for ${displayDepartmentName(selectedDepartment)}.`);
+
+    lastWorkforceData=data;
+    renderWorkforceChart(data);
+    renderWorkforceDetails(data);
+
+    if(missing.length){
+      workforceStatusEl.className='status warning';
+      workforceStatusEl.textContent=`${displayDepartmentName(selectedDepartment)} workforce built with ${available.length} of ${data.length} annual values. No value is plotted for: ${missing.map(d=>d.year).join(', ')}.`;
+    }else{
+      workforceStatusEl.className='status ready';
+    }
+  }catch(err){
+    console.error(err);
+    lastWorkforceData=null;
+    workforceStatusEl.className='status error';
+    const extra=location.protocol==='file:'?' If your browser blocks live API requests from a local file, the same HTML can be hosted unchanged; it has no folder dependencies.':'';
+    workforceStatusEl.textContent=`Could not build workforce graphic: ${err.message}.${extra}`;
+  }
+}
+async function buildPositionChanges(){
+  if(!selectedDepartment) return;
+  positionChangesChartEl.querySelector('svg')?.remove();
+  positionChangesChartEl.querySelector('.position-changes-empty')?.remove();
+  positionChangesDetailsEl.innerHTML='';
+  hidePositionChangesTooltip();
+  downloadPositionChangesBtn.hidden=true;
+  positionChangesStatusEl.className='status';
+  positionChangesStatusEl.textContent=`Loading 2025–2026 position/FTE changes for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('positionChangesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Net and Percent Position/FTE Changes, 2025 to 2026 (Proposed) Budgets`;
+
+  try{
+    const result=await loadPositionChanges(selectedDepartment);
+    lastPositionChangesData=result;
+    renderPositionChangesChart(result);
+    renderPositionChangesDetails(result);
+    if(result.rows.length){
+      positionChangesStatusEl.className='status ready';
+    }else{
+      positionChangesStatusEl.className='status warning';
+      positionChangesStatusEl.textContent=`No changed position/FTE titles were found for ${displayDepartmentName(selectedDepartment)} between the 2025 ordinance and 2026 proposed budgets.`;
+    }
+  }catch(err){
+    console.error(err);
+    lastPositionChangesData=null;
+    positionChangesStatusEl.className='status error';
+    const extra=location.protocol==='file:'?' If your browser blocks live API requests from a local file, the same HTML can be hosted unchanged; it has no folder dependencies.':'';
+    positionChangesStatusEl.textContent=`Could not build position/FTE changes graphic: ${err.message}.${extra}`;
+  }
+}
+async function buildAppropriationChanges(){
+  if(!selectedDepartment) return;
+  appropriationChangesChartEl.querySelector('svg')?.remove();
+  appropriationChangesChartEl.querySelector('.appropriation-changes-empty')?.remove();
+  appropriationChangesDetailsEl.innerHTML='';
+  hideAppropriationChangesTooltip();
+  downloadAppropriationChangesBtn.hidden=true;
+  appropriationChangesStatusEl.className='status';
+  appropriationChangesStatusEl.textContent=`Loading 2025–2026 appropriation changes for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('appropriationChangesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Net and Percent Appropriation Changes, 2025 to 2026 (Proposed) Budgets`;
+
+  try{
+    const result=await loadAppropriationChanges(selectedDepartment);
+    lastAppropriationChangesData=result;
+    renderAppropriationChangesChart(result);
+    renderAppropriationChangesDetails(result);
+    if(result.rows.length){
+      appropriationChangesStatusEl.className='status ready';
+    }else{
+      appropriationChangesStatusEl.className='status warning';
+      appropriationChangesStatusEl.textContent=`No changed appropriation accounts were found for ${displayDepartmentName(selectedDepartment)} between the 2025 ordinance and 2026 proposed budgets.`;
+    }
+  }catch(err){
+    console.error(err);
+    lastAppropriationChangesData=null;
+    appropriationChangesStatusEl.className='status error';
+    const extra=location.protocol==='file:'?' If your browser blocks live API requests from a local file, the same HTML can be hosted unchanged; it has no folder dependencies.':'';
+    appropriationChangesStatusEl.textContent=`Could not build appropriation changes graphic: ${err.message}.${extra}`;
+  }
+}
+async function buildVacancies(){
+  if(!selectedDepartment) return;
+  vacanciesChartEl.querySelector('svg')?.remove();
+  vacanciesDetailsEl.innerHTML='';
+  hideVacanciesTooltip();
+  downloadVacanciesBtn.hidden=true;
+  vacanciesStatusEl.className='status';
+  vacanciesStatusEl.textContent=`Loading vacancy reports for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('vacanciesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Vacancies`;
+
+  try{
+    const result=await loadVacancies(selectedDepartment);
+    const available=result.data.filter(d=>d.available);
+    const missing=result.data.filter(d=>!d.available);
+    if(!available.length){
+      const dateNote=result.availableDateKeys.length
+        ? `The retained rows include report dates: ${result.availableDateKeys.join(', ')}.`
+        : 'The retained rows did not include any report dates for the selected department.';
+      throw new Error(`No February–September 2025 vacancy values were returned for ${displayDepartmentName(selectedDepartment)}. ${dateNote}`);
+    }
+
+    lastVacanciesData=result;
+    document.getElementById('vacanciesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Vacancies, ${result.rangeLabel}`;
+    renderVacanciesChart(result);
+    renderVacanciesDetails(result);
+
+    if(missing.length){
+      vacanciesStatusEl.className='status warning';
+      vacanciesStatusEl.textContent=`${displayDepartmentName(selectedDepartment)} vacancies built with ${available.length} of ${result.data.length} monthly values. No value is plotted for: ${missing.map(d=>d.label).join(', ')}.`;
+    }else{
+      vacanciesStatusEl.className='status ready';
+    }
+  }catch(err){
+    console.error(err);
+    lastVacanciesData=null;
+    vacanciesStatusEl.className='status error';
+    vacanciesStatusEl.textContent=`Could not build vacancies graphic: ${err.message}`;
+  }
+}
+async function buildPersistentVacancies(){
+  if(!selectedDepartment) return;
+  persistentVacanciesChartEl.querySelector('svg')?.remove();
+  persistentVacanciesDetailsEl.innerHTML='';
+  hidePersistentVacanciesTooltip();
+  downloadPersistentVacanciesBtn.hidden=true;
+  persistentVacanciesStatusEl.className='status';
+  persistentVacanciesStatusEl.textContent=`Loading persistent vacancies for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('persistentVacanciesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Persistent Vacancies by Title`;
+
+  try{
+    const result=lastVacanciesData||await loadVacancies(selectedDepartment);
+    if(result.sourceType==='aggregate') throw new Error('The embedded vacancy aggregate fills the monthly chart, but title-level persistent vacancies still require row-level vacancy identities or a persistent-vacancy-by-title dataset.');
+    const rows=result.persistentTitleData||[];
+    if(!rows.length) throw new Error(`No persistent vacancy titles were found for ${displayDepartmentName(selectedDepartment)}.`);
+
+    lastPersistentVacanciesData=result;
+    document.getElementById('persistentVacanciesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Persistent Vacancies by Title, ${result.rangeLabel}`;
+    renderPersistentVacanciesChart(result);
+    renderPersistentVacanciesDetails(result);
+    persistentVacanciesStatusEl.className='status ready';
+  }catch(err){
+    console.error(err);
+    lastPersistentVacanciesData=null;
+    persistentVacanciesStatusEl.className='status error';
+    persistentVacanciesStatusEl.textContent=`Could not build persistent vacancies graphic: ${err.message}`;
+  }
+}
+async function buildLargestAppropriations(){
+  if(!selectedDepartment) return;
+  largestAppropriationsChartEl.querySelector('svg')?.remove();
+  largestAppropriationsDetailsEl.innerHTML='';
+  hideLargestAppropriationsTooltip();
+  downloadLargestAppropriationsBtn.hidden=true;
+  largestAppropriationsStatusEl.className='status';
+  largestAppropriationsStatusEl.textContent=`Loading top 10 2026 appropriations for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('largestAppropriationsTitle').textContent=`${displayDepartmentName(selectedDepartment)} Top 10 Largest Appropriations, 2026 Proposed Chicago Budget`;
+
+  try{
+    const result=await loadLargestAppropriations(selectedDepartment);
+    lastLargestAppropriationsData=result;
+    renderLargestAppropriationsChart(result);
+    renderLargestAppropriationsDetails(result);
+    largestAppropriationsStatusEl.className='status ready';
+  }catch(err){
+    console.error(err);
+    lastLargestAppropriationsData=null;
+    largestAppropriationsStatusEl.className='status error';
+    const extra=location.protocol==='file:'?' If your browser blocks live API requests from a local file, the same HTML can be hosted unchanged; it has no folder dependencies.':'';
+    largestAppropriationsStatusEl.textContent=`Could not build largest appropriations graphic: ${err.message}.${extra}`;
+  }
+}
+async function buildLocalFunds(){
+  if(!selectedDepartment) return;
+  localFundsChartEl.querySelector('svg')?.remove();
+  localFundsDetailsEl.innerHTML='';
+  hideLocalFundsTooltip();
+  downloadLocalFundsBtn.hidden=true;
+  localFundsStatusEl.className='status';
+  localFundsStatusEl.textContent=`Loading 2022–2024 local-fund actuals for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('localFundsTitle').textContent=`${displayDepartmentName(selectedDepartment)} Local Fund Actuals, 2022–2024`;
+
+  try{
+    const data=await mapLimit([2022,2023,2024],3,year=>loadLocalFundsYear(year,selectedDepartment));
+    data.sort((a,b)=>a.year-b.year);
+    const available=data.filter(d=>d.available);
+    const missing=data.filter(d=>!d.available);
+    if(!available.length) throw new Error(`No usable local-fund values were returned for ${displayDepartmentName(selectedDepartment)}.`);
+
+    lastLocalFundsData=data;
+    renderLocalFundsChart(data);
+    renderLocalFundsDetails(data);
+
+    if(missing.length){
+      localFundsStatusEl.className='status warning';
+      localFundsStatusEl.textContent=`${displayDepartmentName(selectedDepartment)} local funds built with ${available.length} of ${data.length} annual values. No value is plotted for: ${missing.map(d=>d.year).join(', ')}.`;
+    }else{
+      localFundsStatusEl.className='status ready';
+    }
+  }catch(err){
+    console.error(err);
+    lastLocalFundsData=null;
+    localFundsStatusEl.className='status error';
+    const extra=location.protocol==='file:'?' If your browser blocks live API requests from a local file, the same HTML can be hosted unchanged; it has no folder dependencies.':'';
+    localFundsStatusEl.textContent=`Could not build local-fund graphic: ${err.message}.${extra}`;
+  }
+}
+async function build(){
+  if(!selectedDepartment) return;
+  chartEl.querySelector('svg')?.remove();
+  detailsEl.innerHTML='';
+  hideTooltip();
+  downloadBtn.hidden=true;
+  departmentSelect.disabled=true;
+  statusEl.className='status';
+  statusEl.textContent=`Loading 2011–2026 City appropriations for ${displayDepartmentName(selectedDepartment)}…`;
+  chartTitleEl.textContent=`${displayDepartmentName(selectedDepartment)} Appropriation, Chicago City Budgets 2011–2026 (Proposed)`;
+
+  try{
+    const data=await mapLimit(YEARS,4,year=>loadYear(year,selectedDepartment));
+    data.sort((a,b)=>a.year-b.year);
+    const available=data.filter(d=>d.available);
+    const missing=data.filter(d=>!d.available);
+    if(available.length<2) throw new Error(`Fewer than two usable annual values were returned for ${displayDepartmentName(selectedDepartment)}.`);
+
+    lastData=data;
+    renderChart(data);
+    renderDetails(data);
+    await buildLocalFunds();
+    await buildWorkforce();
+    await buildVacancies();
+    await buildPersistentVacancies();
+    await buildLargestAppropriations();
+    await buildPositionChanges();
+    await buildAppropriationChanges();
+
+    if(missing.length){
+      statusEl.className='status warning';
+      statusEl.textContent=`${displayDepartmentName(selectedDepartment)} built with ${available.length} of ${data.length} annual values. No value is plotted for: ${missing.map(d=>d.year).join(', ')}. Those years are gaps, not zeros or estimates.`;
+    }else{
+      statusEl.className='status ready';
+    }
+  }catch(err){
+    console.error(err);
+    lastData=null;
+    statusEl.className='status error';
+    const extra=location.protocol==='file:'?' If your browser blocks live API requests from a local file, the same HTML can be hosted unchanged; it has no folder dependencies.':'';
+    statusEl.textContent=`Could not build graphic: ${err.message}.${extra}`;
+  }finally{
+    departmentSelect.disabled=false;
+  }
+}
+
+async function initialize(){
+  statusEl.className='status';
+  statusEl.textContent='Loading departments from the 2026 Budget Recommendations API…';
+  try{
+    const source=await resolveDataset(2026);
+    const rows=await fetchAllRows(source.id);
+    departments=collectDepartments(rows);
+    if(!departments.length) throw new Error('No departments could be identified in the 2026 appropriations dataset.');
+    populateDepartmentSelect();
+    await build();
+  }catch(err){
+    console.error(err);
+    statusEl.className='status error';
+    statusEl.textContent=`Could not load department list: ${err.message}`;
+  }
+}
+retryBtn.addEventListener('click',build);
+departmentSelect.addEventListener('change',()=>{
+  selectedDepartment=departments[Number(departmentSelect.value)]||null;
+  lastData=null;
+  lastLocalFundsData=null;
+  lastWorkforceData=null;
+  lastPositionChangesData=null;
+  lastVacanciesData=null;
+  lastPersistentVacanciesData=null;
+  lastLargestAppropriationsData=null;
+  lastAppropriationChangesData=null;
+  build();
+});
+downloadBtn.addEventListener('click',()=>{
+  const svg=document.getElementById('budgetSvg');
+  if(!svg)return;
+  const clone=svg.cloneNode(true);
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  clone.querySelectorAll('[tabindex]').forEach(node=>node.removeAttribute('tabindex'));
+  const blob=new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const slug=displayDepartmentName(selectedDepartment).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  a.download=`${slug}-appropriations-2011-2026.svg`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+downloadLocalFundsBtn.addEventListener('click',()=>{
+  const svg=document.getElementById('localFundsSvg');
+  if(!svg)return;
+  const clone=svg.cloneNode(true);
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  clone.querySelectorAll('[tabindex]').forEach(node=>node.removeAttribute('tabindex'));
+  const blob=new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const slug=displayDepartmentName(selectedDepartment).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  a.download=`${slug}-local-funds-2022-2024.svg`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+downloadWorkforceBtn.addEventListener('click',()=>{
+  const svg=document.getElementById('workforceSvg');
+  if(!svg)return;
+  const clone=svg.cloneNode(true);
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  clone.querySelectorAll('[tabindex]').forEach(node=>node.removeAttribute('tabindex'));
+  const blob=new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const slug=displayDepartmentName(selectedDepartment).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  a.download=`${slug}-workforce-2011-2026.svg`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+downloadPositionChangesBtn.addEventListener('click',()=>{
+  const svg=document.getElementById('positionChangesSvg');
+  if(!svg)return;
+  const clone=svg.cloneNode(true);
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  clone.querySelectorAll('[tabindex]').forEach(node=>node.removeAttribute('tabindex'));
+  const blob=new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const slug=displayDepartmentName(selectedDepartment).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  a.download=`${slug}-position-fte-changes-2025-2026.svg`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+downloadAppropriationChangesBtn.addEventListener('click',()=>{
+  const svg=document.getElementById('appropriationChangesSvg');
+  if(!svg)return;
+  const clone=svg.cloneNode(true);
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  clone.querySelectorAll('[tabindex]').forEach(node=>node.removeAttribute('tabindex'));
+  const blob=new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const slug=displayDepartmentName(selectedDepartment).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  a.download=`${slug}-appropriation-changes-2025-2026.svg`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+downloadVacanciesBtn.addEventListener('click',()=>{
+  const svg=document.getElementById('vacanciesSvg');
+  if(!svg)return;
+  const clone=svg.cloneNode(true);
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  clone.querySelectorAll('[tabindex]').forEach(node=>node.removeAttribute('tabindex'));
+  const blob=new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const slug=displayDepartmentName(selectedDepartment).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  a.download=`${slug}-vacancies-feb-sept-2025.svg`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+downloadPersistentVacanciesBtn.addEventListener('click',()=>{
+  const svg=document.getElementById('persistentVacanciesSvg');
+  if(!svg)return;
+  const clone=svg.cloneNode(true);
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  clone.querySelectorAll('[tabindex]').forEach(node=>node.removeAttribute('tabindex'));
+  const blob=new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const slug=displayDepartmentName(selectedDepartment).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  a.download=`${slug}-persistent-vacancies-feb-sept-2025.svg`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+downloadLargestAppropriationsBtn.addEventListener('click',()=>{
+  const svg=document.getElementById('largestAppropriationsSvg');
+  if(!svg)return;
+  const clone=svg.cloneNode(true);
+  clone.setAttribute('xmlns','http://www.w3.org/2000/svg');
+  clone.querySelectorAll('[tabindex]').forEach(node=>node.removeAttribute('tabindex'));
+  const blob=new Blob([new XMLSerializer().serializeToString(clone)],{type:'image/svg+xml;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  const slug=displayDepartmentName(selectedDepartment).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  a.download=`${slug}-largest-appropriations-2026.svg`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+window.addEventListener('resize',()=>{
+  clearTimeout(resizeTimer);
+  resizeTimer=setTimeout(()=>{
+    if(lastData)renderChart(lastData);
+    if(lastLocalFundsData)renderLocalFundsChart(lastLocalFundsData);
+    if(lastWorkforceData)renderWorkforceChart(lastWorkforceData);
+    if(lastPositionChangesData)renderPositionChangesChart(lastPositionChangesData);
+    if(lastVacanciesData)renderVacanciesChart(lastVacanciesData);
+    if(lastPersistentVacanciesData)renderPersistentVacanciesChart(lastPersistentVacanciesData);
+    if(lastLargestAppropriationsData)renderLargestAppropriationsChart(lastLargestAppropriationsData);
+    if(lastAppropriationChangesData)renderAppropriationChangesChart(lastAppropriationChangesData);
+  },120);
+});
+
+initialize();
+})();
+</script>
+</body>
+</html>
