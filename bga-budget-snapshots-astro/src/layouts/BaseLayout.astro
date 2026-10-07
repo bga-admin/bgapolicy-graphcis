@@ -1,0 +1,51 @@
+---
+import '../styles/global.css';
+
+const {
+  title,
+  description,
+  canonical,
+  ogTitle,
+  ogDescription,
+  ogUrl,
+  ogImage,
+  twitterTitle,
+  twitterDescription,
+  twitterImage,
+  schemaRaw,
+  robotsNoindex = false,
+  robotsNofollow = false
+} = Astro.props;
+
+const robots = [robotsNoindex ? 'noindex' : 'index', robotsNofollow ? 'nofollow' : 'follow'].join(', ');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://use.typekit.net/qxf4xdj.css" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    <meta name="robots" content={robots} />
+
+    <meta property="og:type" content="article" />
+    <meta property="og:title" content={ogTitle || title} />
+    {ogDescription && <meta property="og:description" content={ogDescription} />}
+    {ogUrl && <meta property="og:url" content={ogUrl} />}
+    {ogImage && <meta property="og:image" content={ogImage} />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={twitterTitle || ogTitle || title} />
+    {twitterDescription && <meta name="twitter:description" content={twitterDescription} />}
+    {twitterImage && <meta name="twitter:image" content={twitterImage} />}
+
+    {schemaRaw && <script type="application/ld+json" set:html={schemaRaw} />}
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
