@@ -80,13 +80,20 @@ button:hover{border-color:var(--primary)}
       <h1 id="chartTitle">Department Appropriation, Chicago City Budgets 2011–2026 (Proposed)</h1>
       <p class="sub">Total budgeted appropriation, in millions · missing City API years are shown as gaps</p>
       <div class="department-picker">
+        <label for="budgetCycleSelect">
+          <span>Budget cycle</span>
+          <select id="budgetCycleSelect">
+            <option value="2026-recommendation">2026 recommendation</option>
+            <option value="2027-prep">2027 prep · 2026 ordinance baseline</option>
+          </select>
+        </label>
         <label for="departmentSelect">
           <span>Department</span>
           <select id="departmentSelect" disabled>
             <option>Loading 2026 departments…</option>
           </select>
         </label>
-        <div class="picker-note">Departments are loaded directly from the 2026 Budget Recommendations — Appropriations API. Historical matching uses department codes first, then conservative name normalization for older schemas.</div>
+        <div id="budgetCycleNote" class="picker-note">Departments are loaded directly from the 2026 Budget Recommendations — Appropriations API. Historical matching uses department codes first, then conservative name normalization for older schemas.</div>
       </div>
     </header>
 
@@ -100,7 +107,7 @@ button:hover{border-color:var(--primary)}
       <button id="downloadSvg" type="button" hidden>Download SVG</button>
     </div>
 
-    <footer class="foot">Source: City of Chicago Budget Ordinance appropriations datasets, 2011–2025, and 2026 Budget Recommendations — Appropriations. Years without a row for the selected department are left blank rather than estimated.</footer>
+    <footer id="chartFoot" class="foot">Source: City of Chicago Budget Ordinance appropriations datasets, 2011–2025, and 2026 Budget Recommendations — Appropriations. Years without a row for the selected department are left blank rather than estimated.</footer>
 
     <details>
       <summary>Data &amp; API details</summary>
@@ -108,11 +115,24 @@ button:hover{border-color:var(--primary)}
     </details>
   </section>
 
+  <section class="card" aria-labelledby="summaryTableTitle">
+    <header>
+      <div class="eyebrow">Budget snapshot</div>
+      <h1 id="summaryTableTitle">Department Budget Summary</h1>
+      <p class="sub">Appropriations and positions/FTEs, current comparison and recent rates of change</p>
+    </header>
+
+    <div id="summaryTableStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
+    <div id="summaryTable"></div>
+
+    <footer id="summaryTableFoot" class="foot">Source: City of Chicago budget APIs. Inflation-adjusted rate uses analyst-provided value-of-dollar factors in 2025 dollars.</footer>
+  </section>
+
   <section class="card" aria-labelledby="localFundsTitle">
     <header>
       <div class="eyebrow">Local funds</div>
-      <h1 id="localFundsTitle">Department Local Fund Actuals, 2022–2024</h1>
-      <p class="sub">Budget spent and unspent from local funds, in millions · last three complete budget years</p>
+      <h1 id="localFundsTitle">Department Local Fund Actuals, 2022–2025</h1>
+      <p class="sub">Budget spent and unspent from local funds, in millions · complete budget years with retained actuals</p>
     </header>
 
     <div id="localFundsStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -140,19 +160,26 @@ button:hover{border-color:var(--primary)}
     <header>
       <div class="eyebrow">Historical context</div>
       <h1 id="workforceTitle">Department Budgeted Workforce, 2011–2026 (Proposed)</h1>
-      <p class="sub">Budgeted positions and FTEs · missing City API years are shown as gaps</p>
+      <p class="sub">Budgeted positions and FTEs by annual, monthly, hourly, and FTE component · missing City API years are shown as gaps</p>
     </header>
 
     <div id="workforceStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
     <div id="workforceChart" class="chart-wrap">
       <div id="workforceTooltip" class="tooltip" role="tooltip"></div>
     </div>
+    <div class="legend" aria-hidden="true">
+      <span><i style="background:#3E7699"></i>Annual positions</span>
+      <span><i style="background:#F9C468"></i>Monthly positions</span>
+      <span><i style="background:#C3D5E0"></i>Hourly positions</span>
+      <span><i style="background:#6D9F7B"></i>Monthly FTEs</span>
+      <span><i style="background:#9B8AB3"></i>Hourly FTEs</span>
+    </div>
 
     <div class="toolbar">
       <button id="downloadWorkforceSvg" type="button" hidden>Download SVG</button>
     </div>
 
-    <footer class="foot">Source: City of Chicago Budget Ordinance positions and salaries datasets, 2011–2025, and 2026 Budget Recommendations — Positions and Salaries. Years without a row for the selected department are left blank rather than estimated.</footer>
+    <footer id="workforceFoot" class="foot">Source: City of Chicago Budget Ordinance positions and salaries datasets, 2011–2025, and 2026 Budget Recommendations — Positions and Salaries. Years without a row for the selected department are left blank rather than estimated.</footer>
 
     <details>
       <summary>Data &amp; API details</summary>
@@ -215,9 +242,9 @@ button:hover{border-color:var(--primary)}
 
   <section class="card" aria-labelledby="largestAppropriationsTitle">
     <header>
-      <div class="eyebrow">2026 proposed budget</div>
+      <div id="largestAppropriationsEyebrow" class="eyebrow">2026 proposed budget</div>
       <h1 id="largestAppropriationsTitle">Top 10 Largest Department Appropriations, 2026 Proposed Chicago Budget</h1>
-      <p class="sub">Largest appropriation accounts in the selected department's proposed 2026 budget</p>
+      <p id="largestAppropriationsSub" class="sub">Largest appropriation accounts in the selected department's proposed 2026 budget</p>
     </header>
 
     <div id="largestAppropriationsStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -229,7 +256,7 @@ button:hover{border-color:var(--primary)}
       <button id="downloadLargestAppropriationsSvg" type="button" hidden>Download SVG</button>
     </div>
 
-    <footer class="foot">Source: City of Chicago 2026 Budget Recommendations — Appropriations. Rows are grouped by appropriation account and ranked by proposed amount.</footer>
+    <footer id="largestAppropriationsFoot" class="foot">Source: City of Chicago 2026 Budget Recommendations — Appropriations. Rows are grouped by appropriation account and ranked by proposed amount.</footer>
 
     <details>
       <summary>Data &amp; API details</summary>
@@ -253,7 +280,7 @@ button:hover{border-color:var(--primary)}
     <header>
       <div class="eyebrow">Budgeted workforce</div>
       <h1 id="positionChangesTitle">Net and Percent Position/FTE Changes, 2025 to 2026 (Proposed) Budgets</h1>
-      <p class="sub">Changed position/FTE titles from the 2025 ordinance to the 2026 proposed budget</p>
+      <p id="positionChangesSub" class="sub">Changed position/FTE titles from the 2025 ordinance to the 2026 proposed budget</p>
     </header>
 
     <div id="positionChangesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -265,7 +292,7 @@ button:hover{border-color:var(--primary)}
       <button id="downloadPositionChangesSvg" type="button" hidden>Download SVG</button>
     </div>
 
-    <footer class="foot">Source: City of Chicago 2025 Budget Ordinance and 2026 Budget Recommendations positions and salaries datasets. Percent change is net change divided by 2025 positions/FTEs.</footer>
+    <footer id="positionChangesFoot" class="foot">Source: City of Chicago 2025 Budget Ordinance and 2026 Budget Recommendations positions and salaries datasets. Percent change is net change divided by 2025 positions/FTEs.</footer>
 
     <details>
       <summary>Data &amp; API details</summary>
@@ -277,7 +304,7 @@ button:hover{border-color:var(--primary)}
     <header>
       <div class="eyebrow">Appropriation changes</div>
       <h1 id="appropriationChangesTitle">Net and Percent Appropriation Changes, 2025 to 2026 (Proposed) Budgets</h1>
-      <p class="sub">Changed appropriation accounts from the 2025 ordinance to the 2026 proposed budget</p>
+      <p id="appropriationChangesSub" class="sub">Changed appropriation accounts from the 2025 ordinance to the 2026 proposed budget</p>
     </header>
 
     <div id="appropriationChangesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -289,12 +316,24 @@ button:hover{border-color:var(--primary)}
       <button id="downloadAppropriationChangesSvg" type="button" hidden>Download SVG</button>
     </div>
 
-    <footer class="foot">Source: City of Chicago 2025 Budget Ordinance and 2026 Budget Recommendations appropriations datasets. Percent change is net change divided by 2025 budgeted appropriation.</footer>
+    <footer id="appropriationChangesFoot" class="foot">Source: City of Chicago 2025 Budget Ordinance and 2026 Budget Recommendations appropriations datasets. Percent change is net change divided by 2025 budgeted appropriation.</footer>
 
     <details>
       <summary>Data &amp; API details</summary>
       <div id="appropriationChangesDetails"></div>
     </details>
+  </section>
+
+  <section class="card" aria-labelledby="actualSpendCategoriesTitle">
+    <header>
+      <div class="eyebrow">Actual spend</div>
+      <h1 id="actualSpendCategoriesTitle">2024 Actual Spend, Local Funds</h1>
+      <p class="sub">Placeholder for category-level budgeted spend and unspent local funds</p>
+    </header>
+
+    <div class="status warning">The embedded actuals file has department-level actuals and encumbrances, but not category-level local-fund actuals. This chart needs category-level 2024 budget, actuals and encumbrances before it can be built.</div>
+
+    <footer class="foot">Source: To be determined. Do not substitute 2024 appropriation accounts for actual spending categories.</footer>
   </section>
 </main>
 
@@ -305,6 +344,64 @@ button:hover{border-color:var(--primary)}
 const DOMAIN='data.cityofchicago.org';
 const CATALOG='https://api.us.socrata.com/api/catalog/v1';
 const YEARS=Array.from({length:16},(_,i)=>2011+i);
+const LOCAL_FUNDS_YEARS=[2022,2023,2024,2025];
+const ORDINANCE_2026_APPROPRIATIONS='6694-f78c';
+const ORDINANCE_2026_POSITIONS='v2t2-vajc';
+const DOLLAR_2025_FACTORS={
+  2011:1.377476176,
+  2012:1.356870341,
+  2013:1.341521744,
+  2014:1.318486615,
+  2015:1.322399382,
+  2016:1.313691115,
+  2017:1.289459829,
+  2018:1.267246094,
+  2019:1.248987275,
+  2020:1.235200289,
+  2021:1.185210833,
+  2022:1.101976909,
+  2023:1.066496725,
+  2024:1.03082214,
+  2025:1
+};
+
+const BUDGET_CYCLES={
+  '2026-recommendation':{
+    key:'2026-recommendation',
+    label:'2026 recommendation',
+    years:YEARS,
+    displayEndYear:2026,
+    latestYear:2026,
+    latestStage:'Recommendation',
+    latestLabel:'2026 proposed',
+    latestLongLabel:'the proposed 2026 budget',
+    departmentSourceYear:2026,
+    previousYear:2025,
+    currentYear:2026,
+    currentAvailable:true,
+    appropriationDataset2026:'axxr-vais',
+    positionDataset2026:'wd4x-2xf8',
+    pickerNote:'Departments are loaded directly from the 2026 Budget Recommendations — Appropriations API. Historical matching uses department codes first, then conservative name normalization for older schemas.'
+  },
+  '2027-prep':{
+    key:'2027-prep',
+    label:'2027 prep · 2026 ordinance baseline',
+    years:YEARS,
+    displayEndYear:2027,
+    latestYear:2026,
+    latestStage:'Ordinance',
+    latestLabel:'2026 ordinance',
+    latestLongLabel:'the 2026 ordinance baseline',
+    departmentSourceYear:2026,
+    previousYear:2026,
+    currentYear:2027,
+    currentAvailable:false,
+    appropriationDataset2026:ORDINANCE_2026_APPROPRIATIONS,
+    positionDataset2026:ORDINANCE_2026_POSITIONS,
+    pickerNote:'2027 prep mode uses the 2026 Budget Ordinance as the steady baseline. Drop in the 2027 recommendation API IDs when they publish to turn on proposed-year charts.'
+  }
+};
+let activeCycle=BUDGET_CYCLES['2026-recommendation'];
 
 // Official City of Chicago annual appropriations datasets.
 // 2017 is resolved by exact City dataset title at runtime if its ID is not pinned here.
@@ -331,14 +428,28 @@ const AGENCY_ALIASES=[
   'CIVILIAN OFFICE OF POLICE ACCOUNTABILITY'
 ];
 const COLORS={primary:'#3E7699',dark:'#1F4964',muted:'#8B9096',border:'#E7ECF0',surface:'#FFFFFF',accent:'#F9C468',pale:'#C3D5E0'};
+const WORKFORCE_COMPONENTS=[
+  {key:'annualPositions',label:'Annual positions',color:'#3E7699'},
+  {key:'monthlyPositions',label:'Monthly positions',color:'#F9C468'},
+  {key:'hourlyPositions',label:'Hourly positions',color:'#C3D5E0'},
+  {key:'monthlyFtes',label:'Monthly FTEs',color:'#6D9F7B'},
+  {key:'hourlyFtes',label:'Hourly FTEs',color:'#9B8AB3'}
+];
 const statusEl=document.getElementById('status');
 const chartEl=document.getElementById('chart');
 const tooltipEl=document.getElementById('tooltip');
 const detailsEl=document.getElementById('details');
 const retryBtn=document.getElementById('retry');
 const downloadBtn=document.getElementById('downloadSvg');
+const budgetCycleSelect=document.getElementById('budgetCycleSelect');
+const budgetCycleNote=document.getElementById('budgetCycleNote');
 const departmentSelect=document.getElementById('departmentSelect');
 const chartTitleEl=document.getElementById('chartTitle');
+const chartFootEl=document.getElementById('chartFoot');
+const summaryTableTitleEl=document.getElementById('summaryTableTitle');
+const summaryTableStatusEl=document.getElementById('summaryTableStatus');
+const summaryTableEl=document.getElementById('summaryTable');
+const summaryTableFootEl=document.getElementById('summaryTableFoot');
 const localFundsStatusEl=document.getElementById('localFundsStatus');
 const localFundsChartEl=document.getElementById('localFundsChart');
 const localFundsTooltipEl=document.getElementById('localFundsTooltip');
@@ -349,6 +460,7 @@ const workforceChartEl=document.getElementById('workforceChart');
 const workforceTooltipEl=document.getElementById('workforceTooltip');
 const workforceDetailsEl=document.getElementById('workforceDetails');
 const downloadWorkforceBtn=document.getElementById('downloadWorkforceSvg');
+const workforceFootEl=document.getElementById('workforceFoot');
 const positionChangesStatusEl=document.getElementById('positionChangesStatus');
 const positionChangesChartEl=document.getElementById('positionChangesChart');
 const positionChangesTooltipEl=document.getElementById('positionChangesTooltip');
@@ -369,11 +481,18 @@ const largestAppropriationsChartEl=document.getElementById('largestAppropriation
 const largestAppropriationsTooltipEl=document.getElementById('largestAppropriationsTooltip');
 const largestAppropriationsDetailsEl=document.getElementById('largestAppropriationsDetails');
 const downloadLargestAppropriationsBtn=document.getElementById('downloadLargestAppropriationsSvg');
+const largestAppropriationsEyebrowEl=document.getElementById('largestAppropriationsEyebrow');
+const largestAppropriationsSubEl=document.getElementById('largestAppropriationsSub');
+const largestAppropriationsFootEl=document.getElementById('largestAppropriationsFoot');
 const appropriationChangesStatusEl=document.getElementById('appropriationChangesStatus');
 const appropriationChangesChartEl=document.getElementById('appropriationChangesChart');
 const appropriationChangesTooltipEl=document.getElementById('appropriationChangesTooltip');
 const appropriationChangesDetailsEl=document.getElementById('appropriationChangesDetails');
 const downloadAppropriationChangesBtn=document.getElementById('downloadAppropriationChangesSvg');
+const positionChangesSubEl=document.getElementById('positionChangesSub');
+const positionChangesFootEl=document.getElementById('positionChangesFoot');
+const appropriationChangesSubEl=document.getElementById('appropriationChangesSub');
+const appropriationChangesFootEl=document.getElementById('appropriationChangesFoot');
 let lastData=null;
 let lastLocalFundsData=null;
 let lastWorkforceData=null;
@@ -504,6 +623,42 @@ const POSITION_PINNED={
   2026:'wd4x-2xf8'
 };
 
+function cycleYears(){
+  return activeCycle.years;
+}
+function latestYearLabel(){
+  return activeCycle.latestLabel;
+}
+function yearRangeLabel(years){
+  return `${years[0]}–${years.at(-1)}`;
+}
+function yearRangeWords(years){
+  return `${years[0]} through ${years.at(-1)}`;
+}
+function chartRangeLabel(){
+  const years=cycleYears();
+  return `${years[0]}–${years.at(-1)}${activeCycle.currentAvailable?' (Proposed)':' (Ordinance Baseline)'}`;
+}
+function ordinanceSourceRange(){
+  const years=cycleYears();
+  const end=stage(activeCycle.latestYear)==='Recommendation'?activeCycle.latestYear-1:activeCycle.latestYear;
+  return `${years[0]}–${end}`;
+}
+function stageLabelForYear(year){
+  return year===activeCycle.latestYear?activeCycle.latestStage:'Ordinance';
+}
+function isLatestYear(year){
+  return year===activeCycle.latestYear;
+}
+function pinnedAppropriationDataset(year){
+  if(year===2026) return activeCycle.appropriationDataset2026;
+  return PINNED[year];
+}
+function pinnedPositionDataset(year){
+  if(year===2026) return activeCycle.positionDataset2026;
+  return POSITION_PINNED[year];
+}
+
 function normalize(value){
   return String(value??'').trim().toUpperCase().replace(/&/g,'AND').replace(/[^A-Z0-9]+/g,' ').replace(/\s+/g,' ');
 }
@@ -511,12 +666,12 @@ function escapeHtml(value){
   return String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 function datasetTitle(year){
-  return year===2026?'Budget - 2026 Budget Recommendations - Appropriations':`Budget - ${year} Budget Ordinance - Appropriations`;
+  return stageLabelForYear(year)==='Recommendation'?`Budget - ${year} Budget Recommendations - Appropriations`:`Budget - ${year} Budget Ordinance - Appropriations`;
 }
 function positionDatasetTitle(year){
-  return year===2026?'Budget - 2026 Budget Recommendations - Positions and Salaries':`Budget - ${year} Budget Ordinance - Positions and Salaries`;
+  return stageLabelForYear(year)==='Recommendation'?`Budget - ${year} Budget Recommendations - Positions and Salaries`:`Budget - ${year} Budget Ordinance - Positions and Salaries`;
 }
-function stage(year){return year===2026?'Recommendation':'Ordinance'}
+function stage(year){return stageLabelForYear(year)}
 function numberValue(value){
   const n=Number(String(value??'').replace(/[$,%]/g,'').replace(/,/g,'').trim());
   return Number.isFinite(n)?n:null;
@@ -568,7 +723,8 @@ async function fetchJson(url){
   return r.json();
 }
 async function resolveDataset(year){
-  if(PINNED[year]) return {id:PINNED[year],title:datasetTitle(year),resolvedBy:'pinned'};
+  const pinned=pinnedAppropriationDataset(year);
+  if(pinned) return {id:pinned,title:datasetTitle(year),resolvedBy:'pinned'};
 
   const expected=datasetTitle(year);
   const url=`${CATALOG}?search_context=${DOMAIN}&q=${encodeURIComponent(expected)}&limit=50`;
@@ -582,7 +738,8 @@ async function resolveDataset(year){
   return {id:exact.resource.id,title:exact.resource.name,resolvedBy:'exact City catalog title'};
 }
 async function resolvePositionDataset(year){
-  if(POSITION_PINNED[year]) return {id:POSITION_PINNED[year],title:positionDatasetTitle(year),resolvedBy:'pinned'};
+  const pinned=pinnedPositionDataset(year);
+  if(pinned) return {id:pinned,title:positionDatasetTitle(year),resolvedBy:'pinned'};
 
   const expected=positionDatasetTitle(year);
   const url=`${CATALOG}?search_context=${DOMAIN}&q=${encodeURIComponent(expected)}&limit=50`;
@@ -827,7 +984,7 @@ function populateDepartmentSelect(){
   departmentSelect.disabled=!selectedDepartment;
 }
 function findAmountField(row,year){
-  const wanted=year===2026?['recommend','proposed']:['ordinance'];
+  const wanted=stage(year)==='Recommendation'?['recommend','proposed']:['ordinance'];
   const candidates=Object.keys(row||{}).filter(key=>{
     const k=key.toLowerCase();
     if(/code|description|authority|account|fund|department|year|number/.test(k)) return false;
@@ -1037,11 +1194,12 @@ function appropriationAccountLabel(row){
   return candidates[0]||'Unlabeled appropriation';
 }
 async function loadLargestAppropriations(department){
-  const source=await resolveDataset(2026);
+  const year=activeCycle.latestYear;
+  const source=await resolveDataset(year);
   const rows=await fetchAllRows(source.id);
   const matchedRows=rows.map(row=>({row,match:departmentMatch(row,department)})).filter(item=>item.match.matched);
-  if(!matchedRows.length) throw new Error(`No rows matched ${displayDepartmentName(department)} in the 2026 City appropriations dataset.`);
-  const amountField=findAmountField(matchedRows[0].row,2026);
+  if(!matchedRows.length) throw new Error(`No rows matched ${displayDepartmentName(department)} in the ${latestYearLabel()} City appropriations dataset.`);
+  const amountField=findAmountField(matchedRows[0].row,year);
   const groups=new Map();
   for(const item of matchedRows){
     const code=appropriationAccountCode(item.row);
@@ -1058,8 +1216,9 @@ async function loadLargestAppropriations(department){
     .filter(row=>row.amount>0)
     .sort((a,b)=>b.amount-a.amount||a.label.localeCompare(b.label))
     .slice(0,10);
-  if(!rowsOut.length) throw new Error(`Rows for ${displayDepartmentName(department)} were found, but no positive 2026 appropriation amounts could be read.`);
+  if(!rowsOut.length) throw new Error(`Rows for ${displayDepartmentName(department)} were found, but no positive ${latestYearLabel()} appropriation amounts could be read.`);
   return {
+    year,
     rows:rowsOut,
     source,
     amountField,
@@ -1097,8 +1256,9 @@ async function loadAppropriationChangeYear(year,department){
   };
 }
 async function loadAppropriationChanges(department){
-  const previous=await loadAppropriationChangeYear(2025,department);
-  const current=await loadAppropriationChangeYear(2026,department);
+  if(!activeCycle.currentAvailable) throw new Error(`${activeCycle.currentYear} recommendation API is not plugged in yet. Add the ${activeCycle.currentYear} recommendations appropriations dataset ID to enable this comparison.`);
+  const previous=await loadAppropriationChangeYear(activeCycle.previousYear,department);
+  const current=await loadAppropriationChangeYear(activeCycle.currentYear,department);
   const keys=[...new Set([...previous.groups.keys(),...current.groups.keys()])];
   const rows=keys.map(key=>{
     const prev=previous.groups.get(key);
@@ -1206,8 +1366,12 @@ async function loadWorkforceYear(year,department){
       };
     }
 
-    const positionField=findPositionField(matches[0]);
-    const positions=matches.reduce((sum,row)=>sum+(numberValue(row[positionField])||0),0);
+    const components=emptyWorkforceComponents();
+    for(const row of matches){
+      const contribution=positionContribution(row);
+      components[contribution.component]+=contribution.value;
+    }
+    const positions=WORKFORCE_COMPONENTS.reduce((sum,item)=>sum+(components[item.key]||0),0);
     if(!Number.isFinite(positions)||positions<=0){
       return {
         year,
@@ -1227,7 +1391,8 @@ async function loadWorkforceYear(year,department){
       datasetId:source.id,
       datasetTitle:source.title,
       resolvedBy:source.resolvedBy,
-      positionField,
+      positionField:'normalized annual/monthly/hourly FTE rules',
+      components,
       rowCount:matches.length,
       stage:stage(year),
       departmentNames:[...new Set(matches.map(departmentDescription).filter(Boolean))],
@@ -1246,18 +1411,27 @@ async function loadWorkforceYear(year,department){
   }
 }
 function positionUnitValue(row){
+  return positionContribution(row).value;
+}
+function emptyWorkforceComponents(){
+  return {annualPositions:0,monthlyPositions:0,hourlyPositions:0,monthlyFtes:0,hourlyFtes:0};
+}
+function positionContribution(row){
   const totalUnits=numberValue(fieldValue(row,['total_budgeted_unit','budgeted_positions','positions','position_count']));
   const budgetUnit=String(fieldValue(row,['budgeted_unit','unit'])||'').trim();
   const controlValue=String(fieldValue(row,['position_control','position_controlled','controlled'])||'').trim();
+  const hasControl=controlValue!=='';
   const controlled=controlValue==='1'||normalize(controlValue)==='YES'||normalize(controlValue)==='TRUE';
   const normalizedUnit=normalize(budgetUnit);
   if(totalUnits!==null && normalizedUnit){
-    if(normalizedUnit==='MONTHLY'&&!controlled) return totalUnits/12;
-    if(normalizedUnit==='HOURLY'&&!controlled) return totalUnits/2080;
-    return totalUnits;
+    if(!hasControl) return {component:'annualPositions',value:totalUnits};
+    if(normalizedUnit==='ANNUAL') return {component:'annualPositions',value:controlled?totalUnits:0};
+    if(normalizedUnit==='MONTHLY') return {component:controlled?'monthlyPositions':'monthlyFtes',value:controlled?totalUnits:totalUnits/12};
+    if(normalizedUnit==='HOURLY') return {component:controlled?'hourlyPositions':'hourlyFtes',value:controlled?totalUnits:totalUnits/2080};
+    return {component:'annualPositions',value:totalUnits};
   }
   const fallbackField=findPositionField(row);
-  return numberValue(row[fallbackField])||0;
+  return {component:'annualPositions',value:numberValue(row[fallbackField])||0};
 }
 function positionTitleLabel(row){
   return titleCaseDepartment(fieldValue(row,['title_description','title'])||'Untitled Position/FTE');
@@ -1300,8 +1474,9 @@ async function loadPositionChangeYear(year,department){
   };
 }
 async function loadPositionChanges(department){
-  const previous=await loadPositionChangeYear(2025,department);
-  const current=await loadPositionChangeYear(2026,department);
+  if(!activeCycle.currentAvailable) throw new Error(`${activeCycle.currentYear} recommendation API is not plugged in yet. Add the ${activeCycle.currentYear} recommendations positions and salaries dataset ID to enable this comparison.`);
+  const previous=await loadPositionChangeYear(activeCycle.previousYear,department);
+  const current=await loadPositionChangeYear(activeCycle.currentYear,department);
   const keys=[...new Set([...previous.groups.keys(),...current.groups.keys()])];
   const rows=keys.map(key=>{
     const prev=previous.groups.get(key);
@@ -1491,6 +1666,10 @@ function positionNumber(value){
   const rounded=Math.round(value*10)/10;
   return Number.isInteger(rounded)?String(rounded):rounded.toFixed(1);
 }
+function workforceNumber(value){
+  const rounded=Math.round(value*10)/10;
+  return rounded.toLocaleString('en-US',{maximumFractionDigits:1});
+}
 function signedPercent(value){
   if(value===null||!Number.isFinite(value)) return '—';
   const pct=value*100;
@@ -1523,7 +1702,7 @@ function rowDepartmentLabel(d){
 }
 function showTooltip(d,cx,cy,W,H){
   if(d.available){
-    tooltipEl.innerHTML=`<div class="yr">${d.year}${d.year===2026?' · Proposed':''}</div><div class="amt">${moneyM(d.amount)}</div><div class="agency">${escapeHtml(rowDepartmentLabel(d))} · ${money(d.amount)}</div>`;
+    tooltipEl.innerHTML=`<div class="yr">${d.year}${stage(d.year)==='Recommendation'?' · Proposed':''}</div><div class="amt">${moneyM(d.amount)}</div><div class="agency">${escapeHtml(rowDepartmentLabel(d))} · ${money(d.amount)}</div>`;
   }else{
     tooltipEl.innerHTML=`<div class="yr">${d.year}</div><div class="amt" style="font-size:16px">No API value</div><div class="agency">${escapeHtml(d.reason||'No usable department rows found.')}</div>`;
   }
@@ -1549,7 +1728,11 @@ function showLocalFundsTooltip(d,cx,cy,W){
 function hideLocalFundsTooltip(){localFundsTooltipEl.classList.remove('show')}
 function showWorkforceTooltip(d,cx,cy,W){
   if(d.available){
-    workforceTooltipEl.innerHTML=`<div class="yr">${d.year}${d.year===2026?' · Proposed':''}</div><div class="amt">${Math.round(d.positions).toLocaleString('en-US')}</div><div class="agency">${escapeHtml(rowDepartmentLabel(d))} · budgeted positions/FTEs</div>`;
+    const breakdown=WORKFORCE_COMPONENTS
+      .filter(item=>(d.components?.[item.key]||0)>0)
+      .map(item=>`${escapeHtml(item.label)}: ${workforceNumber(d.components[item.key])}`)
+      .join('<br>');
+    workforceTooltipEl.innerHTML=`<div class="yr">${d.year}${stage(d.year)==='Recommendation'?' · Proposed':''}</div><div class="amt">${workforceNumber(d.positions)}</div><div class="agency">${escapeHtml(rowDepartmentLabel(d))} · budgeted positions/FTEs${breakdown?`<br>${breakdown}`:''}</div>`;
   }else{
     workforceTooltipEl.innerHTML=`<div class="yr">${d.year}</div><div class="amt" style="font-size:16px">No API value</div><div class="agency">${escapeHtml(d.reason||'No usable workforce rows found.')}</div>`;
   }
@@ -1559,7 +1742,7 @@ function showWorkforceTooltip(d,cx,cy,W){
 }
 function hideWorkforceTooltip(){workforceTooltipEl.classList.remove('show')}
 function showPositionChangesTooltip(d,cx,cy,W){
-  positionChangesTooltipEl.innerHTML=`<div class="yr">${escapeHtml(d.title)}</div><div class="amt">${signedNumber(d.net)}</div><div class="agency">${positionNumber(d.previous)} in 2025 · ${positionNumber(d.current)} in 2026 · ${signedPercent(d.percent)}</div>`;
+  positionChangesTooltipEl.innerHTML=`<div class="yr">${escapeHtml(d.title)}</div><div class="amt">${signedNumber(d.net)}</div><div class="agency">${positionNumber(d.previous)} in ${activeCycle.previousYear} · ${positionNumber(d.current)} in ${activeCycle.currentYear} · ${signedPercent(d.percent)}</div>`;
   positionChangesTooltipEl.style.left=`${Math.max(72,Math.min(W-72,cx))}px`;
   positionChangesTooltipEl.style.top=`${Math.max(60,cy)}px`;
   positionChangesTooltipEl.classList.add('show');
@@ -1591,7 +1774,7 @@ function showLargestAppropriationsTooltip(d,cx,cy,W){
 }
 function hideLargestAppropriationsTooltip(){largestAppropriationsTooltipEl.classList.remove('show')}
 function showAppropriationChangesTooltip(d,cx,cy,W){
-  appropriationChangesTooltipEl.innerHTML=`<div class="yr">${escapeHtml(d.label)}</div><div class="amt">${signedMoney(d.net)}</div><div class="agency">${money(d.previous)} in 2025 · ${money(d.current)} in 2026 · ${signedPercent(d.percent)}</div>`;
+  appropriationChangesTooltipEl.innerHTML=`<div class="yr">${escapeHtml(d.label)}</div><div class="amt">${signedMoney(d.net)}</div><div class="agency">${money(d.previous)} in ${activeCycle.previousYear} · ${money(d.current)} in ${activeCycle.currentYear} · ${signedPercent(d.percent)}</div>`;
   appropriationChangesTooltipEl.style.left=`${Math.max(72,Math.min(W-72,cx))}px`;
   appropriationChangesTooltipEl.style.top=`${Math.max(60,cy)}px`;
   appropriationChangesTooltipEl.classList.add('show');
@@ -1631,15 +1814,16 @@ function renderChart(data){
   const min=Math.min(...amounts);
   const max=Math.max(...amounts);
   const [yMin,yMax]=niceBounds(min,max);
-  const minYear=YEARS[0];
-  const maxYear=YEARS.at(-1);
+  const years=cycleYears();
+  const minYear=years[0];
+  const maxYear=years.at(-1);
   const x=year=>M.left+(year-minYear)/(maxYear-minYear)*iw;
   const y=value=>M.top+ih-(value-yMin)/(yMax-yMin)*ih;
 
   const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'svgTitle svgDesc',id:'budgetSvg'});
-  svg.append(svgEl('title',{id:'svgTitle'},`${displayDepartmentName(selectedDepartment)} appropriations from 2011 through the proposed 2026 budget`));
+  svg.append(svgEl('title',{id:'svgTitle'},`${displayDepartmentName(selectedDepartment)} appropriations from ${minYear} through ${activeCycle.latestLongLabel}`));
   const missingYears=data.filter(d=>!d.available).map(d=>d.year);
-  svg.append(svgEl('desc',{id:'svgDesc'},`Annual adopted appropriations for ${displayDepartmentName(selectedDepartment)} from 2011 through 2025 and the proposed 2026 appropriation. ${missingYears.length?`No City API value was plotted for ${missingYears.join(', ')}.`:'Every year has a plotted value.'}`));
+  svg.append(svgEl('desc',{id:'svgDesc'},`Annual appropriations for ${displayDepartmentName(selectedDepartment)} from ${minYear} through ${latestYearLabel()}. ${missingYears.length?`No City API value was plotted for ${missingYears.join(', ')}.`:'Every year has a plotted value.'}`));
 
   const defs=svgEl('defs');
   const grad=svgEl('linearGradient',{id:'fade',x1:'0',y1:'0',x2:'0',y2:'1'});
@@ -1674,7 +1858,7 @@ function renderChart(data){
 
     if(d.available){
       const cy=y(d.amount);
-      svg.append(svgEl('circle',{cx,cy,r:d.year===2026?4.8:3.4,fill:COLORS.primary,stroke:COLORS.surface,'stroke-width':'2'}));
+      svg.append(svgEl('circle',{cx,cy,r:isLatestYear(d.year)?4.8:3.4,fill:COLORS.primary,stroke:COLORS.surface,'stroke-width':'2'}));
       const hit=svgEl('circle',{cx,cy,r:'11',fill:'transparent','data-year':d.year,tabindex:'0','aria-label':`${d.year}: ${money(d.amount)}`});
       hit.style.cursor='pointer';
       hit.addEventListener('mouseenter',()=>showTooltip(d,cx,cy,W,H));
@@ -1698,7 +1882,7 @@ function renderChart(data){
       svg.append(hit);
     }
 
-    if(!compact || i%2===0 || d.year===2026){
+    if(!compact || i%2===0 || isLatestYear(d.year)){
       svg.append(svgEl('text',{x:cx,y:H-15,'text-anchor':'middle',fill:d.available?COLORS.muted:'#9da2a7','font-family':'Inter,Arial,sans-serif','font-size':compact?'9':'9.5'},String(d.year)));
     }
   });
@@ -1722,6 +1906,63 @@ function renderDetails(data){
     return `<tr><td>${d.year}</td><td>${d.available?'Available':'Missing'}</td><td>${escapeHtml(d.stage)}</td><td>${d.available?money(d.amount):'—'}</td><td>${d.available?escapeHtml((d.departmentNames||[]).join(' / ')):escapeHtml(d.reason||'No usable value')}</td><td>${escapeHtml(d.matchedBy||'—')}</td><td>${dataset}</td><td>${escapeHtml(d.resolvedBy||'—')}</td><td>${escapeHtml(d.amountField||'—')}</td></tr>`;
   }).join('')}</tbody></table></div>`;
 }
+function percentText(value){
+  if(value===null||!Number.isFinite(value)) return 'NA';
+  return `${(value*100).toFixed(1)}%`;
+}
+function cagr(startValue,endValue,startYear,endYear){
+  if(!Number.isFinite(startValue)||!Number.isFinite(endValue)||startValue<=0||endValue<=0||endYear<=startYear) return null;
+  return Math.pow(endValue/startValue,1/(endYear-startYear))-1;
+}
+function valueForYear(data,year,key){
+  const row=(data||[]).find(d=>d.year===year&&d.available);
+  return row&&Number.isFinite(row[key])?row[key]:null;
+}
+function summaryRateStartYear(){
+  return selectedDepartment?.code==='60'?2018:2011;
+}
+function renderSummaryTable(appropriationData,workforceData){
+  const previousYear=activeCycle.previousYear;
+  const currentYear=activeCycle.currentYear;
+  const rateStartYear=summaryRateStartYear();
+  const hasCurrent=activeCycle.currentAvailable;
+  const appPrevious=valueForYear(appropriationData,previousYear,'amount');
+  const appCurrent=hasCurrent?valueForYear(appropriationData,currentYear,'amount'):null;
+  const posPrevious=valueForYear(workforceData,previousYear,'positions');
+  const posCurrent=hasCurrent?valueForYear(workforceData,currentYear,'positions'):null;
+  const appStart=valueForYear(appropriationData,rateStartYear,'amount');
+  const app2025=valueForYear(appropriationData,2025,'amount');
+  const app2024=valueForYear(appropriationData,2024,'amount');
+  const posStart=valueForYear(workforceData,rateStartYear,'positions');
+  const pos2025=valueForYear(workforceData,2025,'positions');
+  const adjustedStart=appStart&&DOLLAR_2025_FACTORS[rateStartYear]?appStart*DOLLAR_2025_FACTORS[rateStartYear]:null;
+  const adjusted2024=app2024&&DOLLAR_2025_FACTORS[2024]?app2024*DOLLAR_2025_FACTORS[2024]:null;
+  const appNet=appCurrent!==null&&appPrevious!==null?appCurrent-appPrevious:null;
+  const posNet=posCurrent!==null&&posPrevious!==null?posCurrent-posPrevious:null;
+  const appPercent=appNet!==null&&appPrevious?appNet/appPrevious:null;
+  const posPercent=posNet!==null&&posPrevious?posNet/posPrevious:null;
+  const appAverage=cagr(appStart,app2025,rateStartYear,2025);
+  const posAverage=cagr(posStart,pos2025,rateStartYear,2025);
+  const appInflationAdjusted=cagr(adjustedStart,adjusted2024,rateStartYear,2024);
+  const currentLabel=hasCurrent?`${currentYear} Proposed`:`${currentYear} Proposed`;
+
+  summaryTableTitleEl.textContent=`${displayDepartmentName(selectedDepartment)} Budget Summary`;
+  summaryTableFootEl.textContent=`Source: City of Chicago budget APIs. Average annual rate of change uses ${rateStartYear}–2025${selectedDepartment?.code==='60'?' for COPA/IPRA to avoid the agency transition.':'.'} Inflation-adjusted appropriations rate uses ${rateStartYear}–2024 values converted to 2025 dollars.`;
+  summaryTableEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th></th><th>${previousYear} Budgeted</th><th>${currentLabel}</th><th>Net Change</th><th>Percent Change</th><th>Average Annual Rate of Change (${rateStartYear}-2025)</th><th>Inflation-adjusted Rate of Change (${rateStartYear}-2024)</th></tr></thead><tbody>
+    <tr><td>Appropriations</td><td>${appPrevious===null?'—':money(appPrevious)}</td><td>${appCurrent===null?'—':money(appCurrent)}</td><td>${appNet===null?'—':signedMoney(appNet)}</td><td>${percentText(appPercent)}</td><td>${percentText(appAverage)}</td><td>${percentText(appInflationAdjusted)}</td></tr>
+    <tr><td>Positions &amp; FTEs</td><td>${posPrevious===null?'—':positionNumber(posPrevious)}</td><td>${posCurrent===null?'—':positionNumber(posCurrent)}</td><td>${posNet===null?'—':signedNumber(posNet)}</td><td>${percentText(posPercent)}</td><td>${percentText(posAverage)}</td><td>NA</td></tr>
+  </tbody></table></div>`;
+
+  const missing=[];
+  if(appCurrent===null) missing.push(`${currentYear} appropriations`);
+  if(posCurrent===null) missing.push(`${currentYear} positions/FTEs`);
+  if(missing.length){
+    summaryTableStatusEl.className='status warning';
+    summaryTableStatusEl.textContent=`Summary table shell is built. Waiting on: ${missing.join(', ')}.`;
+  }else{
+    summaryTableStatusEl.className='status ready';
+  }
+}
 function renderLocalFundsChart(data){
   localFundsChartEl.querySelector('svg')?.remove();
   hideLocalFundsTooltip();
@@ -1741,8 +1982,8 @@ function renderLocalFundsChart(data){
   const baseline=M.top+ih;
 
   const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'localSvgTitle localSvgDesc',id:'localFundsSvg'});
-  svg.append(svgEl('title',{id:'localSvgTitle'},`${displayDepartmentName(selectedDepartment)} local-fund actuals, 2022 through 2024`));
-  svg.append(svgEl('desc',{id:'localSvgDesc'},`Annual local-fund budget spent and unspent for ${displayDepartmentName(selectedDepartment)} from 2022 through 2024. Budget spent equals actuals plus encumbrances, capped at the annual budget.`));
+  svg.append(svgEl('title',{id:'localSvgTitle'},`${displayDepartmentName(selectedDepartment)} local-fund actuals, ${yearRangeWords(LOCAL_FUNDS_YEARS)}`));
+  svg.append(svgEl('desc',{id:'localSvgDesc'},`Annual local-fund budget spent and unspent for ${displayDepartmentName(selectedDepartment)} from ${yearRangeWords(LOCAL_FUNDS_YEARS)}. Budget spent equals actuals plus encumbrances, capped at the annual budget.`));
 
   const ticks=5;
   for(let i=0;i<ticks;i++){
@@ -1802,14 +2043,15 @@ function renderWorkforceChart(data){
   const ih=H-M.top-M.bottom;
   const yMax=Math.ceil(Math.max(...available.map(d=>d.positions))*1.12/25)*25;
   const y=value=>M.top+ih-(value/yMax)*ih;
-  const x=year=>M.left+(year-YEARS[0])/(YEARS.at(-1)-YEARS[0])*iw;
-  const barW=Math.max(8,Math.min(W<520?14:22,iw/YEARS.length*.62));
+  const years=cycleYears();
+  const x=year=>M.left+(year-years[0])/(years.at(-1)-years[0])*iw;
+  const barW=Math.max(8,Math.min(W<520?14:22,iw/years.length*.62));
   const baseline=M.top+ih;
 
   const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'workforceSvgTitle workforceSvgDesc',id:'workforceSvg'});
-  svg.append(svgEl('title',{id:'workforceSvgTitle'},`${displayDepartmentName(selectedDepartment)} budgeted workforce from 2011 through the proposed 2026 budget`));
+  svg.append(svgEl('title',{id:'workforceSvgTitle'},`${displayDepartmentName(selectedDepartment)} budgeted workforce from ${years[0]} through ${activeCycle.latestLongLabel}`));
   const missingYears=data.filter(d=>!d.available).map(d=>d.year);
-  svg.append(svgEl('desc',{id:'workforceSvgDesc'},`Annual budgeted positions and FTEs for ${displayDepartmentName(selectedDepartment)} from 2011 through 2025 and the proposed 2026 budget. ${missingYears.length?`No City API value was plotted for ${missingYears.join(', ')}.`:'Every year has a plotted value.'}`));
+  svg.append(svgEl('desc',{id:'workforceSvgDesc'},`Stacked annual, monthly, hourly, monthly FTE, and hourly FTE budgeted workforce for ${displayDepartmentName(selectedDepartment)} from ${years[0]} through ${latestYearLabel()}. ${missingYears.length?`No City API value was plotted for ${missingYears.join(', ')}.`:'Every year has a plotted value.'}`));
 
   const ticks=5;
   for(let i=0;i<ticks;i++){
@@ -1824,9 +2066,17 @@ function renderWorkforceChart(data){
     const cx=x(d.year);
     if(d.available){
       const yy=y(d.positions);
-      const fill=d.year===2026?COLORS.primary:COLORS.pale;
-      svg.append(svgEl('rect',{x:cx-barW/2,y:yy,width:barW,height:baseline-yy,fill}));
-      const hit=svgEl('rect',{x:cx-barW/2-5,y:yy-18,width:barW+10,height:baseline-yy+28,fill:'transparent',tabindex:'0','aria-label':`${d.year}: ${Math.round(d.positions).toLocaleString('en-US')} budgeted positions/FTEs`});
+      let cumulative=0;
+      WORKFORCE_COMPONENTS.forEach(item=>{
+        const value=d.components?.[item.key]||0;
+        if(value<=0)return;
+        const next=cumulative+value;
+        const yTop=y(next);
+        const yBottom=y(cumulative);
+        svg.append(svgEl('rect',{x:cx-barW/2,y:yTop,width:barW,height:Math.max(0,yBottom-yTop),fill:item.color,opacity:isLatestYear(d.year)?'1':'.86'}));
+        cumulative=next;
+      });
+      const hit=svgEl('rect',{x:cx-barW/2-5,y:yy-18,width:barW+10,height:baseline-yy+28,fill:'transparent',tabindex:'0','aria-label':`${d.year}: ${workforceNumber(d.positions)} budgeted positions/FTEs`});
       hit.style.cursor='pointer';
       hit.addEventListener('mouseenter',()=>showWorkforceTooltip(d,cx,yy,W));
       hit.addEventListener('mouseleave',hideWorkforceTooltip);
@@ -1839,7 +2089,7 @@ function renderWorkforceChart(data){
       svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:markerY-4,y2:markerY+4,stroke:COLORS.muted,'stroke-width':'1.5'}));
       svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:markerY+4,y2:markerY-4,stroke:COLORS.muted,'stroke-width':'1.5'}));
     }
-    if(!compact || i%2===0 || d.year===2026){
+    if(!compact || i%2===0 || isLatestYear(d.year)){
       svg.append(svgEl('text',{x:cx,y:H-15,'text-anchor':'middle',fill:d.available?COLORS.muted:'#9da2a7','font-family':'Inter,Arial,sans-serif','font-size':compact?'9':'9.5'},String(d.year)));
     }
   });
@@ -1851,15 +2101,16 @@ function renderWorkforceChart(data){
   }
 
   const latest=available.at(-1);
-  svg.append(svgEl('text',{x:x(latest.year)-5,y:y(latest.positions)-13,'text-anchor':'end',fill:COLORS.primary,'font-family':'Inter,Arial,sans-serif','font-size':'12','font-weight':'700'},Math.round(latest.positions).toLocaleString('en-US')));
+  svg.append(svgEl('text',{x:x(latest.year)-5,y:y(latest.positions)-13,'text-anchor':'end',fill:COLORS.primary,'font-family':'Inter,Arial,sans-serif','font-size':'12','font-weight':'700'},workforceNumber(latest.positions)));
 
   workforceChartEl.insertBefore(svg,workforceTooltipEl);
   downloadWorkforceBtn.hidden=false;
 }
 function renderWorkforceDetails(data){
-  workforceDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Year</th><th>Status</th><th>Stage</th><th>Budgeted positions/FTEs</th><th>Agency / note</th><th>Matched by</th><th>Dataset</th><th>Resolved by</th><th>Position field</th><th>Rows</th></tr></thead><tbody>${data.map(d=>{
+  workforceDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Year</th><th>Status</th><th>Stage</th><th>Budgeted positions/FTEs</th><th>Annual positions</th><th>Monthly positions</th><th>Hourly positions</th><th>Monthly FTEs</th><th>Hourly FTEs</th><th>Agency / note</th><th>Matched by</th><th>Dataset</th><th>Resolved by</th><th>Position field</th><th>Rows</th></tr></thead><tbody>${data.map(d=>{
     const dataset=d.datasetId?`<a href="https://${DOMAIN}/d/${d.datasetId}" target="_blank" rel="noopener">${escapeHtml(d.datasetId)}</a>`:'—';
-    return `<tr><td>${d.year}</td><td>${d.available?'Available':'Missing'}</td><td>${escapeHtml(d.stage)}</td><td>${d.available?Math.round(d.positions).toLocaleString('en-US'):'—'}</td><td>${d.available?escapeHtml((d.departmentNames||[]).join(' / ')):escapeHtml(d.reason||'No usable value')}</td><td>${escapeHtml(d.matchedBy||'—')}</td><td>${dataset}</td><td>${escapeHtml(d.resolvedBy||'—')}</td><td>${escapeHtml(d.positionField||'—')}</td><td>${d.rowCount||'—'}</td></tr>`;
+    const componentCell=item=>d.available?workforceNumber(d.components?.[item.key]||0):'—';
+    return `<tr><td>${d.year}</td><td>${d.available?'Available':'Missing'}</td><td>${escapeHtml(d.stage)}</td><td>${d.available?workforceNumber(d.positions):'—'}</td>${WORKFORCE_COMPONENTS.map(item=>`<td>${componentCell(item)}</td>`).join('')}<td>${d.available?escapeHtml((d.departmentNames||[]).join(' / ')):escapeHtml(d.reason||'No usable value')}</td><td>${escapeHtml(d.matchedBy||'—')}</td><td>${dataset}</td><td>${escapeHtml(d.resolvedBy||'—')}</td><td>${escapeHtml(d.positionField||'—')}</td><td>${d.rowCount||'—'}</td></tr>`;
   }).join('')}</tbody></table></div>`;
 }
 function renderPositionChangesChart(result){
@@ -1870,7 +2121,7 @@ function renderPositionChangesChart(result){
   if(!data.length){
     const note=document.createElement('p');
     note.className='status position-changes-empty';
-    note.textContent='No changed position/FTE titles were found between the 2025 ordinance and 2026 proposed budgets.';
+    note.textContent=`No changed position/FTE titles were found between the ${activeCycle.previousYear} baseline and ${activeCycle.currentYear} proposed budgets.`;
     positionChangesChartEl.insertBefore(note,positionChangesTooltipEl);
     downloadPositionChangesBtn.hidden=true;
     return;
@@ -1892,12 +2143,12 @@ function renderPositionChangesChart(result){
   };
 
   const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'positionChangesSvgTitle positionChangesSvgDesc',id:'positionChangesSvg'});
-  svg.append(svgEl('title',{id:'positionChangesSvgTitle'},`${displayDepartmentName(selectedDepartment)} net and percent position/FTE changes, 2025 to 2026 proposed budgets`));
-  svg.append(svgEl('desc',{id:'positionChangesSvgDesc'},`Changed position/FTE titles for ${displayDepartmentName(selectedDepartment)} from the 2025 ordinance to the 2026 proposed budget.`));
+  svg.append(svgEl('title',{id:'positionChangesSvgTitle'},`${displayDepartmentName(selectedDepartment)} net and percent position/FTE changes, ${activeCycle.previousYear} to ${activeCycle.currentYear} proposed budgets`));
+  svg.append(svgEl('desc',{id:'positionChangesSvgDesc'},`Changed position/FTE titles for ${displayDepartmentName(selectedDepartment)} from the ${activeCycle.previousYear} baseline to the ${activeCycle.currentYear} proposed budget.`));
   svg.append(svgEl('rect',{x:0,y:0,width:W,height:H,fill:COLORS.surface}));
   svg.append(svgEl('text',{x:titleX,y:25,fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'TITLE'));
-  svg.append(svgEl('text',{x:prevX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'2025'));
-  svg.append(svgEl('text',{x:currX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'2026'));
+  svg.append(svgEl('text',{x:prevX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},String(activeCycle.previousYear)));
+  svg.append(svgEl('text',{x:currX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},String(activeCycle.currentYear)));
   svg.append(svgEl('text',{x:netX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'NET'));
   svg.append(svgEl('text',{x:pctX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'%'));
   svg.append(svgEl('line',{x1:0,x2:W,y1:40,y2:40,stroke:COLORS.border,'stroke-width':'1'}));
@@ -1928,7 +2179,7 @@ function renderPositionChangesDetails(result){
   const rows=result.rows||[];
   const previousDataset=`<a href="https://${DOMAIN}/d/${result.previous.source.id}" target="_blank" rel="noopener">${escapeHtml(result.previous.source.id)}</a>`;
   const currentDataset=`<a href="https://${DOMAIN}/d/${result.current.source.id}" target="_blank" rel="noopener">${escapeHtml(result.current.source.id)}</a>`;
-  positionChangesDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Title</th><th>2025 positions/FTEs</th><th>2026 positions/FTEs</th><th>Net change</th><th>Percent change</th><th>2025 rows</th><th>2026 rows</th></tr></thead><tbody>${rows.length?rows.map(d=>`<tr><td>${escapeHtml(d.title)}</td><td>${positionNumber(d.previous)}</td><td>${positionNumber(d.current)}</td><td>${signedNumber(d.net)}</td><td>${signedPercent(d.percent)}</td><td>${d.previousRows}</td><td>${d.currentRows}</td></tr>`).join(''):`<tr><td colspan="7">No changed position/FTE titles were found.</td></tr>`}</tbody></table></div><p>Datasets: 2025 ${previousDataset}; 2026 ${currentDataset}. Matched by: 2025 ${escapeHtml(result.previous.matchedBy||'—')}; 2026 ${escapeHtml(result.current.matchedBy||'—')}.</p>`;
+  positionChangesDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Title</th><th>${activeCycle.previousYear} positions/FTEs</th><th>${activeCycle.currentYear} positions/FTEs</th><th>Net change</th><th>Percent change</th><th>${activeCycle.previousYear} rows</th><th>${activeCycle.currentYear} rows</th></tr></thead><tbody>${rows.length?rows.map(d=>`<tr><td>${escapeHtml(d.title)}</td><td>${positionNumber(d.previous)}</td><td>${positionNumber(d.current)}</td><td>${signedNumber(d.net)}</td><td>${signedPercent(d.percent)}</td><td>${d.previousRows}</td><td>${d.currentRows}</td></tr>`).join(''):`<tr><td colspan="7">No changed position/FTE titles were found.</td></tr>`}</tbody></table></div><p>Datasets: ${activeCycle.previousYear} ${previousDataset}; ${activeCycle.currentYear} ${currentDataset}. Matched by: ${activeCycle.previousYear} ${escapeHtml(result.previous.matchedBy||'—')}; ${activeCycle.currentYear} ${escapeHtml(result.current.matchedBy||'—')}.</p>`;
 }
 function renderAppropriationChangesChart(result){
   appropriationChangesChartEl.querySelector('svg')?.remove();
@@ -1938,7 +2189,7 @@ function renderAppropriationChangesChart(result){
   if(!data.length){
     const note=document.createElement('p');
     note.className='status appropriation-changes-empty';
-    note.textContent='No changed appropriation accounts were found between the 2025 ordinance and 2026 proposed budgets.';
+    note.textContent=`No changed appropriation accounts were found between the ${activeCycle.previousYear} baseline and ${activeCycle.currentYear} proposed budgets.`;
     appropriationChangesChartEl.insertBefore(note,appropriationChangesTooltipEl);
     downloadAppropriationChangesBtn.hidden=true;
     return;
@@ -1960,12 +2211,12 @@ function renderAppropriationChangesChart(result){
   };
 
   const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'appropriationChangesSvgTitle appropriationChangesSvgDesc',id:'appropriationChangesSvg'});
-  svg.append(svgEl('title',{id:'appropriationChangesSvgTitle'},`${displayDepartmentName(selectedDepartment)} net and percent appropriation changes, 2025 to 2026 proposed budgets`));
-  svg.append(svgEl('desc',{id:'appropriationChangesSvgDesc'},`Changed appropriation accounts for ${displayDepartmentName(selectedDepartment)} from the 2025 ordinance to the 2026 proposed budget.`));
+  svg.append(svgEl('title',{id:'appropriationChangesSvgTitle'},`${displayDepartmentName(selectedDepartment)} net and percent appropriation changes, ${activeCycle.previousYear} to ${activeCycle.currentYear} proposed budgets`));
+  svg.append(svgEl('desc',{id:'appropriationChangesSvgDesc'},`Changed appropriation accounts for ${displayDepartmentName(selectedDepartment)} from the ${activeCycle.previousYear} baseline to the ${activeCycle.currentYear} proposed budget.`));
   svg.append(svgEl('rect',{x:0,y:0,width:W,height:H,fill:COLORS.surface}));
   svg.append(svgEl('text',{x:labelX,y:25,fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'APPROPRIATION'));
-  svg.append(svgEl('text',{x:prevX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'2025'));
-  svg.append(svgEl('text',{x:currX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'2026'));
+  svg.append(svgEl('text',{x:prevX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},String(activeCycle.previousYear)));
+  svg.append(svgEl('text',{x:currX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},String(activeCycle.currentYear)));
   svg.append(svgEl('text',{x:netX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'NET'));
   svg.append(svgEl('text',{x:pctX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Inter,Arial,sans-serif','font-size':'10','font-weight':'800','letter-spacing':'.04em'},'%'));
   svg.append(svgEl('line',{x1:0,x2:W,y1:40,y2:40,stroke:COLORS.border,'stroke-width':'1'}));
@@ -1996,7 +2247,7 @@ function renderAppropriationChangesDetails(result){
   const rows=result.rows||[];
   const previousDataset=`<a href="https://${DOMAIN}/d/${result.previous.source.id}" target="_blank" rel="noopener">${escapeHtml(result.previous.source.id)}</a>`;
   const currentDataset=`<a href="https://${DOMAIN}/d/${result.current.source.id}" target="_blank" rel="noopener">${escapeHtml(result.current.source.id)}</a>`;
-  appropriationChangesDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Appropriation account</th><th>Account code</th><th>2025 budgeted</th><th>2026 proposed</th><th>Net change</th><th>Percent change</th><th>2025 rows</th><th>2026 rows</th></tr></thead><tbody>${rows.length?rows.map(d=>`<tr><td>${escapeHtml(d.label)}</td><td>${escapeHtml(d.code||'—')}</td><td>${money(d.previous)}</td><td>${money(d.current)}</td><td>${signedMoney(d.net)}</td><td>${signedPercent(d.percent)}</td><td>${d.previousRows}</td><td>${d.currentRows}</td></tr>`).join(''):`<tr><td colspan="8">No changed appropriation accounts were found.</td></tr>`}</tbody></table></div><p>Datasets: 2025 ${previousDataset}; 2026 ${currentDataset}. Amount fields: 2025 ${escapeHtml(result.previous.amountField)}; 2026 ${escapeHtml(result.current.amountField)}. Matched by: 2025 ${escapeHtml(result.previous.matchedBy||'—')}; 2026 ${escapeHtml(result.current.matchedBy||'—')}.</p>`;
+  appropriationChangesDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Appropriation account</th><th>Account code</th><th>${activeCycle.previousYear} budgeted</th><th>${activeCycle.currentYear} proposed</th><th>Net change</th><th>Percent change</th><th>${activeCycle.previousYear} rows</th><th>${activeCycle.currentYear} rows</th></tr></thead><tbody>${rows.length?rows.map(d=>`<tr><td>${escapeHtml(d.label)}</td><td>${escapeHtml(d.code||'—')}</td><td>${money(d.previous)}</td><td>${money(d.current)}</td><td>${signedMoney(d.net)}</td><td>${signedPercent(d.percent)}</td><td>${d.previousRows}</td><td>${d.currentRows}</td></tr>`).join(''):`<tr><td colspan="8">No changed appropriation accounts were found.</td></tr>`}</tbody></table></div><p>Datasets: ${activeCycle.previousYear} ${previousDataset}; ${activeCycle.currentYear} ${currentDataset}. Amount fields: ${activeCycle.previousYear} ${escapeHtml(result.previous.amountField)}; ${activeCycle.currentYear} ${escapeHtml(result.current.amountField)}. Matched by: ${activeCycle.previousYear} ${escapeHtml(result.previous.matchedBy||'—')}; ${activeCycle.currentYear} ${escapeHtml(result.current.matchedBy||'—')}.</p>`;
 }
 function renderVacanciesChart(result){
   vacanciesChartEl.querySelector('svg')?.remove();
@@ -2126,7 +2377,7 @@ function renderLargestAppropriationsChart(result){
   largestAppropriationsChartEl.querySelector('svg')?.remove();
   hideLargestAppropriationsTooltip();
   const data=result.rows||[];
-  if(!data.length) throw new Error(`No positive 2026 appropriations were found for ${displayDepartmentName(selectedDepartment)}.`);
+  if(!data.length) throw new Error(`No positive ${latestYearLabel()} appropriations were found for ${displayDepartmentName(selectedDepartment)}.`);
 
   const measured=Math.max(320,Math.round(largestAppropriationsChartEl.getBoundingClientRect().width||700));
   const W=measured;
@@ -2144,8 +2395,8 @@ function renderLargestAppropriationsChart(result){
   };
 
   const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'largestAppropriationsSvgTitle largestAppropriationsSvgDesc',id:'largestAppropriationsSvg'});
-  svg.append(svgEl('title',{id:'largestAppropriationsSvgTitle'},`${displayDepartmentName(selectedDepartment)} top 10 largest appropriations, 2026 proposed budget`));
-  svg.append(svgEl('desc',{id:'largestAppropriationsSvgDesc'},`Top 10 largest 2026 proposed appropriation accounts for ${displayDepartmentName(selectedDepartment)}.`));
+  svg.append(svgEl('title',{id:'largestAppropriationsSvgTitle'},`${displayDepartmentName(selectedDepartment)} top 10 largest appropriations, ${latestYearLabel()}`));
+  svg.append(svgEl('desc',{id:'largestAppropriationsSvgDesc'},`Top 10 largest ${latestYearLabel()} appropriation accounts for ${displayDepartmentName(selectedDepartment)}.`));
 
   data.forEach((d,i)=>{
     const y=M.top+i*rowH;
@@ -2168,7 +2419,7 @@ function renderLargestAppropriationsChart(result){
 }
 function renderLargestAppropriationsDetails(result){
   const dataset=`<a href="https://${DOMAIN}/d/${result.source.id}" target="_blank" rel="noopener">${escapeHtml(result.source.id)}</a>`;
-  largestAppropriationsDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Rank</th><th>Appropriation</th><th>Account code</th><th>2026 proposed</th><th>Rows</th></tr></thead><tbody>${result.rows.map((d,i)=>`<tr><td>${i+1}</td><td>${escapeHtml(d.label)}</td><td>${escapeHtml(d.code||'—')}</td><td>${money(d.amount)}</td><td>${d.rowCount}</td></tr>`).join('')}</tbody></table></div><p>Dataset: ${dataset}. Amount field: ${escapeHtml(result.amountField)}. Matched by: ${escapeHtml(result.matchedBy||'—')}. Source rows matched: ${result.rowCount.toLocaleString('en-US')}.</p>`;
+  largestAppropriationsDetailsEl.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Rank</th><th>Appropriation</th><th>Account code</th><th>${escapeHtml(latestYearLabel())}</th><th>Rows</th></tr></thead><tbody>${result.rows.map((d,i)=>`<tr><td>${i+1}</td><td>${escapeHtml(d.label)}</td><td>${escapeHtml(d.code||'—')}</td><td>${money(d.amount)}</td><td>${d.rowCount}</td></tr>`).join('')}</tbody></table></div><p>Dataset: ${dataset}. Amount field: ${escapeHtml(result.amountField)}. Matched by: ${escapeHtml(result.matchedBy||'—')}. Source rows matched: ${result.rowCount.toLocaleString('en-US')}.</p>`;
 }
 async function buildWorkforce(){
   if(!selectedDepartment) return;
@@ -2177,11 +2428,12 @@ async function buildWorkforce(){
   hideWorkforceTooltip();
   downloadWorkforceBtn.hidden=true;
   workforceStatusEl.className='status';
-  workforceStatusEl.textContent=`Loading 2011–2026 budgeted workforce for ${displayDepartmentName(selectedDepartment)}…`;
-  document.getElementById('workforceTitle').textContent=`${displayDepartmentName(selectedDepartment)} Budgeted Workforce, 2011–2026 (Proposed)`;
+  workforceStatusEl.textContent=`Loading ${chartRangeLabel()} budgeted workforce for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('workforceTitle').textContent=`${displayDepartmentName(selectedDepartment)} Budgeted Workforce, ${chartRangeLabel()}`;
+  workforceFootEl.textContent=`Source: City of Chicago Budget Ordinance positions and salaries datasets, ${ordinanceSourceRange()}${stage(activeCycle.latestYear)==='Recommendation'?`, and ${activeCycle.latestYear} Budget Recommendations — Positions and Salaries`:'.'} Years without a row for the selected department are left blank rather than estimated.`;
 
   try{
-    const data=await mapLimit(YEARS,4,year=>loadWorkforceYear(year,selectedDepartment));
+    const data=await mapLimit(cycleYears(),4,year=>loadWorkforceYear(year,selectedDepartment));
     data.sort((a,b)=>a.year-b.year);
     const available=data.filter(d=>d.available);
     const missing=data.filter(d=>!d.available);
@@ -2213,8 +2465,16 @@ async function buildPositionChanges(){
   hidePositionChangesTooltip();
   downloadPositionChangesBtn.hidden=true;
   positionChangesStatusEl.className='status';
-  positionChangesStatusEl.textContent=`Loading 2025–2026 position/FTE changes for ${displayDepartmentName(selectedDepartment)}…`;
-  document.getElementById('positionChangesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Net and Percent Position/FTE Changes, 2025 to 2026 (Proposed) Budgets`;
+  positionChangesStatusEl.textContent=`Loading ${activeCycle.previousYear}–${activeCycle.currentYear} position/FTE changes for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('positionChangesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Net and Percent Position/FTE Changes, ${activeCycle.previousYear} to ${activeCycle.currentYear} (Proposed) Budgets`;
+  positionChangesSubEl.textContent=`Changed position/FTE titles from the ${activeCycle.previousYear} baseline to the ${activeCycle.currentYear} proposed budget`;
+  positionChangesFootEl.textContent=`Source: City of Chicago ${activeCycle.previousYear} Budget Ordinance and ${activeCycle.currentYear} Budget Recommendations positions and salaries datasets. Percent change is net change divided by ${activeCycle.previousYear} positions/FTEs.`;
+  if(!activeCycle.currentAvailable){
+    lastPositionChangesData=null;
+    positionChangesStatusEl.className='status warning';
+    positionChangesStatusEl.textContent=`Waiting for the ${activeCycle.currentYear} Budget Recommendations positions and salaries API. This will compare the ${activeCycle.previousYear} ordinance baseline to the ${activeCycle.currentYear} proposed budget once the dataset ID is added.`;
+    return;
+  }
 
   try{
     const result=await loadPositionChanges(selectedDepartment);
@@ -2225,7 +2485,7 @@ async function buildPositionChanges(){
       positionChangesStatusEl.className='status ready';
     }else{
       positionChangesStatusEl.className='status warning';
-      positionChangesStatusEl.textContent=`No changed position/FTE titles were found for ${displayDepartmentName(selectedDepartment)} between the 2025 ordinance and 2026 proposed budgets.`;
+      positionChangesStatusEl.textContent=`No changed position/FTE titles were found for ${displayDepartmentName(selectedDepartment)} between the ${activeCycle.previousYear} baseline and ${activeCycle.currentYear} proposed budgets.`;
     }
   }catch(err){
     console.error(err);
@@ -2243,8 +2503,16 @@ async function buildAppropriationChanges(){
   hideAppropriationChangesTooltip();
   downloadAppropriationChangesBtn.hidden=true;
   appropriationChangesStatusEl.className='status';
-  appropriationChangesStatusEl.textContent=`Loading 2025–2026 appropriation changes for ${displayDepartmentName(selectedDepartment)}…`;
-  document.getElementById('appropriationChangesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Net and Percent Appropriation Changes, 2025 to 2026 (Proposed) Budgets`;
+  appropriationChangesStatusEl.textContent=`Loading ${activeCycle.previousYear}–${activeCycle.currentYear} appropriation changes for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('appropriationChangesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Net and Percent Appropriation Changes, ${activeCycle.previousYear} to ${activeCycle.currentYear} (Proposed) Budgets`;
+  appropriationChangesSubEl.textContent=`Changed appropriation accounts from the ${activeCycle.previousYear} baseline to the ${activeCycle.currentYear} proposed budget`;
+  appropriationChangesFootEl.textContent=`Source: City of Chicago ${activeCycle.previousYear} Budget Ordinance and ${activeCycle.currentYear} Budget Recommendations appropriations datasets. Percent change is net change divided by ${activeCycle.previousYear} budgeted appropriation.`;
+  if(!activeCycle.currentAvailable){
+    lastAppropriationChangesData=null;
+    appropriationChangesStatusEl.className='status warning';
+    appropriationChangesStatusEl.textContent=`Waiting for the ${activeCycle.currentYear} Budget Recommendations appropriations API. This will compare the ${activeCycle.previousYear} ordinance baseline to the ${activeCycle.currentYear} proposed budget once the dataset ID is added.`;
+    return;
+  }
 
   try{
     const result=await loadAppropriationChanges(selectedDepartment);
@@ -2255,7 +2523,7 @@ async function buildAppropriationChanges(){
       appropriationChangesStatusEl.className='status ready';
     }else{
       appropriationChangesStatusEl.className='status warning';
-      appropriationChangesStatusEl.textContent=`No changed appropriation accounts were found for ${displayDepartmentName(selectedDepartment)} between the 2025 ordinance and 2026 proposed budgets.`;
+      appropriationChangesStatusEl.textContent=`No changed appropriation accounts were found for ${displayDepartmentName(selectedDepartment)} between the ${activeCycle.previousYear} baseline and ${activeCycle.currentYear} proposed budgets.`;
     }
   }catch(err){
     console.error(err);
@@ -2339,8 +2607,11 @@ async function buildLargestAppropriations(){
   hideLargestAppropriationsTooltip();
   downloadLargestAppropriationsBtn.hidden=true;
   largestAppropriationsStatusEl.className='status';
-  largestAppropriationsStatusEl.textContent=`Loading top 10 2026 appropriations for ${displayDepartmentName(selectedDepartment)}…`;
-  document.getElementById('largestAppropriationsTitle').textContent=`${displayDepartmentName(selectedDepartment)} Top 10 Largest Appropriations, 2026 Proposed Chicago Budget`;
+  largestAppropriationsStatusEl.textContent=`Loading top 10 ${latestYearLabel()} appropriations for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('largestAppropriationsTitle').textContent=`${displayDepartmentName(selectedDepartment)} Top 10 Largest Appropriations, ${latestYearLabel()}`;
+  largestAppropriationsEyebrowEl.textContent=stage(activeCycle.latestYear)==='Recommendation'?`${activeCycle.latestYear} proposed budget`:`${activeCycle.latestYear} ordinance baseline`;
+  largestAppropriationsSubEl.textContent=`Largest appropriation accounts in the selected department's ${latestYearLabel()} budget`;
+  largestAppropriationsFootEl.textContent=`Source: City of Chicago ${activeCycle.latestYear} Budget ${stage(activeCycle.latestYear)==='Recommendation'?'Recommendations':'Ordinance'} — Appropriations. Rows are grouped by appropriation account and ranked by amount.`;
 
   try{
     const result=await loadLargestAppropriations(selectedDepartment);
@@ -2363,11 +2634,11 @@ async function buildLocalFunds(){
   hideLocalFundsTooltip();
   downloadLocalFundsBtn.hidden=true;
   localFundsStatusEl.className='status';
-  localFundsStatusEl.textContent=`Loading 2022–2024 local-fund actuals for ${displayDepartmentName(selectedDepartment)}…`;
-  document.getElementById('localFundsTitle').textContent=`${displayDepartmentName(selectedDepartment)} Local Fund Actuals, 2022–2024`;
+  localFundsStatusEl.textContent=`Loading ${yearRangeLabel(LOCAL_FUNDS_YEARS)} local-fund actuals for ${displayDepartmentName(selectedDepartment)}…`;
+  document.getElementById('localFundsTitle').textContent=`${displayDepartmentName(selectedDepartment)} Local Fund Actuals, ${yearRangeLabel(LOCAL_FUNDS_YEARS)}`;
 
   try{
-    const data=await mapLimit([2022,2023,2024],3,year=>loadLocalFundsYear(year,selectedDepartment));
+    const data=await mapLimit(LOCAL_FUNDS_YEARS,3,year=>loadLocalFundsYear(year,selectedDepartment));
     data.sort((a,b)=>a.year-b.year);
     const available=data.filter(d=>d.available);
     const missing=data.filter(d=>!d.available);
@@ -2395,15 +2666,19 @@ async function build(){
   if(!selectedDepartment) return;
   chartEl.querySelector('svg')?.remove();
   detailsEl.innerHTML='';
+  summaryTableEl.innerHTML='';
+  summaryTableStatusEl.className='status';
+  summaryTableStatusEl.textContent='Waiting for appropriation and workforce data…';
   hideTooltip();
   downloadBtn.hidden=true;
   departmentSelect.disabled=true;
   statusEl.className='status';
-  statusEl.textContent=`Loading 2011–2026 City appropriations for ${displayDepartmentName(selectedDepartment)}…`;
-  chartTitleEl.textContent=`${displayDepartmentName(selectedDepartment)} Appropriation, Chicago City Budgets 2011–2026 (Proposed)`;
+  statusEl.textContent=`Loading ${chartRangeLabel()} City appropriations for ${displayDepartmentName(selectedDepartment)}…`;
+  chartTitleEl.textContent=`${displayDepartmentName(selectedDepartment)} Appropriation, Chicago City Budgets ${chartRangeLabel()}`;
+  chartFootEl.textContent=`Source: City of Chicago Budget Ordinance appropriations datasets, ${ordinanceSourceRange()}${stage(activeCycle.latestYear)==='Recommendation'?`, and ${activeCycle.latestYear} Budget Recommendations — Appropriations`:'.'} Years without a row for the selected department are left blank rather than estimated.`;
 
   try{
-    const data=await mapLimit(YEARS,4,year=>loadYear(year,selectedDepartment));
+    const data=await mapLimit(cycleYears(),4,year=>loadYear(year,selectedDepartment));
     data.sort((a,b)=>a.year-b.year);
     const available=data.filter(d=>d.available);
     const missing=data.filter(d=>!d.available);
@@ -2414,6 +2689,7 @@ async function build(){
     renderDetails(data);
     await buildLocalFunds();
     await buildWorkforce();
+    renderSummaryTable(lastData,lastWorkforceData);
     await buildVacancies();
     await buildPersistentVacancies();
     await buildLargestAppropriations();
@@ -2430,6 +2706,8 @@ async function build(){
     console.error(err);
     lastData=null;
     statusEl.className='status error';
+    summaryTableStatusEl.className='status error';
+    summaryTableStatusEl.textContent='Could not build budget summary because the appropriation data did not load.';
     const extra=location.protocol==='file:'?' If your browser blocks live API requests from a local file, the same HTML can be hosted unchanged; it has no folder dependencies.':'';
     statusEl.textContent=`Could not build graphic: ${err.message}.${extra}`;
   }finally{
@@ -2437,25 +2715,7 @@ async function build(){
   }
 }
 
-async function initialize(){
-  statusEl.className='status';
-  statusEl.textContent='Loading departments from the 2026 Budget Recommendations API…';
-  try{
-    const source=await resolveDataset(2026);
-    const rows=await fetchAllRows(source.id);
-    departments=collectDepartments(rows);
-    if(!departments.length) throw new Error('No departments could be identified in the 2026 appropriations dataset.');
-    populateDepartmentSelect();
-    await build();
-  }catch(err){
-    console.error(err);
-    statusEl.className='status error';
-    statusEl.textContent=`Could not load department list: ${err.message}`;
-  }
-}
-retryBtn.addEventListener('click',build);
-departmentSelect.addEventListener('change',()=>{
-  selectedDepartment=departments[Number(departmentSelect.value)]||null;
+function clearRenderedData(){
   lastData=null;
   lastLocalFundsData=null;
   lastWorkforceData=null;
@@ -2464,7 +2724,38 @@ departmentSelect.addEventListener('change',()=>{
   lastPersistentVacanciesData=null;
   lastLargestAppropriationsData=null;
   lastAppropriationChangesData=null;
+}
+async function loadDepartmentsForActiveCycle(){
+  statusEl.className='status';
+  statusEl.textContent=`Loading departments from the ${latestYearLabel()} appropriations API…`;
+  budgetCycleNote.textContent=activeCycle.pickerNote;
+  departmentSelect.disabled=true;
+  try{
+    const source=await resolveDataset(activeCycle.departmentSourceYear);
+    const rows=await fetchAllRows(source.id);
+    departments=collectDepartments(rows);
+    if(!departments.length) throw new Error(`No departments could be identified in the ${latestYearLabel()} appropriations dataset.`);
+    populateDepartmentSelect();
+    await build();
+  }catch(err){
+    console.error(err);
+    statusEl.className='status error';
+    statusEl.textContent=`Could not load department list: ${err.message}`;
+  }
+}
+async function initialize(){
+  await loadDepartmentsForActiveCycle();
+}
+retryBtn.addEventListener('click',build);
+departmentSelect.addEventListener('change',()=>{
+  selectedDepartment=departments[Number(departmentSelect.value)]||null;
+  clearRenderedData();
   build();
+});
+budgetCycleSelect.addEventListener('change',()=>{
+  activeCycle=BUDGET_CYCLES[budgetCycleSelect.value]||BUDGET_CYCLES['2026-recommendation'];
+  clearRenderedData();
+  loadDepartmentsForActiveCycle();
 });
 downloadBtn.addEventListener('click',()=>{
   const svg=document.getElementById('budgetSvg');
@@ -2492,7 +2783,7 @@ downloadLocalFundsBtn.addEventListener('click',()=>{
   const a=document.createElement('a');
   a.href=url;
   const slug=displayDepartmentName(selectedDepartment).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  a.download=`${slug}-local-funds-2022-2024.svg`;
+  a.download=`${slug}-local-funds-${LOCAL_FUNDS_YEARS[0]}-${LOCAL_FUNDS_YEARS.at(-1)}.svg`;
   a.click();
   URL.revokeObjectURL(url);
 });

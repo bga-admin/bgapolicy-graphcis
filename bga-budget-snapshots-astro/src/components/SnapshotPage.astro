@@ -1,0 +1,127 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {
+  deriveMetrics,
+  deriveSeo,
+  formatPostDate,
+  snapshotYear,
+  structurePostContent
+} from '../lib/transform.js';
+
+const { post } = Astro.props;
+const structured = structurePostContent(post.content || '');
+const metrics = deriveMetrics(post.content || '');
+const seo = deriveSeo(post, structured);
+const category = post.categories?.nodes?.[0]?.name || 'Research & Analysis';
+const year = snapshotYear(post);
+const author = post.author?.node;
+---
+
+<BaseLayout {...seo}>
+  <header class="site-header">
+    <div class="shell site-header__inner">
+      <a class="brand" href="https://www.bettergov.org/">Better Government Association</a>
+      <div class="product">BGA Policy · Budget Snapshots</div>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell">
+        <div class="hero__inner">
+          <p class="eyebrow">{category} · {year} Budget Snapshot</p>
+          <h1 set:html={post.title} />
+          <div class="meta">
+            {author?.name && <span>By <strong>{author.name}</strong></span>}
+            <span>{formatPostDate(post.date)}</span>
+          </div>
+          {structured.introHtml && (
+            <div class="hero__intro" set:html={structured.introHtml} />
+          )}
+        </div>
+      </div>
+    </section>
+
+    {metrics.length > 0 && (
+      <section class="metrics" aria-label="Budget snapshot key figures">
+        <div class="shell metrics__grid">
+          {metrics.map((metric) => (
+            <div class="metric">
+              <div class="metric__value">{metric.value}</div>
+              <div class="metric__label">{metric.label}</div>
+              <div class="metric__detail">{metric.detail}</div>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {structured.sections.length > 0 && (
+      <nav class="toc" aria-label="Table of contents">
+        <div class="shell toc__inner">
+          <div class="toc__label">On this page</div>
+          <div class="toc__links">
+            {structured.sections.map((section) => (
+              <a href={`#${section.id}`}>{section.title}</a>
+            ))}
+          </div>
+        </div>
+      </nav>
+    )}
+
+    {structured.sections.map((section) => (
+      <section class="section" id={section.id}>
+        <div class="shell section__layout">
+          <div class="section__num">{section.number} / {section.shortTitle}</div>
+          <div class="section__content">
+            <h2>{section.title}</h2>
+            <div class="section__body" set:html={section.html} />
+          </div>
+        </div>
+      </section>
+    ))}
+
+    {author?.name && (
+      <section class="author">
+        <div class="shell">
+          <div class="author__card">
+            {author.avatar?.url && <img src={author.avatar.url} alt={author.name} loading="lazy" />}
+            <div>
+              <p class="author__eyebrow">About the author</p>
+              <h3>{author.name}</h3>
+              {author.description && <p>{author.description}</p>}
+              {author.uri && (
+                <a class="author__link" href={new URL(author.uri, 'https://www.bettergov.org').toString()}>
+                  More by {author.name}
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <footer class="footer-note">
+      <div class="shell footer-note__inner">
+        <span>BGA Policy · Budget Snapshots</span>
+        {post.source === 'fallback' && (
+          <span class="dev-note">Development fallback data is being used.</span>
+        )}
+      </div>
+    </footer>
+  </main>
+
+  <script is:inline>
+    window.addEventListener('message', function (event) {
+      if (!event.data || !event.data['datawrapper-height']) return;
+      const iframes = document.querySelectorAll('iframe[src*="datawrapper.dwcdn.net"]');
+      for (const chartId in event.data['datawrapper-height']) {
+        for (const iframe of iframes) {
+          if (iframe.contentWindow === event.source) {
+            iframe.style.height = event.data['datawrapper-height'][chartId] + 'px';
+          }
+        }
+      }
+    });
+  </script>
+</BaseLayout>
