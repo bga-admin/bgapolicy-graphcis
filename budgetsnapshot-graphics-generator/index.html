@@ -225,6 +225,19 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   </div>
 </section>
 <main class="shell generator">
+  <section class="card" aria-labelledby="summaryTableTitle">
+    <header>
+      <div class="eyebrow">Budget snapshot</div>
+      <h2 id="summaryTableTitle">Department Budget Summary</h2>
+      <p class="sub">Appropriations and positions/FTEs, current comparison and recent rates of change</p>
+    </header>
+
+    <div id="summaryTableStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
+    <div id="summaryTable"></div>
+
+    <footer id="summaryTableFoot" class="foot">Source: City of Chicago budget APIs. Inflation-adjusted rate uses analyst-provided value-of-dollar factors in 2025 dollars.</footer>
+  </section>
+
   <section class="card" aria-labelledby="chartTitle">
     <header>
       <div class="eyebrow">Historical context</div>
@@ -250,19 +263,6 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
       <summary>Data &amp; API details</summary>
       <div id="details"></div>
     </details>
-  </section>
-
-  <section class="card" aria-labelledby="summaryTableTitle">
-    <header>
-      <div class="eyebrow">Budget snapshot</div>
-      <h2 id="summaryTableTitle">Department Budget Summary</h2>
-      <p class="sub">Appropriations and positions/FTEs, current comparison and recent rates of change</p>
-    </header>
-
-    <div id="summaryTableStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
-    <div id="summaryTable"></div>
-
-    <footer id="summaryTableFoot" class="foot">Source: City of Chicago budget APIs. Inflation-adjusted rate uses analyst-provided value-of-dollar factors in 2025 dollars.</footer>
   </section>
 
   <section class="card" aria-labelledby="localFundsTitle">
@@ -437,6 +437,18 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
     </details>
   </section>
 
+  <section class="card" aria-labelledby="actualSpendCategoriesTitle">
+    <header>
+      <div class="eyebrow">Actual spend</div>
+      <h2 id="actualSpendCategoriesTitle">2024 Actual Spend, Local Funds</h2>
+      <p class="sub">Placeholder for category-level budgeted spend and unspent local funds</p>
+    </header>
+
+    <div class="status warning">The embedded actuals file has department-level actuals and encumbrances, but not category-level local-fund actuals. This chart needs category-level 2024 budget, actuals and encumbrances before it can be built.</div>
+
+    <footer class="foot">Source: To be determined. Do not substitute 2024 appropriation accounts for actual spending categories.</footer>
+  </section>
+
   <section class="card" aria-labelledby="appropriationChangesTitle">
     <header>
       <div class="eyebrow">Appropriation changes</div>
@@ -459,18 +471,6 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
       <summary>Data &amp; API details</summary>
       <div id="appropriationChangesDetails"></div>
     </details>
-  </section>
-
-  <section class="card" aria-labelledby="actualSpendCategoriesTitle">
-    <header>
-      <div class="eyebrow">Actual spend</div>
-      <h2 id="actualSpendCategoriesTitle">2024 Actual Spend, Local Funds</h2>
-      <p class="sub">Placeholder for category-level budgeted spend and unspent local funds</p>
-    </header>
-
-    <div class="status warning">The embedded actuals file has department-level actuals and encumbrances, but not category-level local-fund actuals. This chart needs category-level 2024 budget, actuals and encumbrances before it can be built.</div>
-
-    <footer class="foot">Source: To be determined. Do not substitute 2024 appropriation accounts for actual spending categories.</footer>
   </section>
 </main>
 
