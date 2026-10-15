@@ -93,7 +93,6 @@ h1{margin:0;font-size:clamp(2.85rem,6vw,5.2rem);line-height:.98;letter-spacing:-
 .card + .card{margin-top:34px}
 .card h2{margin:0;max-width:780px;font-size:clamp(1.45rem,2.6vw,2rem);line-height:1.1;letter-spacing:-.025em;font-weight:700;text-wrap:balance}
 .card .eyebrow{margin-bottom:10px;color:var(--muted);font-size:.76rem;letter-spacing:.055em}
-.sub{font-size:.88rem;color:var(--muted);margin:12px 0 0;line-height:1.55}
 .status{margin:18px 0 12px;font-size:.82rem;color:var(--muted);line-height:1.5}
 .status.ready{display:none}
 .status.error{display:block;color:var(--negative);font-weight:600;background:#faf5f7;border-left:3px solid var(--negative);padding:10px 12px}
@@ -113,13 +112,17 @@ details{margin-top:20px;padding-top:18px;border-top:1px solid var(--border);font
 summary{cursor:pointer;color:var(--primary-dark);font-weight:700}
 .table-wrap{overflow:auto;margin-top:18px}
 table{width:100%;min-width:720px;border-collapse:collapse;font-variant-numeric:tabular-nums}
-th,td{padding:13px 11px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap;font-size:.87rem}
+th,td{padding:13px 11px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap;font-size:.94rem}
 th:first-child,td:first-child{text-align:left}
 td:first-child{font-family:var(--display);font-weight:700}
-th{background:#eef3f6;font-size:.68rem;font-weight:700;line-height:1.35;text-transform:uppercase;letter-spacing:.055em;color:var(--muted)}
+th{background:#eef3f6;font-size:.76rem;font-weight:700;line-height:1.35;text-transform:uppercase;letter-spacing:.055em;color:var(--muted)}
 a{color:var(--primary-dark);text-decoration-thickness:1px;text-underline-offset:3px}
 a:hover{color:#17374d}
 .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.graphic-marker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.graphic-marker p{margin:0;font-size:.82rem;line-height:1.5;overflow-wrap:anywhere;user-select:text}
+.graphic-marker .marker-label{flex-basis:100%;font-size:.72rem;color:var(--muted)}
+.graphic-marker .marker-feedback{font-size:.72rem;color:var(--muted)}
 button{border:1px solid var(--border);background:var(--surface);color:var(--primary-dark);font:600 .82rem/1.4 var(--sans);min-height:42px;padding:10px 14px;border-radius:4px;cursor:pointer}
 button:hover:not(:disabled){border-color:var(--primary);background:var(--sky-light)}
 #exportAllAstro{background:var(--primary-dark);border-color:var(--primary-dark);color:var(--surface)}
@@ -136,14 +139,14 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 /* Match the compact, striped budgeted workforce comparison table. */
 #summaryTable .table-wrap{margin-top:20px}
 .budget-summary{min-width:740px;table-layout:fixed;font-family:var(--sans)}
-.budget-summary th,.budget-summary td{padding:10px 12px;border-bottom:0;font-size:11px;line-height:1.4}
-.budget-summary thead th{background:var(--surface);color:var(--primary-dark);font-size:10px;letter-spacing:.04em;white-space:normal;vertical-align:bottom;border-bottom:1px solid var(--border)}
+.budget-summary th,.budget-summary td{padding:10px 12px;border-bottom:0;font-size:12.5px;line-height:1.4}
+.budget-summary thead th{background:var(--surface);color:var(--primary-dark);font-size:11.5px;letter-spacing:.04em;white-space:normal;vertical-align:bottom;border-bottom:1px solid var(--border)}
 .budget-summary thead th:first-child{width:16%}
 .budget-summary thead th:nth-child(2),.budget-summary thead th:nth-child(3){width:15%}
 .budget-summary thead th:nth-child(4){width:14%}
 .budget-summary thead th:nth-child(5){width:10%}
 .budget-summary thead th:nth-child(6),.budget-summary thead th:nth-child(7){width:15%}
-.budget-summary tbody th{background:transparent;color:var(--primary-dark);font:600 11px/1.4 var(--sans);letter-spacing:normal;text-transform:none;white-space:normal}
+.budget-summary tbody th{background:transparent;color:var(--primary-dark);font:600 12.5px/1.4 var(--sans);letter-spacing:normal;text-transform:none;white-space:normal}
 .budget-summary tbody td{color:var(--muted)}
 .budget-summary tbody tr:nth-child(even){background:#f7fafc}
 .budget-summary td.change-positive{color:var(--primary);font-weight:700}
@@ -227,22 +230,22 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 <main class="shell generator">
   <section class="card" aria-labelledby="summaryTableTitle">
     <header>
-      <div class="eyebrow">Budget snapshot</div>
+      <div class="eyebrow">Summary</div>
       <h2 id="summaryTableTitle">Department Budget Summary</h2>
-      <p class="sub">Appropriations and positions/FTEs, current comparison and recent rates of change</p>
     </header>
 
     <div id="summaryTableStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
-    <div id="summaryTable"></div>
+    <div id="summaryChart" class="chart-wrap"></div>
+    <div class="toolbar"><button id="downloadSummarySvg" type="button" hidden>Download SVG</button></div>
+    <details><summary>Data table</summary><div id="summaryTable"></div></details>
 
     <footer id="summaryTableFoot" class="foot">Source: City of Chicago budget APIs. Inflation-adjusted rate uses analyst-provided value-of-dollar factors in 2025 dollars.</footer>
   </section>
 
   <section class="card" aria-labelledby="chartTitle">
     <header>
-      <div class="eyebrow">Historical context</div>
+      <div class="eyebrow">Appropriations</div>
       <h2 id="chartTitle">Department Appropriation, Chicago City Budgets 2011–2026 (Proposed)</h2>
-      <p class="sub">Total budgeted appropriation, in millions · missing City API years are shown as gaps</p>
 
     </header>
 
@@ -265,11 +268,29 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
     </details>
   </section>
 
+  <section class="card" aria-labelledby="fringeTitle">
+    <header>
+      <div class="eyebrow">Estimated fringe</div>
+      <h2 id="fringeTitle">Departmental Budget with Estimated Fringe Cost, 2018–2026</h2>
+    </header>
+    <div id="fringeStatus" class="status" role="status" aria-live="polite">Waiting for department selection…</div>
+    <div id="fringeChart" class="chart-wrap">
+      <div id="fringeTooltip" class="tooltip" role="tooltip"></div>
+    </div>
+    <div class="legend" aria-hidden="true">
+      <span><i style="background:var(--primary)"></i>Departmental appropriations</span>
+      <span><i style="background:#4f8795"></i>Calculated full-time fringe</span>
+      <span><i style="background:var(--accent)"></i>Estimated part-time fringe</span>
+    </div>
+    <div class="toolbar"><button id="downloadFringeSvg" type="button" hidden>Download SVG</button></div>
+    <footer class="foot">Source: departmental fringe by year - master.csv. Total equals departmental appropriations plus calculated fringe for full-time positions and estimated fringe for part-time positions. Uses the supplied 2018–2026 CSV values for either budget cycle; absent department-years remain gaps. Historical names are matched by department number.</footer>
+    <details><summary>Data &amp; calculation details</summary><div id="fringeDetails"></div></details>
+  </section>
+
   <section class="card" aria-labelledby="localFundsTitle">
     <header>
       <div class="eyebrow">Local funds</div>
       <h2 id="localFundsTitle">Department Local Fund Actuals, 2022–2025</h2>
-      <p class="sub">Budget spent and unspent from local funds, in millions · complete budget years with retained actuals</p>
     </header>
 
     <div id="localFundsStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -295,9 +316,8 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 
   <section class="card" aria-labelledby="workforceTitle">
     <header>
-      <div class="eyebrow">Historical context</div>
+      <div class="eyebrow">Workforce</div>
       <h2 id="workforceTitle">Department Budgeted Workforce, 2011–2026 (Proposed)</h2>
-      <p class="sub">Budgeted positions and FTEs by annual, monthly, hourly, and FTE component · missing City API years are shown as gaps</p>
     </header>
 
     <div id="workforceStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -305,11 +325,8 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
       <div id="workforceTooltip" class="tooltip" role="tooltip"></div>
     </div>
     <div class="legend" aria-hidden="true">
-      <span><i style="background:#3e6f8c"></i>Annual positions</span>
-      <span><i style="background:#e9b84a"></i>Monthly positions</span>
-      <span><i style="background:#dce8ef"></i>Hourly positions</span>
-      <span><i style="background:#4f8795"></i>Monthly FTEs</span>
-      <span><i style="background:#8b6472"></i>Hourly FTEs</span>
+      <span><i style="background:#294f68"></i>Ordinance</span>
+      <span><i style="background:#a8adb2"></i>Proposed</span>
     </div>
 
     <div class="toolbar">
@@ -328,7 +345,6 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
     <header>
       <div class="eyebrow">Vacancies</div>
       <h2 id="vacanciesTitle">Department Vacancies, February–September 2025</h2>
-      <p class="sub">Filled positions, persistent vacancies and nonpersistent vacancies · retained monthly vacancy aggregates</p>
     </header>
 
     <div id="vacanciesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -357,7 +373,6 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
     <header>
       <div class="eyebrow">Persistent vacancies</div>
       <h2 id="persistentVacanciesTitle">Persistent Vacancies by Title, February–September 2025</h2>
-      <p class="sub">Positions vacant in every retained monthly snapshot, grouped by title</p>
     </header>
 
     <div id="persistentVacanciesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -379,9 +394,8 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 
   <section class="card" aria-labelledby="largestAppropriationsTitle">
     <header>
-      <div id="largestAppropriationsEyebrow" class="eyebrow">2026 proposed budget</div>
+      <div class="eyebrow">Largest appropriations</div>
       <h2 id="largestAppropriationsTitle">Top 10 Largest Department Appropriations, 2026 Proposed Chicago Budget</h2>
-      <p id="largestAppropriationsSub" class="sub">Largest appropriation accounts in the selected department's proposed 2026 budget</p>
     </header>
 
     <div id="largestAppropriationsStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -405,7 +419,6 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
     <header>
       <div class="eyebrow">Budget floor</div>
       <h2 id="budgetFloorTitle">Budget Floor Graphic Placeholder</h2>
-      <p class="sub">Manual-input placeholder for the future budget-floor graphic</p>
     </header>
 
     <div class="status warning">Budget-floor inputs and formula are not wired yet. This placeholder keeps the analysis order stable while we continue building the other graphics.</div>
@@ -415,9 +428,8 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
 
   <section class="card" aria-labelledby="positionChangesTitle">
     <header>
-      <div class="eyebrow">Budgeted workforce</div>
+      <div class="eyebrow">Workforce changes</div>
       <h2 id="positionChangesTitle">Net and Percent Position/FTE Changes, 2025 to 2026 (Proposed) Budgets</h2>
-      <p id="positionChangesSub" class="sub">Changed position/FTE titles from the 2025 ordinance to the 2026 proposed budget</p>
     </header>
 
     <div id="positionChangesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -441,7 +453,6 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
     <header>
       <div class="eyebrow">Actual spend</div>
       <h2 id="actualSpendCategoriesTitle">2024 Actual Spend, Local Funds</h2>
-      <p class="sub">Placeholder for category-level budgeted spend and unspent local funds</p>
     </header>
 
     <div class="status warning">The embedded actuals file has department-level actuals and encumbrances, but not category-level local-fund actuals. This chart needs category-level 2024 budget, actuals and encumbrances before it can be built.</div>
@@ -453,7 +464,6 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
     <header>
       <div class="eyebrow">Appropriation changes</div>
       <h2 id="appropriationChangesTitle">Net and Percent Appropriation Changes, 2025 to 2026 (Proposed) Budgets</h2>
-      <p id="appropriationChangesSub" class="sub">Changed appropriation accounts from the 2025 ordinance to the 2026 proposed budget</p>
     </header>
 
     <div id="appropriationChangesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -618,19 +628,19 @@ const largestAppropriationsChartEl=document.getElementById('largestAppropriation
 const largestAppropriationsTooltipEl=document.getElementById('largestAppropriationsTooltip');
 const largestAppropriationsDetailsEl=document.getElementById('largestAppropriationsDetails');
 const downloadLargestAppropriationsBtn=document.getElementById('downloadLargestAppropriationsSvg');
-const largestAppropriationsEyebrowEl=document.getElementById('largestAppropriationsEyebrow');
-const largestAppropriationsSubEl=document.getElementById('largestAppropriationsSub');
 const largestAppropriationsFootEl=document.getElementById('largestAppropriationsFoot');
 const appropriationChangesStatusEl=document.getElementById('appropriationChangesStatus');
 const appropriationChangesChartEl=document.getElementById('appropriationChangesChart');
 const appropriationChangesTooltipEl=document.getElementById('appropriationChangesTooltip');
 const appropriationChangesDetailsEl=document.getElementById('appropriationChangesDetails');
 const downloadAppropriationChangesBtn=document.getElementById('downloadAppropriationChangesSvg');
-const positionChangesSubEl=document.getElementById('positionChangesSub');
 const positionChangesFootEl=document.getElementById('positionChangesFoot');
-const appropriationChangesSubEl=document.getElementById('appropriationChangesSub');
 const appropriationChangesFootEl=document.getElementById('appropriationChangesFoot');
+let lastSummaryData=null;
+let derivedSummaryData=null;
+let summaryOverrides={};
 let lastData=null;
+let lastFringeData=null;
 let lastLocalFundsData=null;
 let lastWorkforceData=null;
 let lastPositionChangesData=null;
@@ -1024,6 +1034,116 @@ function vacancyAggregateRows(){
 }
 const LOCAL_ACTUALS_ROWS=localActualsRows();
 const VACANCY_AGGREGATE_ROWS=vacancyAggregateRows();
+// Embedded snapshot of departmental fringe by year - master.csv; no fetch is required.
+const DEPARTMENT_FRINGE_CSV="Year,Department,Department Number,Departmental Appropriations,Calculated Fringe (Full-time Positions),Estimated Fringe (Part-time positions)\n2018,MAYOR,1,\"$7,704,181\",\"$2,394,375\",$0\n2018,OIG,3,\"$8,889,857\",\"$3,004,443\",$0\n2018,OBM,5,\"$9,561,828\",\"$1,100,869\",$0\n2018,DOIT,6,\"$30,815,532\",\"$3,389,602\",$0\n2018,COUNCIL,15,\"$27,427,115\",\"$7,016,993\",$0\n2018,DCASE,23,\"$33,147,199\",\"$2,399,991\",\"$1,923\"\n2018,CLERK,25,\"$10,696,620\",\"$2,995,232\",$0\n2018,DOF,27,\"$85,682,124\",\"$16,589,694\",\"$504,372\"\n2018,TREASURER,28,\"$4,161,578\",\"$938,108\",$0\n2018,DOAH,30,\"$8,532,654\",\"$1,296,043\",$0\n2018,DOL,31,\"$38,716,977\",\"$12,204,352\",\"$112,418\"\n2018,DHR,33,\"$7,403,234\",\"$2,654,828\",$0\n2018,DPS,35,\"$8,908,659\",\"$3,188,435\",$0\n2018,FFM,38,\"$351,521,694\",\"$31,681,303\",$0\n2018,BOEC,39,\"$15,606,377\",\"$3,545,409\",$0\n2018,CDPH,41,\"$158,907,978\",\"$6,251,624\",\"$35,674\"\n2018,CCHR,45,\"$2,438,623\",\"$377,986\",$0\n2018,MOPD,48,\"$5,407,274\",\"$407,371\",$0\n2018,DFSS,50,\"$398,318,084\",\"$1,596,524\",$0\n2018,DPD,54,\"$189,268,495\",\"$5,389,981\",\"$7,347\"\n2018,POLICE BOARD,55,\"$473,519\",\"$62,343\",$0\n2018,CPD,57,\"$1,575,588,780\",\"$849,756,255\",\"$130,516\"\n2018,OEMC,58,\"$296,821,019\",\"$54,623,102\",\"$1,157,787\"\n2018,CFD,59,\"$642,620,615\",\"$368,911,712\",$0\n2018,COPA,60,\"$13,289,393\",\"$4,458,150\",$0\n2018,DOB,67,\"$37,417,249\",\"$7,420,626\",$0\n2018,BACP,70,\"$20,306,192\",\"$5,653,404\",\"$15,653\"\n2018,CACC,73,\"$6,479,324\",\"$2,038,199\",\"$59,590\"\n2018,LAC,77,\"$186,667\",\"$31,110\",$0\n2018,ETHICS,78,\"$833,803\",\"$251,934\",$0\n2018,DSS,81,\"$263,418,415\",\"$62,856,784\",\"$425,403\"\n2018,CDOT,84,\"$459,129,158\",\"$35,536,581\",\"$1,666,894\"\n2018,DOA,85,\"$823,090,246\",\"$43,028,012\",\"$2,514,040\"\n2018,DWM,88,\"$294,895,925\",\"$56,193,367\",\"$3,683,925\"\n2018,CPL,91,\"$77,453,977\",\"$22,811,897\",\"$575,602\"\n2019,MAYOR,1,\"9,024,863.00\",\"$2,792,723\",$0\n2019,OIG,3,9563464,\"$3,574,145\",$0\n2019,OBM,5,\"8,827,382.00\",1220822.994,$0\n2019,DOIT,6,\"32,169,541.00\",\"$3,865,892\",$0\n2019,COUNCIL,15,\"28,019,677.00\",\"$7,817,004\",$0\n2019,DOH,21,\"148,425,952.00\",\"$1,276,388\",$0\n2019,DCASE,23,\"36,327,399.00\",\"$2,659,921\",\"$2,018\"\n2019,CLERK,25,\"10,756,887.00\",\"$3,395,575\",$0\n2019,DOF,27,\"85,318,711.00\",\"$18,231,093\",\"$501,075\"\n2019,TREASURER,28,\"4,134,722.00\",\"$1,038,848\",$0\n2019,DOAH,30,\"8,412,662.00\",\"$1,436,275\",$0\n2019,DOL,31,\"40,306,777.00\",\"$13,699,854\",\"$116,459\"\n2019,DHR,33,\"7,546,282.00\",\"$2,920,795\",$0\n2019,DPS,35,\"9,422,624.00\",\"$3,679,676\",$0\n2019,FFM,38,\"396,771,258.00\",35499395.34,$0\n2019,BOEC,39,\"34,186,369.00\",\"$3,929,352\",$0\n2019,CDPH,41,\"177,264,833.00\",\"$7,037,180\",\"$40,460\"\n2019,CCHR,45,\"2,470,198.00\",\"$416,734\",$0\n2019,MOPD,48,\"5,840,085.00\",486487.2488,$0\n2019,DFSS,50,\"633,571,744.00\",\"$2,772,947\",$0\n2019,DPD,54,\"35,082,318.00\",\"$5,141,625\",$0\n2019,POLICE BOARD,55,465978,\"$69,138\",$0\n2019,CPD,57,\"1,656,002,057.00\",\"$879,632,785\",\"$137,892\"\n2019,OEMC,58,\"233,860,841.00\",60940376.4,\"$1,164,102\"\n2019,CFD,59,\"652,282,316.00\",\"$372,021,350\",$0\n2019,COPA,60,\"13,851,285.00\",\"$5,160,793\",$0\n2019,DOB,67,\"38,119,079.00\",\"$8,263,394\",$0\n2019,BACP,70,\"22,199,674.00\",\"$6,443,122\",\"$16,181\"\n2019,CACC,73,\"6,843,307.00\",\"$2,302,773\",\"$64,069\"\n2019,LAC,77,\"185,067.00\",\"$34,545\",$0\n2019,ETHICS,78,\"866,882.00\",\"$279,648\",$0\n2019,DSS,81,\"268,026,340.00\",\"$69,466,033\",\"$455,022\"\n2019,CDOT,84,\"543,060,487.00\",\"$40,586,178\",\"$1,520,134\"\n2019,DOA,85,\"911,289,787.00\",54944970.88,\"$1,276,699\"\n2019,DWM,88,\"310,450,401.00\",\"$63,629,188\",\"$3,882,658\"\n2019,CPL,91,\"71,420,108.00\",\"$26,385,428\",\"$655,366\"\n2020,MAYOR,1,\"11,803,914.00\",\"$3,956,871\",$0\n2020,OIG,3,\"9,807,374.00\",\"$4,034,905\",$0\n2020,OBM,5,\"7,408,590.00\",\"$1,301,590\",$0\n2020,COUNCIL,15,\"28,533,636.00\",\"$7,679,975\",$0\n2020,DOH,21,\"198,896,756.00\",\"$1,361,900\",$0\n2020,DCASE,23,\"43,697,506.00\",\"$2,871,414\",\"$2,016\"\n2020,CLERK,25,\"11,262,733.00\",\"$3,582,640\",$0\n2020,DOF,27,\"97,534,031.00\",\"$20,033,881\",\"$502,540\"\n2020,TREASURER,28,\"4,124,036.00\",\"$1,139,318\",$0\n2020,DOAH,30,\"8,259,831.00\",\"$1,538,629\",$0\n2020,DOL,31,\"41,365,309.00\",\"$14,627,438\",\"$99,834\"\n2020,DHR,33,\"7,365,140.00\",\"$3,092,843\",$0\n2020,DPS,35,\"9,132,947.00\",\"$3,861,109\",$0\n2020,AIS,38,\"435,799,345.00\",\"$43,106,741\",$0\n2020,BOEC,39,\"18,377,300.00\",\"$4,323,230\",$0\n2020,CDPH,41,\"221,654,005.00\",\"$8,439,685\",\"$40,424\"\n2020,CCHR,45,\"2,955,975.00\",\"$419,173\",$0\n2020,MOPD,48,\"7,632,109.00\",\"$532,896\",$0\n2020,DFSS,50,\"686,392,402.00\",\"$3,874,458\",$0\n2020,PSA,51,\"33,445,047.00\",\"$14,370,620\",$0\n2020,DPD,54,\"65,034,959.00\",\"$5,821,714\",$0\n2020,POLICE BOARD,55,\"1,101,910.00\",\"$75,849\",$0\n2020,CPD,57,\"1,762,078,349.00\",\"$1,033,186,450\",\"$138,390\"\n2020,OEMC,58,\"204,747,050.00\",\"$61,793,737\",\"$1,030,331\"\n2020,CFD,59,\"674,228,297.00\",\"$492,626,085\",$0\n2020,COPA,60,\"13,753,178.00\",\"$5,677,812\",$0\n2020,DOB,67,\"37,127,233.00\",\"$8,809,283\",$0\n2020,BACP,70,\"28,541,142.00\",\"$7,075,206\",\"$16,520\"\n2020,CACC,73,\"7,006,449.00\",\"$2,568,723\",\"$64,074\"\n2020,LAC,77,\"188,346.00\",\"$38,074\",$0\n2020,ETHICS,78,\"873,629.00\",\"$306,246\",$0\n2020,DSS,81,\"273,635,333.00\",\"$76,487,981\",\"$344,092\"\n2020,CDOT,84,\"467,971,706.00\",\"$45,054,015\",\"$1,335,795\"\n2020,DOA,85,\"871,219,092.00\",\"$66,897,955\",\"$1,504,538\"\n2020,DWM,88,\"315,071,281.00\",\"$67,879,561\",\"$3,710,501\"\n2020,CPL,91,\"84,521,915.00\",\"$31,360,938\",\"$912,982\"\n2021,MAYOR,1,\"$11,331,422\",\"$4,123,557\",$0\n2021,OIG,3,\"$10,962,647\",\"$4,315,135\",$0\n2021,OBM,5,\"$127,008,429\",\"$1,316,090\",$0\n2021,COUNCIL,15,\"$28,519,751\",\"$8,474,762\",$0\n2021,DOH,21,\"$190,769,087\",\"$1,302,167\",$0\n2021,DCASE,23,\"$25,510,269\",\"$2,729,528\",\"$2,139\"\n2021,CLERK,25,\"$10,519,042\",\"$3,732,163\",$0\n2021,DOF,27,\"$84,617,522\",\"$21,056,091\",\"$536,851\"\n2021,TREASURER,28,\"$4,040,902\",\"$1,261,938\",$0\n2021,DOAH,30,\"$7,766,362\",\"$1,622,138\",$0\n2021,DOL,31,\"$40,560,261\",\"$15,276,284\",\"$98,569\"\n2021,DHR,33,\"$6,810,130\",\"$3,146,843\",$0\n2021,DPS,35,\"$8,470,855\",\"$3,911,837\",$0\n2021,AIS,38,\"$441,494,205\",\"$44,452,167\",$0\n2021,BOEC,39,\"$19,175,482\",\"$4,804,508\",$0\n2021,CDPH,41,\"$518,606,427\",\"$9,285,853\",\"$40,813\"\n2021,CCHR,45,\"$2,796,074\",\"$464,590\",$0\n2021,MOPD,48,\"$7,760,748\",\"$630,042\",$0\n2021,DFSS,50,\"$780,489,814\",\"$3,965,000\",$0\n2021,PSA,51,\"$135,591,779\",\"$13,490,346\",$0\n2021,DPD,54,\"$97,532,008\",\"$6,253,955\",$0\n2021,POLICE BOARD,55,\"$564,945\",\"$83,606\",$0\n2021,CPD,57,\"$1,698,735,503\",\"$1,067,493,526\",\"$136,637\"\n2021,OEMC,58,\"$133,947,766\",\"$33,878,921\",\"$1,106,775\"\n2021,CFD,59,\"$738,357,735\",\"$489,266,471\",$0\n2021,COPA,60,\"$13,314,826\",\"$5,852,544\",$0\n2021,DOB,67,\"$33,404,387\",\"$8,942,748\",$0\n2021,BACP,70,\"$27,352,831\",\"$7,114,205\",\"$16,310\"\n2021,CACC,73,\"$7,022,025\",\"$2,778,601\",\"$59,701\"\n2021,LAC,77,\"$191,115\",\"$42,235\",$0\n2021,ETHICS,78,\"$869,535\",\"$339,167\",$0\n2021,DSS,81,\"$283,104,001\",\"$83,751,546\",\"$343,974\"\n2021,CDOT,84,\"$770,356,074\",\"$48,946,578\",\"$1,341,769\"\n2021,DOA,85,\"$1,141,154,450\",\"$72,466,397\",\"$1,527,037\"\n2021,DWM,88,\"$321,523,152\",\"$72,560,040\",\"$3,729,990\"\n2021,CPL,91,\"$110,971,841\",\"$34,841,113\",\"$923,674\"\n2022,MAYOR,1,\"$12,009,266\",\"$6,275,498\",$0\n2022,OIG,3,\"$14,999,561\",\"$6,814,801\",$0\n2022,OBM,5,\"$1,645,234,288\",\"$2,216,451\",$0\n2022,COUNCIL,15,\"$34,607,399\",\"$11,903,266\",$0\n2022,DOH,21,\"$380,117,919\",\"$1,603,934\",$0\n2022,DCASE,23,\"$71,233,120\",\"$4,565,495\",\"$2,564\"\n2022,CLERK,25,\"$11,872,734\",\"$5,333,882\",$0\n2022,DOF,27,\"$96,175,527\",\"$33,722,942\",\"$217,565\"\n2022,TREASURER,28,\"$4,806,567\",\"$2,088,330\",$0\n2022,DOAH,30,\"$8,233,681\",\"$2,350,347\",$0\n2022,DOL,31,\"$43,224,244\",\"$22,253,739\",\"$118,570\"\n2022,DHR,33,\"$7,811,507\",\"$4,925,241\",$0\n2022,DPS,35,\"$10,284,041\",\"$6,240,526\",$0\n2022,AIS,38,\"$514,125,731\",\"$63,959,672\",$0\n2022,BOEC,39,\"$25,828,604\",\"$6,935,730\",$0\n2022,CDPH,41,\"$1,001,647,288\",\"$15,144,165\",\"$50,760\"\n2022,CCHR,45,\"$2,949,142\",\"$656,963\",$0\n2022,MOPD,48,\"$7,877,273\",\"$1,297,944\",$0\n2022,DFSS,50,\"$910,616,641\",\"$6,257,173\",$0\n2022,PSA,51,\"$172,894,734\",\"$19,233,103\",$0\n2022,DPD,54,\"$162,618,863\",\"$9,576,275\",$0\n2022,POLICE BOARD,55,\"$579,608\",\"$118,588\",$0\n2022,CPD,57,\"$1,899,239,537\",\"$1,121,091,115\",\"$170,672\"\n2022,OEMC,58,\"$121,287,347\",\"$48,679,471\",\"$672,854\"\n2022,CFD,59,\"$779,018,476\",\"$528,838,598\",$0\n2022,COPA,60,\"$14,728,193\",\"$8,876,392\",$0\n2022,CCPSA,62,\"$3,433,907\",\"$820,868\",$0\n2022,DOB,67,\"$34,875,735\",\"$13,238,533\",$0\n2022,BACP,70,\"$76,259,143\",\"$10,651,916\",\"$23,544\"\n2022,CACC,73,\"$7,173,854\",\"$4,091,711\",\"$72,936\"\n2022,LAC,77,\"$197,804\",\"$60,039\",$0\n2022,ETHICS,78,\"$919,914\",\"$482,221\",$0\n2022,DSS,81,\"$308,021,905\",\"$118,956,441\",\"$491,375\"\n2022,CDOT,84,\"$1,276,497,782\",\"$75,058,277\",\"$2,000,710\"\n2022,DOA,85,\"$1,151,260,371\",\"$107,927,625\",\"$1,851,133\"\n2022,DWM,88,\"$346,810,100\",\"$100,961,753\",\"$4,588,141\"\n2022,CPL,91,\"$129,622,327\",\"$49,216,733\",\"$1,151,293\"\n2023,MAYOR,1,\"$15,285,353\",\"$6,491,358\",$0\n2023,OIG,3,\"$13,036,466\",\"$7,280,691\",$0\n2023,OBM,5,\"$246,578,693\",\"$2,296,294\",$0\n2023,COUNCIL,15,\"$35,556,215\",\"$11,580,446\",$0\n2023,DOH,21,\"$332,094,168\",\"$2,267,047\",$0\n2023,DCASE,23,\"$71,399,885\",\"$4,659,899\",\"$2,786\"\n2023,CLERK,25,\"$12,319,291\",\"$5,227,063\",$0\n2023,DOF,27,\"$99,227,998\",\"$33,549,984\",\"$237,522\"\n2023,TREASURER,28,\"$5,712,960\",\"$2,293,555\",$0\n2023,DOAH,30,\"$8,447,480\",\"$2,303,062\",$0\n2023,DOL,31,\"$45,641,696\",\"$22,044,727\",\"$132,249\"\n2023,DHR,33,\"$12,051,198\",\"$6,848,634\",$0\n2023,DPS,35,\"$12,560,485\",\"$7,754,695\",$0\n2023,FFM,38,\"$559,915,375\",\"$70,027,864\",$0\n2023,BOEC,39,\"$56,602,820\",\"$6,791,581\",$0\n2023,CDPH,41,\"$972,398,008\",\"$15,365,250\",\"$56,387\"\n2023,CCHR,45,\"$3,169,003\",\"$703,328\",$0\n2023,MOPD,48,\"$9,844,715\",\"$1,447,937\",$0\n2023,DFSS,50,\"$926,780,352\",\"$6,554,241\",$0\n2023,PSA,51,\"$180,016,152\",\"$19,716,332\",$0\n2023,DPD,54,\"$208,372,201\",\"$9,953,039\",$0\n2023,POLICE BOARD,55,\"$588,184\",\"$116,939\",$0\n2023,CPD,57,\"$1,943,242,055\",\"$1,210,840,488\",\"$188,729\"\n2023,OEMC,58,\"$109,129,306\",\"$48,395,767\",\"$730,982\"\n2023,CFD,59,\"$771,041,777\",\"$572,221,047\",$0\n2023,COPA,60,\"$15,036,021\",\"$8,943,253\",$0\n2023,CCPSA,62,\"$3,184,119\",\"$1,410,001\",$0\n2023,DOB,67,\"$38,606,461\",\"$13,847,822\",$0\n2023,BACP,70,\"$86,469,596\",\"$10,961,556\",\"$28,988\"\n2023,ENVIRONMENT,72,\"$676,942\",\"$586,566\",$0\n2023,CACC,73,\"$7,025,418\",\"$4,327,669\",\"$45,480\"\n2023,LAC,77,\"$198,042\",\"$59,060\",$0\n2023,ETHICS,78,\"$916,559\",\"$474,732\",$0\n2023,DSS,81,\"$311,515,608\",\"$115,926,635\",\"$729,396\"\n2023,CDOT,84,\"$1,399,244,996\",\"$73,584,994\",\"$2,669,577\"\n2023,DOA,85,\"$1,201,844,333\",\"$108,796,901\",\"$2,042,873\"\n2023,DWM,88,\"$384,350,460\",\"$98,846,098\",\"$8,328,155\"\n2023,CPL,91,\"$113,371,472\",\"$48,845,479\",\"$1,264,309\"\n2024,MAYOR,1,\"$21,057,012\",\"$6,657,038\",$0\n2024,OIG,3,\"$14,216,049\",\"$7,016,709\",$0\n2024,OBM,5,\"$31,183,034\",\"$2,465,983\",$0\n2024,DOIT,6,\"$80,019,736\",\"$11,171,683\",$0\n2024,COUNCIL,15,\"$36,785,846\",\"$13,535,726\",$0\n2024,DOH,21,\"$279,843,675\",\"$2,188,292\",$0\n2024,DCASE,23,\"$87,364,393\",\"$4,537,221\",\"$3,311\"\n2024,CLERK,25,\"$15,341,039\",\"$5,125,649\",$0\n2024,DOF,27,\"$104,908,871\",\"$33,674,992\",\"$263,559\"\n2024,TREASURER,28,\"$6,272,699\",\"$2,281,183\",$0\n2024,DOAH,30,\"$8,769,092\",\"$2,233,707\",$0\n2024,DOL,31,\"$46,229,759\",\"$22,874,468\",\"$144,404\"\n2024,DHR,33,\"$13,792,309\",\"$7,162,291\",$0\n2024,DPS,35,\"$14,605,398\",\"$7,718,588\",$0\n2024,FFM,38,\"$530,639,879\",\"$53,983,544\",$0\n2024,BOEC,39,\"$34,482,421\",\"$6,585,891\",$0\n2024,CDPH,41,\"$902,026,766\",\"$18,858,961\",\"$60,157\"\n2024,CCHR,45,\"$3,330,423\",\"$687,749\",$0\n2024,MOPD,48,\"$16,284,323\",\"$1,510,259\",$0\n2024,DFSS,50,\"$915,856,073\",\"$7,378,896\",$0\n2024,PSA,51,\"$182,990,109\",\"$20,309,234\",$0\n2024,DPD,54,\"$202,163,654\",\"$10,399,166\",$0\n2024,POLICE BOARD,55,\"$601,188\",\"$113,018\",$0\n2024,CPD,57,\"$2,011,524,627\",\"$1,281,466,589\",\"$443,891\"\n2024,OEMC,58,\"$110,154,371\",\"$47,280,376\",\"$851,481\"\n2024,CFD,59,\"$784,765,013\",\"$585,454,245\",$0\n2024,COPA,60,\"$16,756,984\",\"$8,869,958\",$0\n2024,CCPSA,62,\"$4,003,410\",\"$1,654,109\",$0\n2024,DOB,67,\"$40,142,876\",\"$15,867,677\",$0\n2024,BACP,70,\"$82,620,445\",\"$11,085,025\",\"$30,926\"\n2024,ENVIRONMENT,72,\"$1,801,802\",\"$796,856\",$0\n2024,CACC,73,\"$7,698,109\",\"$4,181,299\",\"$53,094\"\n2024,LAC,77,\"$206,653\",\"$57,750\",$0\n2024,ETHICS,78,\"$1,019,825\",\"$465,905\",$0\n2024,DSS,81,\"$350,228,010\",\"$111,858,053\",\"$670,520\"\n2024,CDOT,84,\"$1,484,552,843\",\"$72,249,325\",\"$3,761,667\"\n2024,DOA,85,\"$1,423,824,759\",\"$112,317,319\",\"$2,457,177\"\n2024,DWM,88,\"$397,830,838\",\"$96,590,844\",\"$9,376,919\"\n2024,CPL,91,\"$116,976,333\",\"$47,278,389\",\"$1,422,603\"\n2025,MAYOR,1,\"$19,646,654\",\"$6,281,872\",$0\n2025,OIG,3,\"$14,216,198\",\"$7,012,734\",$0\n2025,OBM,5,\"$18,568,096\",\"$2,465,702\",$0\n2025,DOIT,6,\"$82,083,894\",\"$8,244,478\",$0\n2025,COUNCIL,15,\"$36,805,986\",\"$14,004,773\",$0\n2025,DOH,21,\"$248,512,603\",\"$2,528,221\",$0\n2025,DCASE,23,\"$72,961,225\",\"$4,640,330\",\"$3,245\"\n2025,CLERK,25,\"$15,093,753\",\"$5,250,622\",$0\n2025,DOF,27,\"$112,325,541\",\"$33,366,027\",\"$261,033\"\n2025,TREASURER,28,\"$6,539,097\",\"$2,447,192\",\"$16,291\"\n2025,DOAH,30,\"$8,560,776\",\"$2,227,014\",$0\n2025,DOL,31,\"$45,918,684\",\"$22,847,881\",\"$79,867\"\n2025,DHR,33,\"$13,367,100\",\"$6,679,768\",$0\n2025,DPS,35,\"$13,905,122\",\"$7,573,621\",$0\n2025,FFM,38,\"$557,363,694\",\"$54,215,607\",$0\n2025,BOEC,39,\"$28,507,734\",\"$6,744,329\",$0\n2025,CDPH,41,\"$689,641,355\",\"$19,901,900\",\"$58,966\"\n2025,CCHR,45,\"$2,781,810\",\"$762,178\",$0\n2025,MOPD,48,\"$14,833,880\",\"$1,551,328\",$0\n2025,DFSS,50,\"$937,819,585\",\"$7,221,314\",$0\n2025,PSA,51,\"$152,138,585\",\"$20,639,326\",$0\n2025,DPD,54,\"$132,499,758\",\"$10,464,036\",$0\n2025,POLICE BOARD,55,\"$509,970\",\"$116,005\",$0\n2025,CPD,57,\"$2,097,040,517\",\"$1,436,586,827\",\"$435,107\"\n2025,OEMC,58,\"$95,101,008\",\"$48,835,665\",\"$765,054\"\n2025,CFD,59,\"$760,668,006\",\"$583,934,274\",$0\n2025,COPA,60,\"$15,089,632\",\"$8,926,639\",$0\n2025,CCPSA,62,\"$3,986,182\",\"$1,637,265\",$0\n2025,DOB,67,\"$39,704,856\",\"$15,696,770\",$0\n2025,BACP,70,\"$50,132,350\",\"$10,278,773\",\"$30,314\"\n2025,ENVIRONMENT,72,\"$2,399,239\",\"$814,551\",$0\n2025,CACC,73,\"$7,519,976\",\"$4,098,078\",\"$47,124\"\n2025,LAC,77,\"$206,624\",\"$59,061\",$0\n2025,ETHICS,78,\"$985,480\",\"$474,862\",$0\n2025,DSS,81,\"$352,858,177\",\"$113,076,018\",\"$608,875\"\n2025,CDOT,84,\"$2,039,303,751\",\"$74,873,512\",\"$3,446,173\"\n2025,DOA,85,\"$1,547,505,037\",\"$121,170,862\",\"$2,466,749\"\n2025,DWM,88,\"$417,185,283\",\"$100,169,882\",\"$9,394,701\"\n2025,CPL,91,\"$122,105,043\",\"$47,254,430\",\"$1,206,178\"\n2026,MAYOR,1,\"$16,419,712\",\"$7,567,056.41\",$0.00\n2026,OIG,3,\"$14,297,022\",\"$8,054,982.53\",$0.00\n2026,OBM,5,\"$38,552,702\",\"$2,909,638.28\",$0.00\n2026,DOIT,6,\"$76,383,040\",\"$9,684,264.08\",$0.00\n2026,COUNCIL,15,\"$37,764,468\",\"$16,550,358.73\",$0.00\n2026,DOH,21,\"$173,252,026\",\"$3,846,621.78\",$0.00\n2026,DCASE,23,\"$62,003,597\",\"$5,457,404.21\",$0.00\n2026,CLERK,25,\"$15,214,652\",\"$6,183,761.37\",$0.00\n2026,DOF,27,\"$127,818,882\",\"$38,391,598.85\",\"$271,810.20\"\n2026,TREASURER,28,\"$6,504,251\",\"$2,748,392.20\",$0.00\n2026,DOAH,30,\"$8,389,224\",\"$2,619,966.70\",$0.00\n2026,DOL,31,\"$47,954,637\",\"$27,646,348.12\",\"$82,339.48\"\n2026,DHR,33,\"$12,957,553\",\"$7,724,946.59\",$0.00\n2026,DPS,35,\"$13,923,365\",\"$8,620,395.80\",$0.00\n2026,FFM,38,\"$503,454,074\",\"$63,601,304.47\",$0.00\n2026,BOEC,39,\"$27,867,404\",\"$7,939,161.22\",$0.00\n2026,CDPH,41,\"$335,049,660\",\"$23,996,259.11\",\"$56,869.07\"\n2026,CCHR,45,\"$2,773,200\",\"$966,724.71\",$0.00\n2026,MOPD,48,\"$9,679,159\",\"$1,828,908.71\",$0.00\n2026,DFSS,50,\"$653,365,973\",\"$6,506,301.69\",$0.00\n2026,PSA,51,\"$135,631,676\",\"$23,334,933.24\",$0.00\n2026,DPD,54,\"$146,482,815\",\"$12,311,522.05\",$0.00\n2026,POLICE BOARD,55,\"$498,200\",\"$136,502.83\",$0.00\n2026,CPD,57,\"$2,109,811,600\",\"$1,594,968,952.33\",\"$448,575.73\"\n2026,OEMC,58,\"$99,931,120\",\"$57,872,147.15\",\"$802,248.50\"\n2026,CFD,59,\"$901,681,972\",\"$649,269,169.00\",$0.00\n2026,COPA,60,\"$15,781,027\",\"$10,240,954.30\",$0.00\n2026,CCPSA,62,\"$4,026,765\",\"$1,999,627.53\",$0.00\n2026,DOB,67,\"$39,368,146\",\"$18,428,701.79\",$0.00\n2026,BACP,70,\"$36,783,162\",\"$13,446,655.93\",\"$29,919.35\"\n2026,ENVIRONMENT,72,\"$52,458,895\",\"$4,236,107.17\",$0.00\n2026,CACC,73,\"$8,177,388\",\"$5,364,214.15\",\"$48,582.32\"\n2026,LAC,77,\"$209,988\",\"$69,298.54\",$0.00\n2026,ETHICS,78,\"$925,597\",\"$551,717.62\",$0.00\n2026,DSS,81,\"$349,888,561\",\"$131,713,550.20\",\"$570,540.09\"\n2026,CDOT,84,\"$1,837,522,563\",\"$81,613,384.25\",\"$3,738,169.47\"\n2026,DOA,85,\"$1,666,093,529\",\"$146,312,803.83\",\"$2,640,504.49\"\n2026,DWM,88,\"$772,719,058\",\"$117,310,190.09\",\"$10,200,681.06\"\n2026,CPL,91,\"$116,016,346\",\"$55,796,957.24\",\"$1,281,549.25\"";
+function fringeRowsFromCsv(text){
+  const [headers,...records]=parseCsv(text);
+  const columns=['Year','Department','Department Number','Departmental Appropriations','Calculated Fringe (Full-time Positions)','Estimated Fringe (Part-time positions)'].map(name=>headers.indexOf(name));
+  if(columns.some(index=>index<0))throw new Error('Fringe CSV is missing a required column.');
+  return records.filter(row=>row.some(value=>String(value).trim())).map(row=>{
+    const [year,name,code,appropriations,fullTimeFringe,partTimeFringe]=columns.map(index=>row[index]);
+    const moneyValue=value=>String(value??'').trim()===''?null:numberValue(value);
+    const parsed={year:Number(year),department:name,code:parseDepartmentCode(code),appropriations:moneyValue(appropriations),fullTimeFringe:moneyValue(fullTimeFringe),partTimeFringe:moneyValue(partTimeFringe)};
+    parsed.available=[parsed.appropriations,parsed.fullTimeFringe,parsed.partTimeFringe].every(value=>Number.isFinite(value)&&value>=0);
+    parsed.total=parsed.available?parsed.appropriations+parsed.fullTimeFringe+parsed.partTimeFringe:null;
+    return parsed;
+  });
+}
+const FRINGE_ROWS=fringeRowsFromCsv(DEPARTMENT_FRINGE_CSV);
+const FRINGE_YEARS=Array.from({length:9},(_,index)=>2018+index);
+const FRINGE_COMPONENTS=[
+  {key:'appropriations',label:'Departmental appropriations',color:COLORS.primary},
+  {key:'fullTimeFringe',label:'Calculated full-time fringe',color:'#4f8795'},
+  {key:'partTimeFringe',label:'Estimated part-time fringe',color:COLORS.accent}
+];
+function includeFringeDepartments(current){
+  const merged=[...current];
+  const codes=new Set(merged.map(department=>parseDepartmentCode(department.code)));
+  for(const row of FRINGE_ROWS){
+    if(!row.code||codes.has(row.code))continue;
+    merged.push({key:'code:'+row.code,code:row.code,name:row.department});
+    codes.add(row.code);
+  }
+  return merged.sort((a,b)=>Number(a.code)-Number(b.code));
+}
+function fringeForDepartment(department){
+  const code=parseDepartmentCode(department?.code);
+  return FRINGE_YEARS.map(year=>{
+    const matches=FRINGE_ROWS.filter(row=>row.code===code&&row.year===year);
+    if(!matches.length)return {year,available:false,reason:'No row in the supplied fringe CSV.'};
+    if(matches.length!==1)throw new Error(`Multiple fringe rows for department ${code} in ${year}.`);
+    const row=structuredClone(matches[0]);
+    if(!row.available)row.reason='A fringe CSV amount is missing or invalid.';
+    return row;
+  });
+}
+function formatFringeTooltip(row){
+  if(!row.available)return `<div class="yr">${row.year}</div><div class="amt" style="font-size:16px">No CSV value</div><div class="agency">${escapeHtml(row.reason||'Missing value')}</div>`;
+  return `<div class="yr">${row.year}${row.manualEntry?' · Manual entry':''}</div><div class="amt">${moneyM(row.total)}</div><div class="agency">Departmental budget with estimated fringe: ${money(row.total)}<br>${FRINGE_COMPONENTS.map(item=>`${escapeHtml(item.label)}: ${money(row[item.key])}`).join('<br>')}</div>`;
+}
+function renderFringeChart(data){
+  const chart=document.getElementById('fringeChart'),tooltip=document.getElementById('fringeTooltip');
+  chart.querySelector('svg')?.remove();tooltip.classList.remove('show');
+  const W=Math.max(320,Math.round(chart.getBoundingClientRect().width||700)),H=W<520?330:305;
+  const M={top:38,right:20,bottom:48,left:W<520?50:62};
+  const available=data.filter(row=>row.available);
+  const max=niceMax(Math.max(0,...available.map(row=>row.total)));
+  const height=H-M.top-M.bottom,baseline=H-M.bottom;
+  const y=value=>baseline-value/max*height;
+  const step=(W-M.left-M.right)/data.length,barWidth=Math.min(48,step*.6);
+  const svg=svgEl('svg',{id:'fringeSvg',viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'fringeSvgTitle fringeSvgDesc'});
+  svg.append(svgEl('title',{id:'fringeSvgTitle'},`${displayDepartmentName(selectedDepartment)} departmental budget with estimated fringe cost, 2018–2026`));
+  svg.append(svgEl('desc',{id:'fringeSvgDesc'},'Departmental appropriations plus calculated full-time fringe and estimated part-time fringe from the supplied CSV. Missing years remain gaps.'));
+  for(let index=0;index<5;index++){
+    const value=max*index/4,yy=y(value);
+    svg.append(svgEl('line',{x1:M.left,x2:W-M.right,y1:yy,y2:yy,stroke:COLORS.border}));
+    svg.append(svgEl('text',{x:M.left-9,y:yy+4,'text-anchor':'end',fill:COLORS.muted,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10'},axisMoney(value)));
+  }
+  data.forEach((row,index)=>{
+    const cx=M.left+step*(index+.5);
+    let cumulative=0;
+    if(row.available){
+      for(const component of FRINGE_COMPONENTS){
+        const next=cumulative+row[component.key];
+        svg.append(svgEl('rect',{x:cx-barWidth/2,y:y(next),width:barWidth,height:Math.max(0,y(cumulative)-y(next)),fill:component.color}));
+        cumulative=next;
+      }
+      if(W>=520||index===data.length-1)svg.append(svgEl('text',{x:cx,y:y(row.total)-10,'text-anchor':'middle',fill:COLORS.primary,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700'},row.total>=1e9?'$'+(row.total/1e9).toFixed(2)+'B':moneyM(row.total)));
+    }else{
+      svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:baseline-12,y2:baseline-4,stroke:COLORS.muted}));
+      svg.append(svgEl('line',{x1:cx-4,x2:cx+4,y1:baseline-4,y2:baseline-12,stroke:COLORS.muted}));
+    }
+    const hit=svgEl('rect',{x:cx-step/2,y:M.top,width:step,height:height,'data-year':row.year,fill:'transparent',tabindex:'0'});
+    freezeTooltip(hit,formatFringeTooltip(row));
+    const show=()=>{
+      tooltip.innerHTML=formatFringeTooltip(row);
+      tooltip.style.left=`${Math.max(88,Math.min(W-88,cx))}px`;
+      tooltip.style.top=`${Math.max(65,row.available?y(row.total):baseline-20)}px`;
+      tooltip.classList.add('show');
+    };
+    hit.addEventListener('mouseenter',show);hit.addEventListener('focus',show);hit.addEventListener('click',show);
+    hit.addEventListener('mouseleave',()=>tooltip.classList.remove('show'));hit.addEventListener('blur',()=>tooltip.classList.remove('show'));
+    svg.append(hit);
+    svg.append(svgEl('text',{x:cx,y:H-17,'text-anchor':'middle',fill:COLORS.muted,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':W<520?'9':'10'},String(row.year)));
+  });
+  chart.insertBefore(svg,tooltip);
+  document.getElementById('downloadFringeSvg').hidden=!available.length;
+}
+function renderFringeDetails(data){
+  document.getElementById('fringeDetails').innerHTML=`<div class="table-wrap"><table><thead><tr><th>Year</th><th>Department in CSV</th><th>Status</th><th>Appropriations</th><th>Full-time fringe</th><th>Part-time fringe</th><th>Budget with fringe</th></tr></thead><tbody>${data.map(row=>`<tr><td>${row.year}</td><td>${escapeHtml(row.department||'—')}</td><td>${row.available?row.manualEntry?'Manual entry':'CSV value':'Missing'}</td>${['appropriations','fullTimeFringe','partTimeFringe','total'].map(key=>`<td>${row.available?money(row[key]):'—'}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+function buildFringe(){
+  const status=document.getElementById('fringeStatus');
+  document.getElementById('fringeTitle').textContent=`${displayDepartmentName(selectedDepartment)} Departmental Budget with Estimated Fringe Cost, 2018–2026`;
+  try{
+    lastFringeData=fringeForDepartment(selectedDepartment);
+    renderFringeChart(lastFringeData);renderFringeDetails(lastFringeData);
+    const missing=lastFringeData.filter(row=>!row.available);
+    status.className=missing.length?'status warning':'status ready';
+    status.textContent=missing.length?`No CSV value for ${missing.map(row=>row.year).join(', ')}. These years remain gaps and can be filled in the editor.`:'';
+  }catch(error){lastFringeData=null;status.className='status error';status.textContent=error.message}
+}
+
 function localActualsForDepartment(department){
   if(!department) return null;
   const byCode=LOCAL_ACTUALS_ROWS.find(row=>department.code&&row.code===String(Number(department.code)));
@@ -1051,7 +1171,7 @@ function departmentMatch(row,department){
 
   // COPA's historical predecessor was IPRA. This alias must work even in years where
   // a usable department-code field is absent.
-  if(department.code==='60' && AGENCY_ALIASES.some(alias=>normalizedRowName===normalize(alias) || normalizedRowName.includes(normalize(alias)))){
+  if(department.code==='60' && (rowCode==='56' || ['IPRA','COPA'].includes(normalizedRowName) || AGENCY_ALIASES.some(alias=>normalizedRowName===normalize(alias) || normalizedRowName.includes(normalize(alias))))){
     return {matched:true,by:'IPRA/COPA historical alias'};
   }
 
@@ -1374,7 +1494,8 @@ async function loadAppropriationChangeYear(year,department){
   for(const item of matchedRows){
     const code=appropriationAccountCode(item.row);
     const label=appropriationAccountLabel(item.row);
-    const key=JSON.stringify([code,normalize(label)]);
+    // Account descriptions change spelling and formatting between budgets.
+    const key=JSON.stringify(code?['code',code]:['label',normalize(label)]);
     if(!groups.has(key)){
       groups.set(key,{key,code,label,amount:0,rowCount:0});
     }
@@ -1554,7 +1675,7 @@ function emptyWorkforceComponents(){
   return {annualPositions:0,monthlyPositions:0,hourlyPositions:0,monthlyFtes:0,hourlyFtes:0};
 }
 function positionContribution(row){
-  const totalUnits=numberValue(fieldValue(row,['total_budgeted_unit','budgeted_positions','positions','position_count']));
+  const totalUnits=numberValue(fieldValue(row,['total_budgeted_unit','total_budgeted_units','budgeted_positions','positions','position_count']));
   const budgetUnit=String(fieldValue(row,['budgeted_unit','unit'])||'').trim();
   const controlValue=String(fieldValue(row,['position_control','position_controlled','controlled'])||'').trim();
   const hasControl=controlValue!=='';
@@ -1793,6 +1914,9 @@ function freezeTooltip(hit,html){
   text.innerHTML=html.replace(/<br\s*\/?\s*>/gi,'\n');
   const lines=Array.from(text.children,node=>node.textContent).join('\n');
   hit.setAttribute('data-budget-tooltip',lines);
+  hit.setAttribute('data-budget-tooltip-title',text.querySelector('.yr')?.textContent||'');
+  hit.setAttribute('data-budget-tooltip-value',text.querySelector('.amt')?.textContent||'');
+  hit.setAttribute('data-budget-tooltip-detail',text.querySelector('.agency')?.textContent||'');
   hit.setAttribute('aria-label',lines.replace(/\n/g,'; '));
   hit.append(svgEl('title',{},lines));
 }
@@ -1823,13 +1947,6 @@ function signedPercent(value){
 function axisMoney(value){
   const m=value/1e6;
   return '$'+(Math.abs(m-Math.round(m))<.001?Math.round(m):m.toFixed(1))+'M';
-}
-function niceBounds(min,max){
-  const pad=750000;
-  let lo=Math.floor((min-pad)/1e6)*1e6;
-  let hi=Math.ceil((max+pad)/1e6)*1e6;
-  if(hi-lo<4e6){lo-=1e6;hi+=1e6}
-  return [lo,hi];
 }
 function niceMax(max){
   const step=5e6;
@@ -1980,9 +2097,8 @@ function renderChart(data){
   const iw=W-M.left-M.right;
   const ih=H-M.top-M.bottom;
   const amounts=available.map(d=>d.amount);
-  const min=Math.min(...amounts);
-  const max=Math.max(...amounts);
-  const [yMin,yMax]=niceBounds(min,max);
+  const yMin=0;
+  const yMax=niceMax(Math.max(...amounts));
   const years=cycleYears();
   const minYear=years[0];
   const maxYear=years.at(-1);
@@ -2108,33 +2224,92 @@ function renderSummaryTable(appropriationData,workforceData){
   const pos2025=valueForYear(workforceData,2025,'positions');
   const adjustedStart=appStart&&DOLLAR_2025_FACTORS[rateStartYear]?appStart*DOLLAR_2025_FACTORS[rateStartYear]:null;
   const adjusted2024=app2024&&DOLLAR_2025_FACTORS[2024]?app2024*DOLLAR_2025_FACTORS[2024]:null;
-  const appNet=appCurrent!==null&&appPrevious!==null?appCurrent-appPrevious:null;
-  const posNet=posCurrent!==null&&posPrevious!==null?posCurrent-posPrevious:null;
-  const appPercent=appNet!==null&&appPrevious?appNet/appPrevious:null;
-  const posPercent=posNet!==null&&posPrevious?posNet/posPrevious:null;
   const appAverage=cagr(appStart,app2025,rateStartYear,2025);
   const posAverage=cagr(posStart,pos2025,rateStartYear,2025);
   const appInflationAdjusted=cagr(adjustedStart,adjusted2024,rateStartYear,2024);
-  const currentLabel=hasCurrent?`${currentYear} Proposed`:`${currentYear} Proposed`;
-  const changeClass=value=>value===null||value===0?'change-neutral':value>0?'change-positive':'change-negative';
 
   summaryTableTitleEl.textContent=`${displayDepartmentName(selectedDepartment)} Budget Summary`;
   summaryTableFootEl.textContent=`Source: City of Chicago budget APIs. Average annual rate of change uses ${rateStartYear}–2025${selectedDepartment?.code==='60'?' for COPA/IPRA to avoid the agency transition.':'.'} Inflation-adjusted appropriations rate uses ${rateStartYear}–2024 values converted to 2025 dollars.`;
-  summaryTableEl.innerHTML=`<div class="table-wrap"><table class="budget-summary" aria-labelledby="summaryTableTitle"><thead><tr><th scope="col">Measure</th><th scope="col">${previousYear} Budgeted</th><th scope="col">${currentLabel}</th><th scope="col">Net Change</th><th scope="col">Percent Change</th><th scope="col">Average Annual Rate of Change (${rateStartYear}-2025)</th><th scope="col">Inflation-adjusted Rate of Change (${rateStartYear}-2024)</th></tr></thead><tbody>
-    <tr><th scope="row">Appropriations</th><td>${appPrevious===null?'—':money(appPrevious)}</td><td>${appCurrent===null?'—':money(appCurrent)}</td><td class="${changeClass(appNet)}">${appNet===null?'—':signedMoney(appNet)}</td><td class="${changeClass(appPercent)}">${percentText(appPercent)}</td><td>${percentText(appAverage)}</td><td>${percentText(appInflationAdjusted)}</td></tr>
-    <tr><th scope="row">Positions &amp; FTEs</th><td>${posPrevious===null?'—':positionNumber(posPrevious)}</td><td>${posCurrent===null?'—':positionNumber(posCurrent)}</td><td class="${changeClass(posNet)}">${posNet===null?'—':signedNumber(posNet)}</td><td class="${changeClass(posPercent)}">${percentText(posPercent)}</td><td>${percentText(posAverage)}</td><td>NA</td></tr>
-  </tbody></table></div>`;
-
-  const missing=[];
-  if(appCurrent===null) missing.push(`${currentYear} appropriations`);
-  if(posCurrent===null) missing.push(`${currentYear} positions/FTEs`);
-  if(missing.length){
-    summaryTableStatusEl.className='status warning';
-    summaryTableStatusEl.textContent=`Summary table shell is built. Waiting on: ${missing.join(', ')}.`;
-  }else{
-    summaryTableStatusEl.className='status ready';
-  }
+  derivedSummaryData={previousYear,currentYear,rateStartYear,rows:[
+    {id:'appropriations',label:'Appropriations',previous:appPrevious,current:appCurrent,averageRatePct:appAverage===null?null:appAverage*100,inflationRatePct:appInflationAdjusted===null?null:appInflationAdjusted*100},
+    {id:'positions',label:'Positions & FTEs',previous:posPrevious,current:posCurrent,averageRatePct:posAverage===null?null:posAverage*100,inflationRatePct:null}
+  ]};
+  const data={...derivedSummaryData,rows:derivedSummaryData.rows.map(row=>({...row,...summaryOverrides[row.id]}))};
+  renderSummaryGraphic(data);
 }
+function summaryRows(data){
+  return data.rows.map(row=>({
+    ...row,
+    net:Number.isFinite(row.current)&&Number.isFinite(row.previous)?row.current-row.previous:null,
+    percent:Number.isFinite(row.current)&&Number.isFinite(row.previous)&&row.previous!==0?(row.current-row.previous)/row.previous:null
+  }));
+}
+function setSummaryData(data){
+  summaryOverrides={};
+  for(const row of data.rows){
+    const original=derivedSummaryData.rows.find(item=>item.id===row.id);
+    for(const key of ['previous','current','averageRatePct','inflationRatePct']){
+      if(row[key]!==original[key])(summaryOverrides[row.id]??={})[key]=row[key];
+    }
+  }
+  lastSummaryData={...data,rows:summaryRows(data)};
+}
+function summaryCells(data,row){
+  const number=value=>value===null?'—':row.id==='appropriations'?money(value):positionNumber(value);
+  return [row.label,number(row.previous),number(row.current),row.net===null?'—':row.id==='appropriations'?signedMoney(row.net):signedNumber(row.net),percentText(row.percent),row.averageRatePct===null?'—':percentText(row.averageRatePct/100),row.id==='positions'?'NA':row.inflationRatePct===null?'—':percentText(row.inflationRatePct/100)];
+}
+function renderSummaryGraphic(data){
+  if(!data)return;
+  data={...data,rows:summaryRows(data)};
+  lastSummaryData=data;
+  const headers=['Measure',`${data.previousYear} Budgeted`,`${data.currentYear} Proposed`,'Net Change','Percent Change',`Average Annual Rate (${data.rateStartYear}–2025)`,`Inflation-adjusted Rate (${data.rateStartYear}–2024)`];
+  const chart=document.getElementById('summaryChart');
+  chart.querySelector('svg')?.remove();
+  const W=Math.max(320,Math.round(chart.getBoundingClientRect().width||760));
+  const compact=W<650;
+  const H=compact?530:224;
+  const svg=svgEl('svg',{id:'summarySvg',viewBox:`0 0 ${W} ${H}`,role:'group','aria-labelledby':'summarySvgTitle summarySvgDesc'});
+  svg.append(svgEl('title',{id:'summarySvgTitle'},summaryTableTitleEl.textContent));
+  svg.append(svgEl('desc',{id:'summarySvgDesc'},'Appropriations and positions/FTEs comparison. Missing values are shown as dashes.'));
+  svg.append(svgEl('rect',{x:0,y:0,width:W,height:H,fill:COLORS.surface}));
+  function text(x,y,value,attrs={}){
+    svg.append(svgEl('text',{x,y,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':12.5,...attrs},value));
+  }
+  function wrapped(x,y,value,width){
+    const words=value.split(' '),lines=[];let line='';
+    for(const word of words){if((line+' '+word).trim().length>width&&line){lines.push(line);line=word}else line=(line+' '+word).trim()}
+    if(line)lines.push(line);
+    lines.forEach((line,index)=>text(x,y+index*15,line,{'font-size':11.5,'font-weight':700}));
+  }
+  if(!compact){
+    const first=W*.18,cell=(W-first)/6;
+    svg.append(svgEl('line',{x1:0,x2:W,y1:92,y2:92,stroke:COLORS.border,'stroke-width':1}));
+    headers.forEach((header,index)=>wrapped(index?first+(index-1)*cell+8:10,18,header,index?Math.max(13,Math.floor(cell/6)):20));
+    data.rows.forEach((row,index)=>{
+      const values=summaryCells(data,row),y=126+index*56;
+      if(index%2===1)svg.append(svgEl('rect',{x:0,y:y-25,width:W,height:56,fill:'#f7fafc'}));
+      values.forEach((value,column)=>text(column?first+column*cell-8:10,y,value,{'text-anchor':column?'end':'start','font-weight':column===0||column===3||column===4?700:400,fill:column===0?COLORS.dark:column===3||column===4?row.net>0?COLORS.primary:row.net<0?COLORS.negative:COLORS.muted:COLORS.muted}));
+    });
+  }else{
+    data.rows.forEach((row,index)=>{
+      const top=index*265,values=summaryCells(data,row);
+      svg.append(svgEl('line',{x1:0,x2:W,y1:top+32,y2:top+32,stroke:COLORS.border,'stroke-width':1}));
+      text(10,top+20,row.label,{'font-weight':700});
+      values.slice(1).forEach((value,column)=>{
+        const y=top+56+column*37;
+        wrapped(10,y,headers[column+1],Math.floor(W*.59/6));
+        text(W-10,y,value,{'text-anchor':'end'});
+      });
+    });
+  }
+  chart.append(svg);
+  summaryTableEl.innerHTML=`<div class="table-wrap"><table class="budget-summary" aria-labelledby="summaryTableTitle"><thead><tr>${headers.map(header=>`<th scope="col">${escapeHtml(header)}</th>`).join('')}</tr></thead><tbody>${data.rows.map(row=>`<tr>${summaryCells(data,row).map((cell,index)=>index?`<td>${escapeHtml(cell)}</td>`:`<th scope="row">${escapeHtml(cell)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+  const missing=data.rows.filter(row=>row.current===null).map(row=>`${data.currentYear} ${row.label.toLowerCase()}`);
+  summaryTableStatusEl.className=missing.length?'status warning':'status ready';
+  summaryTableStatusEl.textContent=missing.length?`Summary shell is built. Waiting on: ${missing.join(', ')}.`:'';
+  document.getElementById('downloadSummarySvg').hidden=false;
+}
+
 function renderLocalFundsChart(data){
   localFundsChartEl.querySelector('svg')?.remove();
   hideLocalFundsTooltip();
@@ -2224,7 +2399,7 @@ function renderWorkforceChart(data){
   const svg=svgEl('svg',{viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'workforceSvgTitle workforceSvgDesc',id:'workforceSvg'});
   svg.append(svgEl('title',{id:'workforceSvgTitle'},`${displayDepartmentName(selectedDepartment)} budgeted workforce from ${years[0]} through ${activeCycle.latestLongLabel}`));
   const missingYears=data.filter(d=>!d.available).map(d=>d.year);
-  svg.append(svgEl('desc',{id:'workforceSvgDesc'},`Stacked annual, monthly, hourly, monthly FTE, and hourly FTE budgeted workforce for ${displayDepartmentName(selectedDepartment)} from ${years[0]} through ${latestYearLabel()}. ${missingYears.length?`No City API value was plotted for ${missingYears.join(', ')}.`:'Every year has a plotted value.'}`));
+  svg.append(svgEl('desc',{id:'workforceSvgDesc'},`Annual, monthly, hourly, monthly FTE, and hourly FTE budgeted workforce, with ordinance years in deep blue and proposed years in gray, for ${displayDepartmentName(selectedDepartment)} from ${years[0]} through ${latestYearLabel()}. ${missingYears.length?`No City API value was plotted for ${missingYears.join(', ')}.`:'Every year has a plotted value.'}`));
 
   const ticks=5;
   for(let i=0;i<ticks;i++){
@@ -2246,7 +2421,7 @@ function renderWorkforceChart(data){
         const next=cumulative+value;
         const yTop=y(next);
         const yBottom=y(cumulative);
-        svg.append(svgEl('rect',{x:cx-barW/2,y:yTop,width:barW,height:Math.max(0,yBottom-yTop),fill:item.color,opacity:isLatestYear(d.year)?'1':'.86'}));
+        svg.append(svgEl('rect',{x:cx-barW/2,y:yTop,width:barW,height:Math.max(0,yBottom-yTop),fill:stage(d.year)==='Recommendation'?'#a8adb2':COLORS.dark}));
         cumulative=next;
       });
       const hit=svgEl('rect',{x:cx-barW/2-5,y:yy-18,width:barW+10,height:baseline-yy+28,fill:'transparent',tabindex:'0','aria-label':`${d.year}: ${workforceNumber(d.positions)} budgeted positions/FTEs`});
@@ -2303,14 +2478,14 @@ function renderPositionChangesChart(result){
 
   const measured=Math.max(340,Math.round(positionChangesChartEl.getBoundingClientRect().width||700));
   const W=measured;
-  const rowH=30;
+  const rowH=36;
   const H=78+data.length*rowH;
   const titleX=18;
   const prevX=W<560?W*.47:W*.50;
   const currX=W<560?W*.61:W*.64;
   const netX=W<560?W*.76:W*.78;
   const pctX=W-20;
-  const titleLimit=W<560?22:38;
+  const titleLimit=W<560?19:32;
   const label=value=>{
     const text=String(value||'');
     return text.length>titleLimit?`${text.slice(0,titleLimit-1)}…`:text;
@@ -2320,23 +2495,23 @@ function renderPositionChangesChart(result){
   svg.append(svgEl('title',{id:'positionChangesSvgTitle'},`${displayDepartmentName(selectedDepartment)} net and percent position/FTE changes, ${activeCycle.previousYear} to ${activeCycle.currentYear} proposed budgets`));
   svg.append(svgEl('desc',{id:'positionChangesSvgDesc'},`Changed position/FTE titles for ${displayDepartmentName(selectedDepartment)} from the ${activeCycle.previousYear} baseline to the ${activeCycle.currentYear} proposed budget.`));
   svg.append(svgEl('rect',{x:0,y:0,width:W,height:H,fill:COLORS.surface}));
-  svg.append(svgEl('text',{x:titleX,y:25,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700','letter-spacing':'.04em'},'TITLE'));
-  svg.append(svgEl('text',{x:prevX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700','letter-spacing':'.04em'},String(activeCycle.previousYear)));
-  svg.append(svgEl('text',{x:currX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700','letter-spacing':'.04em'},String(activeCycle.currentYear)));
-  svg.append(svgEl('text',{x:netX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700','letter-spacing':'.04em'},'NET'));
-  svg.append(svgEl('text',{x:pctX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700','letter-spacing':'.04em'},'%'));
+  svg.append(svgEl('text',{x:titleX,y:25,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11.5','font-weight':'700','letter-spacing':'.04em'},'TITLE'));
+  svg.append(svgEl('text',{x:prevX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11.5','font-weight':'700','letter-spacing':'.04em'},String(activeCycle.previousYear)));
+  svg.append(svgEl('text',{x:currX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11.5','font-weight':'700','letter-spacing':'.04em'},String(activeCycle.currentYear)));
+  svg.append(svgEl('text',{x:netX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11.5','font-weight':'700','letter-spacing':'.04em'},'NET'));
+  svg.append(svgEl('text',{x:pctX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11.5','font-weight':'700','letter-spacing':'.04em'},'%'));
   svg.append(svgEl('line',{x1:0,x2:W,y1:40,y2:40,stroke:COLORS.border,'stroke-width':'1'}));
 
   data.forEach((d,i)=>{
-    const y=56+i*rowH;
+    const y=62+i*rowH;
     const fill=d.net>0?COLORS.primary:COLORS.negative;
-    if(i%2===1) svg.append(svgEl('rect',{x:0,y:y-18,width:W,height:rowH,fill:'#F7FAFC'}));
-    svg.append(svgEl('text',{x:titleX,y,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':W<560?'10':'11','font-weight':'600'},label(d.title)));
-    svg.append(svgEl('text',{x:prevX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11'},positionNumber(d.previous)));
-    svg.append(svgEl('text',{x:currX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11'},positionNumber(d.current)));
-    svg.append(svgEl('text',{x:netX,y,'text-anchor':'end',fill,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11','font-weight':'700'},signedNumber(d.net)));
-    svg.append(svgEl('text',{x:pctX,y,'text-anchor':'end',fill,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11','font-weight':'700'},signedPercent(d.percent)));
-    const hit=svgEl('rect',{x:0,y:y-20,width:W,height:rowH,fill:'transparent',tabindex:'0','aria-label':`${d.title}: ${signedNumber(d.net)} positions/FTEs, ${signedPercent(d.percent)}`});
+    if(i%2===1) svg.append(svgEl('rect',{x:0,y:y-22,width:W,height:rowH,fill:'#F7FAFC'}));
+    svg.append(svgEl('text',{x:titleX,y,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':W<560?'11.5':'12.5','font-weight':'600'},label(d.title)));
+    svg.append(svgEl('text',{x:prevX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'12.5'},positionNumber(d.previous)));
+    svg.append(svgEl('text',{x:currX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'12.5'},positionNumber(d.current)));
+    svg.append(svgEl('text',{x:netX,y,'text-anchor':'end',fill,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'12.5','font-weight':'700'},signedNumber(d.net)));
+    svg.append(svgEl('text',{x:pctX,y,'text-anchor':'end',fill,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'12.5','font-weight':'700'},signedPercent(d.percent)));
+    const hit=svgEl('rect',{x:0,y:y-24,width:W,height:rowH,fill:'transparent',tabindex:'0','aria-label':`${d.title}: ${signedNumber(d.net)} positions/FTEs, ${signedPercent(d.percent)}`});
     freezeTooltip(hit,formatPositionChangesTooltip(d));
     hit.style.cursor='pointer';
     hit.addEventListener('mouseenter',()=>showPositionChangesTooltip(d,W/2,y,W));
@@ -2372,14 +2547,14 @@ function renderAppropriationChangesChart(result){
 
   const measured=Math.max(340,Math.round(appropriationChangesChartEl.getBoundingClientRect().width||700));
   const W=measured;
-  const rowH=30;
+  const rowH=36;
   const H=78+data.length*rowH;
   const labelX=18;
   const prevX=W<600?W*.45:W*.48;
   const currX=W<600?W*.61:W*.63;
   const netX=W<600?W*.78:W*.79;
   const pctX=W-20;
-  const titleLimit=W<600?21:38;
+  const titleLimit=W<600?18:31;
   const label=value=>{
     const text=String(value||'');
     return text.length>titleLimit?`${text.slice(0,titleLimit-1)}…`:text;
@@ -2389,23 +2564,23 @@ function renderAppropriationChangesChart(result){
   svg.append(svgEl('title',{id:'appropriationChangesSvgTitle'},`${displayDepartmentName(selectedDepartment)} net and percent appropriation changes, ${activeCycle.previousYear} to ${activeCycle.currentYear} proposed budgets`));
   svg.append(svgEl('desc',{id:'appropriationChangesSvgDesc'},`Changed appropriation accounts for ${displayDepartmentName(selectedDepartment)} from the ${activeCycle.previousYear} baseline to the ${activeCycle.currentYear} proposed budget.`));
   svg.append(svgEl('rect',{x:0,y:0,width:W,height:H,fill:COLORS.surface}));
-  svg.append(svgEl('text',{x:labelX,y:25,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700','letter-spacing':'.04em'},'APPROPRIATION'));
-  svg.append(svgEl('text',{x:prevX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700','letter-spacing':'.04em'},String(activeCycle.previousYear)));
-  svg.append(svgEl('text',{x:currX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700','letter-spacing':'.04em'},String(activeCycle.currentYear)));
-  svg.append(svgEl('text',{x:netX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700','letter-spacing':'.04em'},'NET'));
-  svg.append(svgEl('text',{x:pctX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700','letter-spacing':'.04em'},'%'));
+  svg.append(svgEl('text',{x:labelX,y:25,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11.5','font-weight':'700','letter-spacing':'.04em'},'APPROPRIATION'));
+  svg.append(svgEl('text',{x:prevX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11.5','font-weight':'700','letter-spacing':'.04em'},String(activeCycle.previousYear)));
+  svg.append(svgEl('text',{x:currX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11.5','font-weight':'700','letter-spacing':'.04em'},String(activeCycle.currentYear)));
+  svg.append(svgEl('text',{x:netX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11.5','font-weight':'700','letter-spacing':'.04em'},'NET'));
+  svg.append(svgEl('text',{x:pctX,y:25,'text-anchor':'end',fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'11.5','font-weight':'700','letter-spacing':'.04em'},'%'));
   svg.append(svgEl('line',{x1:0,x2:W,y1:40,y2:40,stroke:COLORS.border,'stroke-width':'1'}));
 
   data.forEach((d,i)=>{
-    const y=56+i*rowH;
+    const y=62+i*rowH;
     const fill=d.net>0?COLORS.primary:COLORS.negative;
-    if(i%2===1) svg.append(svgEl('rect',{x:0,y:y-18,width:W,height:rowH,fill:'#F7FAFC'}));
-    svg.append(svgEl('text',{x:labelX,y,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':W<600?'9.5':'10.5','font-weight':'600'},label(d.label)));
-    svg.append(svgEl('text',{x:prevX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10.5'},money(d.previous)));
-    svg.append(svgEl('text',{x:currX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10.5'},money(d.current)));
-    svg.append(svgEl('text',{x:netX,y,'text-anchor':'end',fill,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10.5','font-weight':'700'},signedMoney(d.net)));
-    svg.append(svgEl('text',{x:pctX,y,'text-anchor':'end',fill,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10.5','font-weight':'700'},signedPercent(d.percent)));
-    const hit=svgEl('rect',{x:0,y:y-20,width:W,height:rowH,fill:'transparent',tabindex:'0','aria-label':`${d.label}: ${signedMoney(d.net)}, ${signedPercent(d.percent)}`});
+    if(i%2===1) svg.append(svgEl('rect',{x:0,y:y-22,width:W,height:rowH,fill:'#F7FAFC'}));
+    svg.append(svgEl('text',{x:labelX,y,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':W<600?'11.5':'12.5','font-weight':'600'},label(d.label)));
+    svg.append(svgEl('text',{x:prevX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'12.5'},money(d.previous)));
+    svg.append(svgEl('text',{x:currX,y,'text-anchor':'end',fill:COLORS.muted,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'12.5'},money(d.current)));
+    svg.append(svgEl('text',{x:netX,y,'text-anchor':'end',fill,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'12.5','font-weight':'700'},signedMoney(d.net)));
+    svg.append(svgEl('text',{x:pctX,y,'text-anchor':'end',fill,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'12.5','font-weight':'700'},signedPercent(d.percent)));
+    const hit=svgEl('rect',{x:0,y:y-24,width:W,height:rowH,fill:'transparent',tabindex:'0','aria-label':`${d.label}: ${signedMoney(d.net)}, ${signedPercent(d.percent)}`});
     freezeTooltip(hit,formatAppropriationChangesTooltip(d));
     hit.style.cursor='pointer';
     hit.addEventListener('mouseenter',()=>showAppropriationChangesTooltip(d,W/2,y,W));
@@ -2646,7 +2821,6 @@ async function buildPositionChanges(){
   positionChangesStatusEl.className='status';
   positionChangesStatusEl.textContent=`Loading ${activeCycle.previousYear}–${activeCycle.currentYear} position/FTE changes for ${displayDepartmentName(selectedDepartment)}…`;
   document.getElementById('positionChangesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Net and Percent Position/FTE Changes, ${activeCycle.previousYear} to ${activeCycle.currentYear} (Proposed) Budgets`;
-  positionChangesSubEl.textContent=`Changed position/FTE titles from the ${activeCycle.previousYear} baseline to the ${activeCycle.currentYear} proposed budget`;
   positionChangesFootEl.textContent=`Source: City of Chicago ${activeCycle.previousYear} Budget Ordinance and ${activeCycle.currentYear} Budget Recommendations positions and salaries datasets. Percent change is net change divided by ${activeCycle.previousYear} positions/FTEs.`;
   if(!activeCycle.currentAvailable){
     lastPositionChangesData=null;
@@ -2684,7 +2858,6 @@ async function buildAppropriationChanges(){
   appropriationChangesStatusEl.className='status';
   appropriationChangesStatusEl.textContent=`Loading ${activeCycle.previousYear}–${activeCycle.currentYear} appropriation changes for ${displayDepartmentName(selectedDepartment)}…`;
   document.getElementById('appropriationChangesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Net and Percent Appropriation Changes, ${activeCycle.previousYear} to ${activeCycle.currentYear} (Proposed) Budgets`;
-  appropriationChangesSubEl.textContent=`Changed appropriation accounts from the ${activeCycle.previousYear} baseline to the ${activeCycle.currentYear} proposed budget`;
   appropriationChangesFootEl.textContent=`Source: City of Chicago ${activeCycle.previousYear} Budget Ordinance and ${activeCycle.currentYear} Budget Recommendations appropriations datasets. Percent change is net change divided by ${activeCycle.previousYear} budgeted appropriation.`;
   if(!activeCycle.currentAvailable){
     lastAppropriationChangesData=null;
@@ -2788,8 +2961,6 @@ async function buildLargestAppropriations(){
   largestAppropriationsStatusEl.className='status';
   largestAppropriationsStatusEl.textContent=`Loading top 10 ${latestYearLabel()} appropriations for ${displayDepartmentName(selectedDepartment)}…`;
   document.getElementById('largestAppropriationsTitle').textContent=`${displayDepartmentName(selectedDepartment)} Top 10 Largest Appropriations, ${latestYearLabel()}`;
-  largestAppropriationsEyebrowEl.textContent=stage(activeCycle.latestYear)==='Recommendation'?`${activeCycle.latestYear} proposed budget`:`${activeCycle.latestYear} ordinance baseline`;
-  largestAppropriationsSubEl.textContent=`Largest appropriation accounts in the selected department's ${latestYearLabel()} budget`;
   largestAppropriationsFootEl.textContent=`Source: City of Chicago ${activeCycle.latestYear} Budget ${stage(activeCycle.latestYear)==='Recommendation'?'Recommendations':'Ordinance'} — Appropriations. Rows are grouped by appropriation account and ranked by amount.`;
 
   try{
@@ -2857,6 +3028,7 @@ async function build(){
   budgetCycleSelect.disabled=true;
   statusEl.className='status';
   statusEl.textContent=`Loading ${chartRangeLabel()} City appropriations for ${displayDepartmentName(selectedDepartment)}…`;
+  buildFringe();
   chartTitleEl.textContent=`${displayDepartmentName(selectedDepartment)} Appropriation, Chicago City Budgets ${chartRangeLabel()}`;
   chartFootEl.textContent=`Source: City of Chicago Budget Ordinance appropriations datasets, ${ordinanceSourceRange()}${stage(activeCycle.latestYear)==='Recommendation'?`, and ${activeCycle.latestYear} Budget Recommendations — Appropriations`:'.'} Years without a row for the selected department are left blank rather than estimated.`;
 
@@ -2907,7 +3079,11 @@ function clearRenderedData(){
     document.getElementById(chart.svgId)?.remove();
     document.getElementById(chart.buttonId).hidden=true;
   });
+  lastSummaryData=null;
+  derivedSummaryData=null;
+  summaryOverrides={};
   lastData=null;
+  lastFringeData=null;
   lastLocalFundsData=null;
   lastWorkforceData=null;
   lastPositionChangesData=null;
@@ -2927,7 +3103,7 @@ async function loadDepartmentsForActiveCycle(){
   try{
     const source=await resolveDataset(activeCycle.departmentSourceYear);
     const rows=await fetchAllRows(source.id);
-    departments=collectDepartments(rows);
+    departments=includeFringeDepartments(collectDepartments(rows));
     if(!departments.length) throw new Error(`No departments could be identified in the ${latestYearLabel()} appropriations dataset.`);
     populateDepartmentSelect();
     await build();
@@ -2935,6 +3111,11 @@ async function loadDepartmentsForActiveCycle(){
     console.error(err);
     statusEl.className='status error';
     statusEl.textContent=`Could not load department list: ${err.message}`;
+    departments=includeFringeDepartments([]);
+    populateDepartmentSelect();
+    clearRenderedData();
+    buildFringe();
+    budgetCycleNote.textContent='City API departments could not load. Department selection and the fringe chart use the supplied CSV; live API graphics are unavailable until you reload data.';
     exportBusy=false;
     budgetCycleSelect.disabled=false;
     refreshExportControls();
@@ -2957,17 +3138,20 @@ budgetCycleSelect.addEventListener('change',()=>{
 // The generator remains standalone. Exported files contain no fetching or chart-building code.
 const EXPORT_CHARTS=[
   ['appropriations','budgetSvg','downloadSvg'],
+  ['estimated-fringe','fringeSvg','downloadFringeSvg'],
   ['local-funds','localFundsSvg','downloadLocalFundsSvg'],
   ['workforce','workforceSvg','downloadWorkforceSvg'],
   ['vacancies','vacanciesSvg','downloadVacanciesSvg'],
   ['persistent-vacancies','persistentVacanciesSvg','downloadPersistentVacanciesSvg'],
   ['largest-appropriations','largestAppropriationsSvg','downloadLargestAppropriationsSvg'],
   ['position-changes','positionChangesSvg','downloadPositionChangesSvg'],
-  ['appropriation-changes','appropriationChangesSvg','downloadAppropriationChangesSvg']
+  ['appropriation-changes','appropriationChangesSvg','downloadAppropriationChangesSvg'],
+  ['summary','summarySvg','downloadSummarySvg']
 ].map(([id,svgId,buttonId])=>({id,svgId,buttonId}));
 let exportBusy=true;
 const exportStatus=document.getElementById('exportStatus');
 const exportAllButton=document.getElementById('exportAllAstro');
+function graphicMarker(id){return `[budget-graphic id="${id}"]`}
 function exportSlug(value){return String(value).toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 function availableExports(){
   return EXPORT_CHARTS.filter(chart=>!document.getElementById(chart.buttonId).hidden&&document.getElementById(chart.svgId));
@@ -2981,6 +3165,8 @@ function refreshExportControls(){
     original.disabled=exportBusy;
     const button=document.getElementById('export-'+chart.id);
     if(button){button.hidden=original.hidden;button.disabled=exportBusy}
+    const copyButton=document.getElementById('copy-marker-'+chart.id);
+    if(copyButton)copyButton.disabled=exportBusy||original.hidden;
   });
 }
 function downloadFile(name,blob){
@@ -3021,13 +3207,12 @@ function frozenGraphic(chart,context){
   const foot=card.querySelector('.foot')?.textContent||'';
   const state=card.querySelector('.status:not(#exportStatus)');
   const warning=state&&!state.classList.contains('ready')?state.textContent.trim():'';
-  const legend=card.querySelector('.legend')?.cloneNode(true);
-  if(legend)legend.removeAttribute('aria-hidden');
   const edited=Boolean(editorStates.get(chart.id)?.edited);
   const metadata={...context,id:chart.id,title:heading,source:foot,warning,edited};
+  if(chart.id==='summary')metadata.data=structuredClone(lastSummaryData);
   clone.append(svgEl('metadata',{},JSON.stringify(metadata)));
   const svg=new XMLSerializer().serializeToString(clone);
-  const html=`<figure class="budget-graphic" data-budget-figure="${chart.id}">\n<h2>${escapeHtml(heading)}</h2>\n<p>${escapeHtml(card.querySelector('.sub')?.textContent||'')}</p>\n${warning?`<p class="budget-warning">${escapeHtml(warning)}</p>`:''}\n${svg}\n${legend?.outerHTML||''}\n${edited?'<p>Edited in generator.</p>':''}\n<figcaption>${escapeHtml(foot)}</figcaption>\n</figure>`;
+  const html=`<figure class="budget-graphic" data-budget-figure="${chart.id}">\n<h2>${escapeHtml(heading)}</h2>\n${svg}\n</figure>`;
   return {svg,html,metadata};
 }
 // This exact function is written to the ZIP as one shared, dependency-free script.
@@ -3055,7 +3240,20 @@ function budgetTooltipRuntime(){
   function show(node){
     hide();
     active=node;
-    tooltip.textContent=node.getAttribute('data-budget-tooltip');
+    const lines=(node.getAttribute('data-budget-tooltip')||'').split('\n');
+    tooltip.replaceChildren();
+    const fields=[
+      ['yr',node.getAttribute('data-budget-tooltip-title')??lines[0]??''],
+      ['amt',node.getAttribute('data-budget-tooltip-value')??lines[1]??''],
+      ['agency',node.getAttribute('data-budget-tooltip-detail')??lines.slice(2).join('\n')]
+    ];
+    for(const [className,value] of fields){
+      if(!value)continue;
+      const field=document.createElement('div');
+      field.className=className;
+      field.textContent=value;
+      tooltip.append(field);
+    }
     tooltip.hidden=false;
     node.setAttribute('aria-describedby',((node.getAttribute('aria-describedby')||'')+' '+tooltip.id).trim());
     const bounds=node.getBoundingClientRect();
@@ -3078,14 +3276,12 @@ function budgetTooltipRuntime(){
 const EXPORT_CSS=`
 .budget-graphic{--primary:#3e6f8c;--accent:#e9b84a;box-sizing:border-box;margin:0 0 34px;padding:clamp(16px,3vw,32px);border:1px solid #d8e1e6;border-radius:4px;background:#fff;color:#213747;font-family:"Synthese","Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.63;letter-spacing:-.005em}
 .budget-graphic h2{margin:0 0 12px;font:700 clamp(1.45rem,2.6vw,2rem)/1.1 "Proxima Nova","Helvetica Neue",Arial,sans-serif;letter-spacing:-.025em;color:#213747}
-.budget-graphic p,.budget-graphic figcaption{font-size:.76rem;line-height:1.55;color:#6f808b}
 .budget-graphic svg{display:block;width:100%;height:auto;overflow:visible}
-.budget-graphic .legend{display:flex;gap:14px;flex-wrap:wrap;margin:14px 0;font-size:.76rem;color:#6f808b}
-.budget-graphic .legend span{display:inline-flex;align-items:center;gap:6px}
-.budget-graphic .legend i{display:inline-block;width:14px;height:10px}
 .budget-graphic [data-budget-tooltip]:focus{outline:2px solid #294f68;outline-offset:2px}
-.budget-graphic .budget-warning{padding:10px;background:#fffaf0;color:#6f571c}
-.budget-tooltip{position:fixed;z-index:10000;pointer-events:none;box-sizing:border-box;max-width:min(320px,calc(100vw - 16px));padding:10px 12px;border-radius:4px;background:#294f68;color:#fff;white-space:pre-line;font:12px/1.5 "Synthese","Helvetica Neue",Helvetica,Arial,sans-serif;box-shadow:0 8px 24px rgba(33,55,71,.18)}
+.budget-tooltip{position:fixed;z-index:10000;pointer-events:none;box-sizing:border-box;max-width:min(320px,calc(100vw - 16px));min-width:138px;padding:10px 12px;border-radius:4px;background:rgba(41,79,104,.96);color:#fff;white-space:pre-line;font:12px/1.5 "Synthese","Helvetica Neue",Helvetica,Arial,sans-serif;box-shadow:0 8px 24px rgba(33,55,71,.18)}
+.budget-tooltip .yr{font-weight:700;font-size:12px;margin-bottom:2px}
+.budget-tooltip .amt{font-family:"Proxima Nova","Helvetica Neue",Arial,sans-serif;font-size:22px;font-weight:700;line-height:1.05}
+.budget-tooltip .agency{opacity:.8;margin-top:4px;font-size:10px}
 .budget-tooltip[hidden]{display:none}
 `;
 // ZIP "store" entries need no compression dependency or network connection.
@@ -3133,7 +3329,8 @@ function exportForAstro(charts){
       const graphic=frozenGraphic(chart,context);
       files[folder+chart.id+'.svg']=graphic.svg;
       files[folder+chart.id+'.html']=graphic.html;
-      graphics.push({...graphic.metadata,svg:chart.id+'.svg',html:chart.id+'.html',placeholder:`[budget-graphic id="${chart.id}"]`});
+      if(chart.id==='summary')files[folder+'summary.json']=JSON.stringify({...context,...graphic.metadata.data},null,2);
+      graphics.push({...graphic.metadata,svg:chart.id+'.svg',html:chart.id+'.html',placeholder:graphicMarker(chart.id)});
       return graphic;
     });
     const skipped=EXPORT_CHARTS.filter(chart=>!availableExports().includes(chart)).map(chart=>({id:chart.id,reason:document.getElementById(chart.buttonId).closest('.card').querySelector('.status')?.textContent.trim()||'No rendered chart available.'}));
@@ -3142,14 +3339,63 @@ function exportForAstro(charts){
     files[folder+'budget-graphics.css']=EXPORT_CSS;
     // Encode markup so Live Server cannot inject reload code into this JS string.
     files[folder+'preview.html']=`\x3C!doctype html>\x3Chtml lang="en">\x3Chead>\x3Cmeta charset="utf-8">\x3Cmeta name="viewport" content="width=device-width,initial-scale=1">\x3Ctitle>${escapeHtml(context.department)} approved graphics preview\x3C/title>\x3Clink rel="stylesheet" href="budget-graphics.css">\x3Cstyle>body{margin:34px auto;padding:0 14px;max-width:860px;background:#f6f8f9;color:#213747;font-family:"Synthese","Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.63}h1{font-family:"Proxima Nova","Helvetica Neue",Arial,sans-serif;letter-spacing:-.025em}body>p{color:#6f808b}\x3C/style>\x3C/head>\x3Cbody>\x3Ch1>${escapeHtml(context.department)} · ${escapeHtml(activeCycle.label)}\x3C/h1>\x3Cp>Frozen export. Hover, focus, or tap a chart point for details. No live data requests.\x3C/p>${frozen.map(graphic=>graphic.html).join('\n')}\x3Cscript src="budget-tooltips.js" defer>\x3C/script>\x3C/body>\x3C/html>`;
-    files[folder+'README.txt']=`Frozen budget graphics export\n\nUnzip, then open preview.html in a browser to review tooltips offline.\n\nSVG files contain approved values, accessible labels, and tooltip text.\nHTML files wrap each inline SVG with its heading, legend, source, and any data warning.\nLoad budget-graphics.css and budget-tooltips.js once per article. SVG must be inline for shared tooltips; an img tag will not expose its bars to the script.\n\nSuggested destination: src/graphics/${folder}\nWordPress placeholders are listed in manifest.json. Automatic Astro placeholder replacement still needs to be wired up; copying these files alone does not change articles.\n\nExporting freezes the current render; it does not certify the data. Review warnings and source notes. Missing/failed charts and unfinished placeholders are excluded and listed in manifest.json.\n`;
+    files[folder+'README.txt']=`Frozen budget graphics export\n\nUnzip, then open preview.html in a browser to review tooltips offline.\n\nSVG files contain approved values, accessible labels, and tooltip text.\nHTML files contain only the title and inline chart. Source notes, warnings, and edit status remain in manifest.json for editorial review.\nLoad budget-graphics.css and budget-tooltips.js once per article. SVG must be inline for shared tooltips; an img tag will not expose its bars to the script.\n\nSuggested destination: src/graphics/${folder}\nWordPress placeholders are listed in manifest.json. Set graphicsFolder in Astro snapshots.js to the export directory relative to src/graphics, then add marker paragraphs in WordPress and rebuild.\n\nExporting freezes the current render; it does not certify the data. Review warnings and source notes. Missing/failed charts and unfinished placeholders are excluded and listed in manifest.json.\n`;
     const name=exportSlug(context.department)+'-'+context.cycle+'-'+(charts.length===1?charts[0].id:'all-graphics')+'.zip';
     downloadFile(name,zipFiles(files));
     exportStatus.textContent=`Exported ${charts.length} graphic${charts.length===1?'':'s'} for ${context.department} (${activeCycle.label}). ${skipped.length?skipped.length+' unavailable chart(s) excluded. ':''}Unzip and open preview.html to check the frozen graphics and tooltips.`;
   }catch(err){exportStatus.textContent='Export failed: '+err.message;console.error(err)}
 }
+async function copyMarkerText(text){
+  try{
+    if(typeof navigator!=='undefined'&&navigator.clipboard?.writeText){
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+  }catch(error){ /* Fall back for local files or restricted clipboard access. */ }
+  const previous=document.activeElement;
+  const textarea=document.createElement('textarea');
+  textarea.value=text;
+  textarea.setAttribute('readonly','');
+  textarea.style.position='fixed';
+  textarea.style.left='-9999px';
+  document.body.append(textarea);
+  try{
+    textarea.select();
+    if(!document.execCommand?.('copy'))throw new Error('Clipboard unavailable');
+  }finally{
+    textarea.remove();
+    previous?.focus();
+  }
+}
 EXPORT_CHARTS.forEach(chart=>{
   const original=document.getElementById(chart.buttonId);
+  const markerRow=document.createElement('div');
+  markerRow.className='graphic-marker';
+  const label=document.createElement('p');
+  label.className='marker-label';
+  label.textContent='WordPress marker · paste into a Paragraph block';
+  const markerText=document.createElement('p');
+  markerText.textContent=graphicMarker(chart.id);
+  const copyButton=document.createElement('button');
+  copyButton.type='button';
+  copyButton.id='copy-marker-'+chart.id;
+  copyButton.textContent='Copy marker';
+  copyButton.setAttribute('aria-label','Copy WordPress marker for '+chart.id);
+  const feedback=document.createElement('span');
+  feedback.className='marker-feedback';
+  feedback.setAttribute('role','status');
+  feedback.setAttribute('aria-live','polite');
+  markerRow.append(label,markerText,copyButton,feedback);
+  original.closest('.toolbar').after(markerRow);
+  copyButton.addEventListener('click',async()=>{
+    if(copyButton.disabled)return;
+    try{
+      await copyMarkerText(graphicMarker(chart.id));
+      feedback.textContent='Copied as plain text.';
+    }catch(error){
+      feedback.textContent='Select the marker text and copy it manually.';
+    }
+  });
   const button=document.createElement('button');
   button.type='button';button.id='export-'+chart.id;button.textContent='Export for Astro (.zip)';button.hidden=true;
   original.after(button);
@@ -3166,6 +3412,7 @@ exportAllButton.addEventListener('click',()=>exportForAstro(availableExports()))
 const editorStates=new Map();
 const editorFields=(...fields)=>fields.map(([key,label,type='number'])=>({key,label,type}));
 const EDITOR_CONFIGS=[
+  {id:'estimated-fringe',title:'fringeTitle',get:()=>lastFringeData,set:value=>lastFringeData=value,rows:value=>value,fields:editorFields(['appropriations','Appropriations ($)'],['fullTimeFringe','Full-time fringe ($)'],['partTimeFringe','Part-time fringe ($)']),render:renderFringeChart,details:renderFringeDetails},
   {id:'appropriations',title:'chartTitle',get:()=>lastData,set:value=>lastData=value,rows:value=>value,fields:editorFields(['amount','Appropriation ($)']),render:renderChart,details:renderDetails},
   {id:'local-funds',title:'localFundsTitle',get:()=>lastLocalFundsData,set:value=>lastLocalFundsData=value,rows:value=>value,fields:editorFields(['amount','Budget ($)'],['actuals','Actuals ($)'],['encumbrances','Encumbrances ($)']),render:renderLocalFundsChart,details:renderLocalFundsDetails},
   {id:'workforce',title:'workforceTitle',get:()=>lastWorkforceData,set:value=>lastWorkforceData=value,rows:value=>value,fields:WORKFORCE_COMPONENTS.map(item=>({key:'components.'+item.key,label:item.label,type:'number'})),render:renderWorkforceChart,details:renderWorkforceDetails},
@@ -3174,7 +3421,7 @@ const EDITOR_CONFIGS=[
   {id:'largest-appropriations',title:'largestAppropriationsTitle',get:()=>lastLargestAppropriationsData,set:value=>lastLargestAppropriationsData=value,rows:value=>value.rows,fields:editorFields(['label','Account label','text'],['amount','Appropriation ($)']),render:renderLargestAppropriationsChart,details:renderLargestAppropriationsDetails},
   {id:'position-changes',title:'positionChangesTitle',get:()=>lastPositionChangesData,set:value=>lastPositionChangesData=value,rows:value=>value.rows,fields:editorFields(['title','Title','text'],['previous','Baseline positions/FTEs'],['current','Current positions/FTEs']),render:renderPositionChangesChart,details:renderPositionChangesDetails},
   {id:'appropriation-changes',title:'appropriationChangesTitle',get:()=>lastAppropriationChangesData,set:value=>lastAppropriationChangesData=value,rows:value=>value.rows,fields:editorFields(['label','Account label','text'],['previous','Baseline ($)'],['current','Current ($)']),render:renderAppropriationChangesChart,details:renderAppropriationChangesDetails},
-  {id:'summary',title:'summaryTableTitle',get:()=>lastData,rows:()=>[],fields:[],render:()=>renderSummaryTable(lastData,lastWorkforceData)}
+  {id:'summary',title:'summaryTableTitle',get:()=>lastSummaryData,set:setSummaryData,rows:value=>value.rows,fields:[{key:'previous',label:'Previous budget',type:'number',nullable:true},{key:'current',label:'Proposed budget',type:'number',nullable:true},{key:'averageRatePct',label:'Average annual rate (%)',type:'number',signed:true,nullable:true},{key:'inflationRatePct',label:'Inflation-adjusted rate (%)',type:'number',signed:true,nullable:true}],render:renderSummaryGraphic}
 ];
 function editorValue(row,key){return key.split('.').reduce((value,part)=>value?.[part],row)}
 function setEditorValue(row,key,value){
@@ -3195,6 +3442,7 @@ function setEditedDataPoint(config,row,field,value){
   if(row.manualEntry){
     if(config.id==='appropriations'||config.id==='local-funds')row.available=Number.isFinite(row.amount);
     if(config.id==='workforce')row.available=WORKFORCE_COMPONENTS.some(item=>Number.isFinite(row.components?.[item.key]));
+    if(config.id==='estimated-fringe')row.available=['appropriations','fullTimeFringe','partTimeFringe'].every(key=>Number.isFinite(row[key]));
     if(config.id==='vacancies')row.available=['filled','persistent','nonpersistent'].every(key=>Number.isFinite(row[key]));
     row.reason=row.available?'Manually entered in generator.':row.apiReason;
     row.matchedBy=row.available?'manual entry':'';
@@ -3203,6 +3451,7 @@ function setEditedDataPoint(config,row,field,value){
 function syncEditorDataStatus(state){
   const status=state.card.querySelector('.status:not(#exportStatus)');
   if(!status||!state.originalStatus)return;
+  if(state.config.id==='summary')return;
   const rows=state.config.rows(state.config.get());
   if(!rows.some(row=>row.manualEntry)){
     status.className=state.originalStatus.className;
@@ -3215,9 +3464,15 @@ function syncEditorDataStatus(state){
   status.textContent=`${manual} manually entered data point${manual===1?'':'s'}.${missing.length?` Missing values remain gaps: ${missing.join(', ')}.`:''}`;
 }
 function normalizeEditedData(id,data){
+  if(id==='summary'){
+    data.rows=summaryRows(data);
+    for(const row of data.rows)if(Object.values(row).some(value=>typeof value==='number'&&!Number.isFinite(value)))throw new Error('Summary values are too large.');
+    return data;
+  }
   const rows=Array.isArray(data)?data:id==='persistent-vacancies'?data.persistentTitleData:id==='vacancies'?data.data:data.rows;
   for(const row of rows){
     if(row.available===false)continue;
+    if(id==='estimated-fringe')row.total=row.appropriations+row.fullTimeFringe+row.partTimeFringe;
     if(id==='workforce')row.positions=WORKFORCE_COMPONENTS.reduce((sum,item)=>sum+(row.components?.[item.key]||0),0);
     if(id==='local-funds'){
       row.hasActuals=Number.isFinite(row.actuals);
@@ -3241,7 +3496,7 @@ function normalizeEditedData(id,data){
   if(id==='persistent-vacancies'&&!rows.some(row=>row.persistentVacancies>0))throw new Error('Keep at least one positive persistent vacancy count.');
   return data;
 }
-function editorTextNodes(state){return {title:state.card.querySelector('h2'),subtitle:state.card.querySelector('.sub'),source:state.card.querySelector('.foot')}}
+function editorTextNodes(state){return {title:state.card.querySelector('h2'),source:state.card.querySelector('.foot')}}
 function syncEditorText(state){
   const nodes=editorTextNodes(state);
   for(const [key,value] of Object.entries(state.text))if(nodes[key]&&value!==state.originalText[key])nodes[key].textContent=value;
@@ -3249,13 +3504,11 @@ function syncEditorText(state){
   if(svg){
     const title=svg.querySelector('title');
     if(title)title.textContent=nodes.title.textContent;
-    const desc=svg.querySelector('desc');
-    if(desc&&state.text.subtitle!==state.originalText.subtitle)desc.textContent=state.text.subtitle;
   }
 }
 function markEditorChanges(state){
   state.edited=JSON.stringify(state.text)!==JSON.stringify(state.originalText)||
-    (state.config.id!=='summary'&&JSON.stringify(state.config.get())!==JSON.stringify(state.originalData));
+    JSON.stringify(state.config.get())!==JSON.stringify(state.originalData);
   state.badge.hidden=!state.edited;
   state.reset.disabled=!state.edited;
 }
@@ -3266,7 +3519,7 @@ function redrawEditedGraphic(state){
   if(state.config.id==='appropriations'||state.config.id==='workforce'){
     renderSummaryTable(lastData,lastWorkforceData);
     const summary=editorStates.get('summary');
-    if(summary)syncEditorText(summary);
+    if(summary){syncEditorText(summary);markEditorChanges(summary);populateEditor(summary)}
   }
   syncEditorText(state);
   syncEditorDataStatus(state);
@@ -3285,11 +3538,11 @@ function populateEditor(state){
   state.panel.replaceChildren();
   const note=document.createElement('p');
   note.className='editor-note';
-  note.textContent='Changes update the preview and downloads immediately. Edits last until you reload data or change department or budget cycle. Money values are dollars. Missing points are editable: enter a value to plot them, or leave them blank to keep a gap. For workforce, blank components count as zero once one component is entered; vacancies need all three counts. Each graphic is edited independently; appropriation and workforce edits also update the budget summary.';
+  note.textContent=state.config.id==='summary'?'Edit the comparison budgets and annual rates here. Net and percent changes recalculate automatically. Rates use percentages (enter 5 for 5%). Blank values remain unknown. Summary edits do not change the historical charts; your overrides are preserved when those charts recalculate.':'Changes update the preview and downloads immediately. Edits last until you reload data or change department or budget cycle. Money values are dollars. Missing points are editable: enter a value to plot them, or leave them blank to keep a gap. For workforce, blank components count as zero once one component is entered; vacancies need all three counts. Each graphic is edited independently; appropriation and workforce edits also update the budget summary.';
   state.panel.append(note);
   const textFields=document.createElement('div');
   textFields.className='editor-text-fields';
-  for(const [key,label] of [['title','Title'],['subtitle','Subtitle'],['source','Source note']]){
+  for(const [key,label] of [['title','Title'],['source','Source note']]){
     const field=document.createElement('label');
     const name=document.createElement('span');name.textContent=label;
     const input=editorInput(state,key,state.text[key],'text');
@@ -3324,11 +3577,13 @@ function populateEditor(state){
       for(const field of state.config.fields){
         const td=document.createElement('td');
         const input=editorInput(state,field.key,row.available===false&&!row.manualEntry&&field.type==='number'?null:editorValue(row,field.key),field.type);
+        if(field.signed)input.removeAttribute('min');
+        if(state.config.id==='summary'&&row.id==='positions'&&field.key==='inflationRatePct')input.disabled=true;
         input.setAttribute('aria-label',label+' · '+field.label);
         input.addEventListener('input',()=>{
-          const clearMissing=field.type==='number'&&input.value.trim()===''&&state.config.rows(state.originalData)[index].available===false;
-          const valid=clearMissing||(field.type==='text'?Boolean(input.value.trim()):input.value.trim()!==''&&Number.isFinite(input.valueAsNumber)&&input.valueAsNumber>=0);
-          if(!valid){input.setCustomValidity(field.type==='text'?'Enter a label.':'Enter a nonnegative number.');state.message.textContent='Enter a valid value. The preview keeps the last valid value.';return}
+          const clearMissing=field.type==='number'&&input.value.trim()===''&&(field.nullable||state.config.rows(state.originalData)[index].available===false);
+          const valid=clearMissing||(field.type==='text'?Boolean(input.value.trim()):input.value.trim()!==''&&Number.isFinite(input.valueAsNumber)&&(field.signed||input.valueAsNumber>=0));
+          if(!valid){input.setCustomValidity(field.type==='text'?'Enter a label.':field.signed?'Enter a finite number.':'Enter a nonnegative number.');state.message.textContent='Enter a valid value. The preview keeps the last valid value.';return}
           const previous=state.config.get();
           const candidate=structuredClone(previous);
           const changedRow=state.config.rows(candidate)[index];
@@ -3406,7 +3661,9 @@ refreshExportControls();
 window.addEventListener('resize',()=>{
   clearTimeout(resizeTimer);
   resizeTimer=setTimeout(()=>{
+    if(lastSummaryData)renderSummaryGraphic(lastSummaryData);
     if(lastData)renderChart(lastData);
+    if(lastFringeData)renderFringeChart(lastFringeData);
     if(lastLocalFundsData)renderLocalFundsChart(lastLocalFundsData);
     if(lastWorkforceData)renderWorkforceChart(lastWorkforceData);
     if(lastPositionChangesData)renderPositionChangesChart(lastPositionChangesData);
