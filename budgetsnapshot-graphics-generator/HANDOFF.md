@@ -6,7 +6,7 @@ This file is a quick pickup note for continuing the one-page graphics generator 
 
 Work in:
 
-`budgetsnapshot-worflow/budgetsnapshot-graphics-generator/department-appropriations-2011-2026-api-dropdown-v2.html`
+`budgetsnapshot-worflow/budgetsnapshot-graphics-generator/index.html`
 
 The user wants the graphics built one-by-one in this same standalone HTML page, not as separate files. Keep it simple and follow the style/pattern already in that HTML.
 
@@ -179,7 +179,7 @@ This avoids incorrectly labeling COPA years as IPRA when the department name is 
 Use this quick syntax check after editing:
 
 ```bash
-node -e "const fs=require('fs');const html=fs.readFileSync('/workspaces/budgetsnapshot-worflow/budgetsnapshot-graphics-generator/department-appropriations-2011-2026-api-dropdown-v2.html','utf8');const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);for(const s of scripts)new Function(s);console.log('inline scripts parse ok:',scripts.length);"
+node -e "const fs=require('fs');const html=fs.readFileSync('/workspaces/budgetsnapshot-worflow/budgetsnapshot-graphics-generator/index.html','utf8');const scripts=[...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m=>m[1]);for(const s of scripts)new Function(s);console.log('inline scripts parse ok:',scripts.length);"
 ```
 
 This has been passing after the latest edits.

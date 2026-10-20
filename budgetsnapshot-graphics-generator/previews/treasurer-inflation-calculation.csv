@@ -1,0 +1,15 @@
+year,ordinance_budget,factor_to_2024_dollars,adjusted_budget_unrounded,annual_change_pct_unrounded,matched_rows,amount_field,dataset_url
+2011,2181879,1.336288892,2915620.6713880682,,22,amount,https://data.cityofchicago.org/d/drv3-jzqp
+2012,2377149,1.316299182,3129039.2841921183,7.319834671855507,20,_ordinance_amount_,https://data.cityofchicago.org/d/8ix6-nb7q
+2013,2414890,1.301409517,3142760.82850813,0.4385225965468864,20,appropriation_ordinance,https://data.cityofchicago.org/d/b24i-nwag
+2014,2497474,1.279063151,3194426.9639805737,1.6439728726340919,19,_ordinance_amount_,https://data.cityofchicago.org/d/ub6s-xy6e
+2015,2528177,1.282858924,3243294.4259015475,1.5297723964889265,20,_ordinance_amount_,https://data.cityofchicago.org/d/qnek-cfpp
+2016,4188955,1.274411039,5338450.493874245,64.59962596181201,38,_ordinance_amount_,https://data.cityofchicago.org/d/36y7-5nnf
+2017,4071831,1.250904281,5093470.829408511,-4.588965744776385,41,_ordinance_amount_,https://data.cityofchicago.org/d/7jem-9wyw
+2018,4161578,1.229354749,5116055.677633923,0.4434078250730833,42,_ordinance_amount_,https://data.cityofchicago.org/d/6g7p-xnsy
+2019,4134722,1.211641879,5009802.333222639,-2.076860595473895,40,_ordinance_amount_,https://data.cityofchicago.org/d/h9rt-tsn7
+2020,4124036,1.198267131,4941696.785860715,-1.3594457990943054,41,_ordinance_amount_,https://data.cityofchicago.org/d/fyin-2vyd
+2021,4040902,1.149772387,4646117.538173074,-5.981331119573319,40,_ordinance_amount_,https://data.cityofchicago.org/d/6tbx-h7y2
+2022,4806567,1.069027203,5138350.8760421015,10.594508938372261,34,_ordinance_amount_,https://data.cityofchicago.org/d/2cr6-8u6w
+2023,5712960,1.034607895,5910673.5198192,15.030554790995376,34,_ordinance_amount_,https://data.cityofchicago.org/d/xbjh-7zvh
+2024,6272699,1,6272699,6.124944627154338,36,_ordinance_amount_,https://data.cityofchicago.org/d/x394-e874
