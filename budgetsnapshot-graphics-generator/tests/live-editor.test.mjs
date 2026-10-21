@@ -76,7 +76,7 @@ function generator({preserveDefaultCycle=false}={}) {
   const script = $('script').text().replace(/\ninitialize\(\);\n\}\)\(\);/, `
   // Existing numeric fixtures describe the 2026 recommendation cycle.
   if(!preserveDefaultCycle) activeCycle=BUDGET_CYCLES['2026-recommendation'];
-  globalThis.api={chartDataTable,chartCsv,csvCell,workbookFile,downloadAllData,downloadChartData,build,buildWorkforce,buildLargestAppropriations,proposalRangeLabel,getCycle:()=>activeCycle.key,getDepartment:()=>selectedDepartment,setDepartmentOptions(rows){departments=rows;populateDepartmentSelect()},VACANCY_AGGREGATE_2026_CSV,VACANCY_AGGREGATE_2026,vacancyAggregate2026FromCsv,parseCsv,PERSISTENT_VACANCIES_2026_CSV,persistentVacanciesForDepartment,loadVacancies,buildVacancies,buildPersistentVacancies,getPersistent:()=>lastPersistentVacanciesData,selectDepartment(code,name){selectedDepartment={code,name}},ACTUAL_SPEND_2025_CSV,ACTUAL_SPEND_2025_ROWS,actualSpendRowsFromCsv,actualSpendForDepartment,foiaMoney,buildActualSpendCategories,getActualSpend:()=>lastActualSpendCategoriesData,editorStates,normalizeEditedData,clearRenderedData,refreshExportControls,
+  globalThis.api={resolveDataset,resolvePositionDataset,cycleYears,stage,loadPositionChanges,chartDataTable,chartCsv,csvCell,workbookFile,downloadAllData,downloadChartData,build,buildWorkforce,buildLargestAppropriations,proposalRangeLabel,getCycle:()=>activeCycle.key,getDepartment:()=>selectedDepartment,setDepartmentOptions(rows){departments=rows;populateDepartmentSelect()},VACANCY_AGGREGATE_2026_CSV,VACANCY_AGGREGATE_2026,vacancyAggregate2026FromCsv,parseCsv,PERSISTENT_VACANCIES_2026_CSV,persistentVacanciesForDepartment,loadVacancies,buildVacancies,buildPersistentVacancies,getPersistent:()=>lastPersistentVacanciesData,selectDepartment(code,name){selectedDepartment={code,name}},ACTUAL_SPEND_2025_CSV,ACTUAL_SPEND_2025_ROWS,actualSpendRowsFromCsv,actualSpendForDepartment,foiaMoney,buildActualSpendCategories,getActualSpend:()=>lastActualSpendCategoriesData,editorStates,normalizeEditedData,clearRenderedData,refreshExportControls,
     averageAnnualChange,inflationAdjustedRate,DOLLAR_2024_FACTORS,DOLLAR_2025_FACTORS,loadYear,loadWorkforceYear,departmentMatch,positionContribution,loadAppropriationChanges,setAppropriationRows(rowsByYear){
       resolveDataset=async year=>({id:String(year)});
       resolvePositionDataset=async year=>({id:String(year)});
@@ -386,7 +386,7 @@ test('exports show title, chart and data download while editorial notes remain i
   status.className='status warning';status.textContent='Missing data warning';
   const graphic=api.frozenGraphic(api.EXPORT_CHARTS[0],{department:'Treasurer',cycle:'2026-recommendation'});
   const $=load(graphic.html,null,false);
-  assert.deepEqual($('figure').children().toArray().map(node=>node.name),['h2','svg','a']);
+  assert.deepEqual($('figure').children().toArray().map(node=>node.name),['h2','button','div','div','a']);
   assert.equal(graphic.metadata.warning,'Missing data warning');
   assert.ok(graphic.metadata.source);
   assert.equal(status.textContent,'Missing data warning');
@@ -534,7 +534,7 @@ test('proposed marks are gray while ordinance baseline marks retain historical c
   assert.match(api.frozenGraphic(api.EXPORT_CHARTS.find(chart=>chart.id==='appropriations'),{department:'Treasurer',cycle:'2026-recommendation'}).html, /#a8adb2/);
   api.setPreviewCycle('2027-prep'); api.seedAll();
   assert.equal(line().querySelector('path[fill="none"]').getAttribute('stroke'), '#3e6f8c');
-  assert.equal(line().querySelector('circle[r="4.8"]').getAttribute('fill'), '#3e6f8c');
+  assert.equal(line().querySelector('circle[r="3.4"]').getAttribute('fill'), '#3e6f8c');
   assert.equal(document.getElementById('workforceSvg').querySelectorAll('rect')[2].getAttribute('fill'), '#3e6f8c');
   assert.equal(document.getElementById('largestAppropriationsSvg').querySelector('rect').getAttribute('fill'), '#3e6f8c');
 });
@@ -777,7 +777,9 @@ test('appropriation toggle adjusts the plotted view without changing source budg
   assert.equal(frozen.metadata.dollarBaseYear,2024);
   assert.deepEqual(Array.from(frozen.metadata.missingInflationFactorYears),[2025,2026]);
   assert.doesNotMatch(frozen.svg,/Inflation-adjusted · 2024 dollars/);
-  assert.doesNotMatch(frozen.html,/<button/);
+  assert.match(frozen.html,/data-budget-price-toggle/);
+  assert.match(frozen.html,/data-budget-price-view="nominal" hidden/);
+  assert.match(frozen.html,/data-budget-price-view="adjusted"/);
   // Editing continues to use nominal dollars, then redraws the selected view.
   const state=api.editorStates.get('appropriations');
   edit(input(state,'amount',0),'2000000');
@@ -1042,7 +1044,7 @@ test('2027 snapshot titles use proposal framing while data years and source note
   api.setPreviewCycle('2027-prep');
   api.seed();
   api.selectDepartment('28','City Treasurer');
-  api.setAppropriationRows(Object.fromEntries(Array.from({length:16},(_,i)=>[2011+i,[{
+  api.setAppropriationRows(Object.fromEntries(Array.from({length:17},(_,i)=>[2011+i,[{
     department_number:'28',department_description:'Treasurer',appropriation_account:'0005',
     appropriation_account_description:'Salaries',amount:'100',total_budgeted_unit:'10',budgeted_unit:'ANNUAL',position_control:'1'
   }]])));
@@ -1056,9 +1058,9 @@ test('2027 snapshot titles use proposal framing while data years and source note
   for(const [id,title] of Object.entries(expectedTitles)){
     assert.equal(document.getElementById(id).textContent,title);
   }
-  assert.equal(api.getData().at(-1).year,2026);
-  assert.equal(api.getWorkforce().at(-1).year,2026);
-  assert.match(document.getElementById('largestAppropriationsFoot').textContent,/2026 Budget Ordinance/);
+  assert.equal(api.getData().at(-1).year,2027);
+  assert.equal(api.getWorkforce().at(-1).year,2027);
+  assert.match(document.getElementById('largestAppropriationsFoot').textContent,/2027 Budget Recommendations/);
   assert.match(document.getElementById('localFundsTitle').textContent,/2025/);
   assert.match(document.getElementById('vacanciesTitle').textContent,/Jan-Sept 2026/);
   assert.match(document.getElementById('persistentVacanciesTitle').textContent,/2026/);
@@ -1201,4 +1203,90 @@ test('persistent vacancy graphics show every title on desktop, narrow layouts an
     assert.equal($('[data-budget-tooltip]').length,rows.length);
     assert.equal(api.chartDataTable(chart).rows.length,rows.length);
   }
+});
+
+test('exported appropriation views switch offline, keep unique IDs, and restore the generator selection', async () => {
+  const {api,document}=generator();api.seed();
+  api.getData().unshift({year:2024,available:true,amount:500000});
+  const chart=api.EXPORT_CHARTS.find(chart=>chart.id==='appropriations');
+  const before=JSON.stringify(api.getData());
+  const graphic=api.frozenGraphic(chart,{department:'Treasurer',cycle:'2026-recommendation'});
+  assert.equal(document.getElementById('budgetSvg').getAttribute('data-price-basis'),'nominal');
+  assert.equal(JSON.stringify(api.getData()),before);
+  assert.match(graphic.views.adjusted.svg,/500,000 in 2024 dollars/);
+  assert.match(graphic.views.adjusted.svg,/No inflation factor/);
+  assert.equal(graphic.metadata.views.adjusted.dollarBaseYear,2024);
+  assert.match(graphic.metadata.views.nominal.svg,/nominal\.svg$/);
+  const parsed=load(graphic.html);
+  const ids=parsed('[id]').map((_,node)=>parsed(node).attr('id')).get();
+  assert.equal(new Set(ids).size,ids.length);
+  parsed('[aria-labelledby]').each((_,node)=>{
+    for(const id of parsed(node).attr('aria-labelledby').split(/\s+/))assert.ok(ids.includes(id));
+  });
+  let zip;
+  api.setDownload((name,bytes)=>zip=new Blob([bytes]));
+  api.exportForAstro([chart]);
+  const files=await unzipStored(zip);
+  assert.ok(Object.keys(files).some(name=>name.endsWith('/appropriations-nominal.svg')));
+  assert.ok(Object.keys(files).some(name=>name.endsWith('/appropriations-adjusted.svg')));
+  const manifest=JSON.parse(Object.entries(files).find(([name])=>name.endsWith('/manifest.json'))[1]);
+  assert.equal(manifest.graphics[0].views.adjusted.svg,'appropriations-adjusted.svg');
+  // Run the actual shipped runtime against two embedded charts.
+  document.body.innerHTML=graphic.html+api.frozenGraphic(chart,{department:'Other',cycle:'2026-recommendation'}).html;
+  api.budgetTooltipRuntime();
+  const buttons=document.querySelectorAll('[data-budget-price-toggle]');
+  const panels=document.querySelectorAll('[data-budget-price-view]');
+  assert.equal(panels[0].hidden,false);
+  assert.equal(panels[1].hidden,true);
+  buttons[0].fire('click');
+  assert.equal(buttons[0].getAttribute('aria-checked'),'true');
+  assert.equal(panels[0].hidden,true);
+  assert.equal(panels[1].hidden,false);
+  assert.equal(buttons[1].getAttribute('aria-checked'),'false');
+  assert.equal(panels[2].hidden,false);
+  buttons[0].fire('click');
+  assert.equal(panels[0].hidden,false);
+  assert.equal(panels[1].hidden,true);
+  assert.doesNotMatch(api.budgetTooltipRuntime.toString(),/fetch\(/);
+});
+
+
+test('2027 sources resolve to recommendations while 2026 comparisons retain ordinance sources', async () => {
+  const {api}=generator({preserveDefaultCycle:true});
+  assert.equal(api.cycleYears().at(-1),2027);
+  assert.equal((await api.resolveDataset(2027)).id,'pptx-hhw3');
+  assert.equal((await api.resolvePositionDataset(2027)).id,'t952-rj49');
+  assert.equal((await api.resolveDataset(2026)).id,'6694-f78c');
+  assert.equal((await api.resolvePositionDataset(2026)).id,'v2t2-vajc');
+  assert.equal(api.stage(2027),'Recommendation');
+  assert.equal(api.stage(2026),'Ordinance');
+  api.setAppropriationRows({
+    2026:[{department_number:'60',department_description:'COPA',appropriation_account:'0005',appropriation_account_description:'Salaries',_ordinance_amount_:'100'}],
+    2027:[{department_number:'60',department_description:'COPA',appropriation_account:'0005',appropriation_account_description:'SALARIES',appropriation:'100',revised_appropriation:'110',recommendation:'125'}]
+  });
+  const department={code:'60',name:'COPA'};
+  assert.equal((await api.loadYear(2027,department)).amount,125);
+  const comparison=await api.loadAppropriationChanges(department);
+  assert.equal(comparison.rows[0].previous,100);
+  assert.equal(comparison.rows[0].current,125);
+  assert.equal(comparison.rows[0].net,25);
+  api.setPreviewCycle('2026-recommendation');
+  assert.equal(api.cycleYears().at(-1),2026);
+  assert.equal((await api.resolveDataset(2026)).id,'axxr-vais');
+  assert.equal((await api.resolvePositionDataset(2026)).id,'wd4x-2xf8');
+});
+
+
+test('2027 workforce counts annual positions and converts monthly and hourly units for comparisons', async () => {
+  const {api}=generator({preserveDefaultCycle:true});
+  const row={department_code:'60',department_description:'COPA',title_code:'1234',title_description:'Investigator',budgeted_unit:'Annual',total_budgeted_unit:'10',position_control:'1'};
+  api.setAppropriationRows({2026:[row],2027:[{...row,total_budgeted_unit:'12'},{...row,title_code:'5678',budgeted_unit:'Monthly',position_control:'0',total_budgeted_unit:'12'},{...row,title_code:'5679',budgeted_unit:'Hourly',position_control:'0',total_budgeted_unit:'2080'}]});
+  const department={code:'60',name:'COPA'};
+  const workforce=await api.loadWorkforceYear(2027,department);
+  assert.equal(workforce.positions,14);
+  assert.equal(workforce.components.annualPositions,12);
+  assert.equal(workforce.components.monthlyFtes,1);
+  assert.equal(workforce.components.hourlyFtes,1);
+  const changes=await api.loadPositionChanges(department);
+  assert.equal(changes.rows.find(row=>row.title==='Investigator'&&row.previous===10).net,2);
 });

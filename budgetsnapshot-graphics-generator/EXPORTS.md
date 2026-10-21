@@ -4,6 +4,10 @@ For a chart-by-chart explanation of sources, calculations, and examples, see [Ho
 
 Open `index.html`, select a department and budget cycle, and wait for chart loading to finish. Review the charts and any missing-data warnings before exporting.
 
+The default 2027 cycle loads departments and proposed appropriations from `pptx-hhw3` and positions and salaries from `t952-rj49`. Histories include 2027 recommendations; change charts and the summary compare them with the 2026 ordinance (`6694-f78c` and `v2t2-vajc`). The 2026 recommendation cycle retains its original sources. Vacancies, actuals, fringe estimates, and inflation factors retain their separately supplied reporting years.
+
+Existing Astro graphics are frozen exports. To show 2027 recommendations on an article, review and export a new package, replace its configured graphics folder, and rebuild Astro.
+
 Each exportable chart shows its WordPress marker as normal paragraph text, with a **Copy marker** button. Paste it into a regular WordPress Paragraph block; the clipboard contains plain text, without code formatting. Copying is enabled when the chart is ready to export.
 
 Each rendered chart has two download options:
@@ -15,7 +19,7 @@ Each rendered chart has two download options:
 
 Exports are disabled while data is loading. Switching departments or budget cycles clears old chart renders so exports cannot mix selections. Export does not fetch data; it freezes the current chart values, including missing-year gaps. It does not certify the analysis or mark a chart approved automatically.
 
-For the appropriations history, set the **Inflation adjusted (year dollars)** switch before exporting (off for nominal; on for adjusted). Both SVG and ZIP preserve that selected view and any missing-factor gaps. The dollar basis remains in the SVG accessibility title and export metadata; there is no visible dollar-basis label inside the chart. The toggle itself is not exported. ZIP tooltips still work with the frozen values; publishing both views with a live switch requires additional HTML and runtime support.
+For the appropriations history, Astro ZIPs automatically include **both nominal and inflation-adjusted views** and a working **Inflation adjusted (year dollars)** switch. The generator's selected view becomes the initial view. Each view has its own SVG (`appropriations-nominal.svg` and `appropriations-adjusted.svg`), accessibility IDs, tooltips, and metadata. `appropriations.svg` and the standalone **Download SVG** retain the selected view. Missing inflation factors stay gaps, with a note beside the adjusted chart. The CSV contains both nominal and adjusted amounts. No live data requests are needed.
 
 ## Try an export
 

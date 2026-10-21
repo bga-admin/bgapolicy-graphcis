@@ -201,6 +201,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   <div class="shell site-header__inner">
     <a class="brand" href="https://www.bettergov.org/">Better Government Association</a>
     <div class="product">BGA Policy · Budget Snapshots</div>
+    <a href="custom-graphics.html" style="font-size:.8rem">Custom graphics ↗</a>
   </div>
 </header>
 <section class="hero" aria-labelledby="generatorTitle">
@@ -220,10 +221,10 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
         <label for="departmentSelect">
           <span>Department</span>
           <select id="departmentSelect" disabled>
-            <option>Loading 2026 departments…</option>
+            <option>Loading 2027 departments…</option>
           </select>
         </label>
-        <div id="budgetCycleNote" class="picker-note">Departments are loaded directly from the 2026 Budget Recommendations — Appropriations API. Historical matching uses department codes first, then conservative name normalization for older schemas.</div>
+        <div id="budgetCycleNote" class="picker-note">Departments are loaded directly from the 2027 Budget Recommendations — Appropriations API. Historical matching uses department codes first, then conservative name normalization for older schemas.</div>
       </div>
     <div class="toolbar generator-actions" aria-label="Generator actions">
       <button id="retry" type="button">Reload data</button>
@@ -575,23 +576,23 @@ const BUDGET_CYCLES={
   '2027-prep':{
     key:'2027-prep',
     label:'2027 budget proposal',
-    years:YEARS,
+    years:[...YEARS,2027],
     displayEndYear:2027,
-    latestYear:2026,
-    latestStage:'Ordinance',
-    latestLabel:'2026 ordinance',
-    latestLongLabel:'the 2026 ordinance baseline',
-    departmentSourceYear:2026,
+    latestYear:2027,
+    latestStage:'Recommendation',
+    latestLabel:'2027 proposed',
+    latestLongLabel:'the proposed 2027 budget',
+    departmentSourceYear:2027,
     previousYear:2026,
     currentYear:2027,
     vacancyYear:2026,
     inflationYear:2025,
     actualSpendYear:2025,
     persistentVacancyYear:2026,
-    currentAvailable:false,
+    currentAvailable:true,
     appropriationDataset2026:ORDINANCE_2026_APPROPRIATIONS,
     positionDataset2026:ORDINANCE_2026_POSITIONS,
-    pickerNote:'2027 budget proposal snapshot. Budget charts currently use the 2026 ordinance baseline pending the 2027 recommendation APIs. Vacancies cover 2026; local fund actuals run through 2025.'
+    pickerNote:'Departments and proposed budgets use the 2027 Budget Recommendations APIs, compared with the 2026 ordinance baseline. Vacancies cover 2026; local fund actuals run through 2025.'
   }
 };
 let activeCycle=BUDGET_CYCLES['2027-prep'];
@@ -613,7 +614,8 @@ const PINNED={
   2023:'xbjh-7zvh',
   2024:'x394-e874',
   2025:'t59y-fr3k',
-  2026:'axxr-vais'
+  2026:'axxr-vais',
+  2027:'pptx-hhw3'
 };
 
 const AGENCY_ALIASES=[
@@ -914,7 +916,8 @@ const POSITION_PINNED={
   2023:'pkjy-hzin',
   2024:'jeta-egyx',
   2025:'2bp7-w85v',
-  2026:'wd4x-2xf8'
+  2026:'wd4x-2xf8',
+  2027:'t952-rj49'
 };
 
 function cycleYears(){
@@ -3576,7 +3579,30 @@ function downloadAllData(){
   }catch(error){exportStatus.textContent='Data download failed: '+error.message;console.error(error)}
 }
 
-function frozenGraphic(chart,context){
+function frozenGraphic(chart,context,singleView=false){
+  if(chart.id==='appropriations'&&!singleView){
+    const selected=appropriationPriceBasis;
+    const views={};
+    try{
+      for(const basis of ['nominal','adjusted']){
+        appropriationPriceBasis=basis;
+        renderChart(lastData);
+        views[basis]=frozenGraphic(chart,context,true);
+      }
+    }finally{
+      appropriationPriceBasis=selected;
+      renderChart(lastData);
+    }
+    const chosen=views[selected];
+    const dollarYear=activeCycle.inflationYear;
+    const missing=views.adjusted.metadata.missingInflationFactorYears;
+    const note=`Values in ${dollarYear} dollars.${missing.length?` No supplied inflation factors for ${missing.join(', ')}; those years remain gaps.`:''}`;
+    const control=`<button type="button" class="budget-price-switch" data-budget-price-toggle role="switch" aria-checked="${selected==='adjusted'}"><span class="budget-price-switch__track" aria-hidden="true"></span>Inflation adjusted (${dollarYear} dollars)</button>`;
+    const panels=Object.entries(views).map(([basis,view])=>`<div data-budget-price-view="${basis}"${basis!==selected?' hidden':''}>${view.svg}<p class="budget-price-note">${escapeHtml(basis==='adjusted'?note:'Values in nominal dollars.')}</p></div>`).join('\n');
+    const heading=escapeHtml(chosen.metadata.title);
+    const html=`<figure class="budget-graphic" data-budget-figure="appropriations"><h2>${heading}</h2>${control}${panels}<a class="budget-data-download" href="data:text/csv;charset=utf-8,${encodeURIComponent(chartCsv(chartDataTable(chart)))}" download="${escapeHtml(chartDataFilename(chart))}">Download data (CSV)</a></figure>`;
+    return {...chosen,html,views,metadata:{...chosen.metadata,views:Object.fromEntries(Object.entries(views).map(([basis,view])=>[basis,{...view.metadata,svg:`appropriations-${basis}.svg`}]))}};
+  }
   const original=document.getElementById(chart.svgId);
   const card=original.closest('.card');
   const clone=original.cloneNode(true);
@@ -3586,7 +3612,7 @@ function frozenGraphic(chart,context){
   clone.style.width='100%';
   clone.style.height='auto';
   // Namespace gradients and accessibility IDs so several exports can share an article.
-  const prefix=exportSlug(context.department)+'-'+context.cycle+'-'+chart.id+'-';
+  const prefix=exportSlug(context.department)+'-'+context.cycle+'-'+chart.id+'-'+(chart.id==='appropriations'?appropriationPriceBasis+'-':'');
   const ids=new Map(Array.from(clone.querySelectorAll('[id]'),node=>[node.id,prefix+node.id]));
   clone.id=prefix+'svg';
   clone.querySelectorAll('*').forEach(node=>{
@@ -3639,6 +3665,16 @@ function budgetTooltipRuntime(){
     active=null;
     tooltip.hidden=true;
   }
+  document.querySelectorAll('[data-budget-price-toggle]').forEach(button=>{
+    button.addEventListener('click',()=>{
+      hide();
+      const adjusted=button.getAttribute('aria-checked')!=='true';
+      button.setAttribute('aria-checked',String(adjusted));
+      button.closest('[data-budget-figure]').querySelectorAll('[data-budget-price-view]').forEach(panel=>{
+        panel.hidden=panel.getAttribute('data-budget-price-view')!==(adjusted?'adjusted':'nominal');
+      });
+    });
+  });
   function target(event){return event.target instanceof Element?event.target.closest('[data-budget-graphic] [data-budget-tooltip]'):null}
   function show(node){
     hide();
@@ -3686,6 +3722,14 @@ const EXPORT_CSS=`
 .budget-tooltip .amt{font-family:"Proxima Nova","Helvetica Neue",Arial,sans-serif;font-size:22px;font-weight:700;line-height:1.05}
 .budget-tooltip .agency{opacity:.8;margin-top:4px;font-size:10px}
 .budget-tooltip[hidden]{display:none}
+.budget-graphic [data-budget-price-view][hidden]{display:none}
+.budget-price-switch{display:inline-flex;align-items:center;gap:10px;min-height:44px;margin:0 0 12px;padding:4px 0;border:0;background:transparent;color:#213747;cursor:pointer;font:600 14px/1.5 system-ui,sans-serif;text-align:left}
+.budget-price-switch:focus-visible{outline:2px solid #294f68;outline-offset:4px}
+.budget-price-switch__track{position:relative;display:inline-block;flex:0 0 42px;width:42px;height:24px;border-radius:999px;background:#b6c2ca}
+.budget-price-switch__track::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0003}
+.budget-price-switch[aria-checked="true"] .budget-price-switch__track{background:#3e6f8c}
+.budget-price-switch[aria-checked="true"] .budget-price-switch__track::after{transform:translateX(18px)}
+.budget-price-note{margin:8px 0;color:#6f808b;font:13px/1.5 system-ui,sans-serif}
 `;
 // ZIP "store" entries need no compression dependency or network connection.
 function zipFiles(files){
@@ -3732,6 +3776,7 @@ function exportForAstro(charts){
       const graphic=frozenGraphic(chart,context);
       files[folder+chart.id+'.svg']=graphic.svg;
       files[folder+chart.id+'.html']=graphic.html;
+      for(const [basis,view] of Object.entries(graphic.views||{}))files[folder+chart.id+'-'+basis+'.svg']=view.svg;
       files[folder+chart.id+'.csv']=chartCsv(chartDataTable(chart));
       if(chart.id==='summary')files[folder+'summary.json']=JSON.stringify({...context,...graphic.metadata.data},null,2);
       graphics.push({...graphic.metadata,svg:chart.id+'.svg',html:chart.id+'.html',csv:chart.id+'.csv',placeholder:graphicMarker(chart.id)});
@@ -3743,7 +3788,7 @@ function exportForAstro(charts){
     files[folder+'budget-graphics.css']=EXPORT_CSS;
     // Encode markup so Live Server cannot inject reload code into this JS string.
     files[folder+'preview.html']=`\x3C!doctype html>\x3Chtml lang="en">\x3Chead>\x3Cmeta charset="utf-8">\x3Cmeta name="viewport" content="width=device-width,initial-scale=1">\x3Ctitle>${escapeHtml(context.department)} approved graphics preview\x3C/title>\x3Clink rel="stylesheet" href="budget-graphics.css">\x3Cstyle>body{margin:34px auto;padding:0 14px;max-width:860px;background:#f6f8f9;color:#213747;font-family:"Synthese","Helvetica Neue",Helvetica,Arial,sans-serif;line-height:1.63}h1{font-family:"Proxima Nova","Helvetica Neue",Arial,sans-serif;letter-spacing:-.025em}body>p{color:#6f808b}\x3C/style>\x3C/head>\x3Cbody>\x3Ch1>${escapeHtml(context.department)} · ${escapeHtml(activeCycle.label)}\x3C/h1>\x3Cp>Frozen export. Hover, focus, or tap a chart point for details. No live data requests.\x3C/p>${frozen.map(graphic=>graphic.html).join('\n')}\x3Cscript src="budget-tooltips.js" defer>\x3C/script>\x3C/body>\x3C/html>`;
-    files[folder+'README.txt']=`Frozen budget graphics export\n\nUnzip, then open preview.html in a browser to review tooltips offline.\n\nSVG files contain approved values, accessible labels, and tooltip text.\nHTML files contain the title, inline chart, and an offline CSV download link. Each graphic also has a matching CSV file. Source notes, warnings, and edit status remain in manifest.json for editorial review.\nLoad budget-graphics.css and budget-tooltips.js once per article. SVG must be inline for shared tooltips; an img tag will not expose its bars to the script.\n\nSuggested destination: src/graphics/${folder}\nWordPress placeholders are listed in manifest.json. Set graphicsFolder in Astro snapshots.js to the export directory relative to src/graphics, then add marker paragraphs in WordPress and rebuild.\n\nExporting freezes the current render; it does not certify the data. Review warnings and source notes. Missing/failed charts and unfinished placeholders are excluded and listed in manifest.json.\n`;
+    files[folder+'README.txt']=`Frozen budget graphics export\n\nUnzip, then open preview.html in a browser to review tooltips offline.\n\nSVG files contain approved values, accessible labels, and tooltip text.\nHTML files contain the title, inline chart, and an offline CSV download link. Appropriations include nominal and inflation-adjusted views with a switch; both views also have separate SVG files. Missing inflation factors remain gaps. Each graphic also has a matching CSV file. Source notes, warnings, and edit status remain in manifest.json for editorial review.\nLoad budget-graphics.css and budget-tooltips.js once per article. SVG must be inline for shared tooltips; an img tag will not expose its bars to the script.\n\nSuggested destination: src/graphics/${folder}\nWordPress placeholders are listed in manifest.json. Set graphicsFolder in Astro snapshots.js to the export directory relative to src/graphics, then add marker paragraphs in WordPress and rebuild.\n\nExporting freezes the current render; it does not certify the data. Review warnings and source notes. Missing/failed charts and unfinished placeholders are excluded and listed in manifest.json.\n`;
     const name=exportSlug(context.department)+'-'+context.cycle+'-'+(charts.length===1?charts[0].id:'all-graphics')+'.zip';
     downloadFile(name,zipFiles(files));
     exportStatus.textContent=`Exported ${charts.length} graphic${charts.length===1?'':'s'} for ${context.department} (${activeCycle.label}). ${skipped.length?skipped.length+' unavailable chart(s) excluded. ':''}Unzip and open preview.html to check the frozen graphics and tooltips.`;

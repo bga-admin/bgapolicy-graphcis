@@ -141,7 +141,7 @@ Missing or unusable years remain gaps, and the line does not bridge them. The do
 
 The adjusted view leaves years without a supplied factor as gaps and lists them below the chart. Currently the 2024-dollar table ends in 2024, so 2025–2026 are gaps for the 2026 proposal; the 2025-dollar table ends in 2025, so 2026 is a gap for the 2027 cycle. Factors are never assumed to be 1 for uncovered years. An adjusted view with fewer than two usable points can show individual points or only gaps.
 
-**Export behavior:** SVG and Astro ZIP exports freeze the selected dollar view. The toggle itself stays in the generator. A visible label inside the SVG identifies nominal dollars or the inflation base year; adjusted tooltips include both adjusted and nominal amounts. Export metadata includes `priceBasis`, `dollarBaseYear`, and `missingInflationFactorYears`. The ZIP's shared tooltip interaction still works with the selected values. Publishing a toggle would require exporting both views plus a separate switching control and runtime.
+**Export behavior:** Astro ZIPs automatically include both nominal and inflation-adjusted appropriation views, separate SVG files for each, and a working switch in the HTML fragment. The selected generator view is the default; standalone SVG downloads preserve that selected view. Adjusted tooltips include both adjusted and nominal amounts. Each view has its own accessibility IDs and metadata (`priceBasis`, `dollarBaseYear`, and `missingInflationFactorYears`). The shared script switches views and dismisses any open tooltip, without fetching or recalculating data. Missing factors remain gaps and are explained beside the adjusted chart.
 
 ### Recovered IPRA history
 

@@ -1,0 +1,403 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Custom Graphics — BGA Policy</title>
+<link rel="stylesheet" href="https://use.typekit.net/qxf4xdj.css">
+<style>
+:root{--bg:#f6f8f9;--surface:#fff;--primary:#3e6f8c;--primary-dark:#294f68;--accent:#e9b84a;--text:#213747;--muted:#6f808b;--border:#d8e1e6;--sky:#edf3f6;--negative:#8b6472;--display:"Proxima Nova","Helvetica Neue",Arial,sans-serif;--sans:"Synthese","Helvetica Neue",Helvetica,Arial,sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:14px/1.6 var(--sans);-webkit-font-smoothing:antialiased}a{color:var(--primary-dark);text-underline-offset:3px}.shell{width:min(calc(100% - 40px),1440px);margin:auto}.site-header{border-bottom:1px solid var(--border);background:#fafcfd}.site-header .shell{min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:16px}.brand{font:700 16px var(--display);text-decoration:none}.product,.eyebrow{font:700 11px var(--display);letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}.hero{padding:44px 0 38px;background:radial-gradient(circle at 87% 24%,#c9dce8,transparent 36rem),linear-gradient(145deg,#e9f0f4,#d8e5ec 52%,#e7eef2);border-bottom:1px solid #ccd8df}.eyebrow{color:var(--primary);margin:0 0 12px}h1,h2,h3{font-family:var(--display);line-height:1.1;letter-spacing:-.025em}h1{font-size:clamp(36px,5vw,64px);margin:0}h2{font-size:24px;margin:0 0 20px}h3{font-size:18px;margin:0 0 12px}.hero p:last-child{max-width:760px;color:#405968;font-size:17px;margin-bottom:0}.workspace{display:grid;grid-template-columns:330px minmax(0,1fr);gap:24px;padding:30px 0 64px}.card{background:white;border:1px solid var(--border);border-radius:4px;padding:22px;min-width:0}.card+.card{margin-top:22px}.fields{display:grid;gap:14px}.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{display:grid;gap:5px;color:var(--primary-dark);font-size:12px;font-weight:600}input,select,textarea,button{font:inherit;border:1px solid #c1cdd4;border-radius:4px;color:var(--text);background:white}input,select,textarea{width:100%;min-width:0;padding:9px 10px}textarea{resize:vertical;font-weight:400}button{min-height:40px;padding:9px 12px;font-size:12px;font-weight:600;cursor:pointer;color:var(--primary-dark)}button:hover{background:var(--sky);border-color:var(--primary)}button:disabled{opacity:.45;cursor:not-allowed}.primary{background:var(--primary-dark);color:#fff;border-color:var(--primary-dark)}.primary:hover{background:var(--primary)}:focus-visible{outline:2px solid var(--primary);outline-offset:2px}.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.note{font-size:12px;color:var(--muted);line-height:1.55}.note code{overflow-wrap:anywhere}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px}.section-head h2{margin:0}.preview-stage{background:var(--sky);padding:18px;border:1px solid var(--border);border-radius:4px;overflow:auto}.graphic{margin:auto;background:#fff;max-width:100%}.graphic svg{display:block;width:100%;height:auto}.preview-stage.narrow .graphic{max-width:375px}.preview-stage.narrow{padding:10px}.status{padding:10px 12px;background:var(--sky);color:var(--primary-dark);font-size:12px;margin:14px 0}.status.error{color:#74364c;background:#faf0f3;border-left:3px solid var(--negative)}[hidden]{display:none!important}.sheet-wrap{overflow:auto;border:1px solid var(--border);max-height:420px;margin-top:14px}table.sheet{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}.sheet th{background:#edf3f6;font-size:11px;color:var(--muted);font-weight:600;min-width:36px;padding:5px;position:sticky;top:0;z-index:1}.sheet td{border:1px solid #d8e1e6;padding:0;min-width:130px}.sheet td input{border:0;border-radius:0;min-height:37px;padding:8px;font-size:12px;font-weight:400}.sheet tr:first-child input{background:#f4f7f9;font-weight:700}.sheet td:focus-within{outline:2px solid var(--primary);outline-offset:-2px}.sheet .delete{padding:0;min-width:35px}.delete button{border:0;background:transparent;padding:2px;min-height:30px;color:var(--muted)}details{margin-top:16px;border-top:1px solid var(--border);padding-top:14px}summary{font-size:12px;font-weight:700;color:var(--primary-dark);cursor:pointer}.paste-input{font:12px/1.5 monospace;margin-top:12px}.export-code{font:12px/1.5 monospace;background:#f6f8f9}.check{display:flex;align-items:center;gap:8px}.check input{width:auto}footer{font-size:12px;color:var(--muted);padding:0 0 30px}#notice{min-height:20px;margin:10px 0 0;color:var(--primary-dark);font-size:12px}@media(max-width:1050px){.workspace{grid-template-columns:280px minmax(0,1fr)}.card{padding:16px}.preview-stage{padding:4px}}@media(max-width:800px){.workspace{grid-template-columns:1fr}.shell{width:calc(100% - 24px)}.settings .fields{grid-template-columns:1fr 1fr}.settings .wide{grid-column:1/-1}.product{display:none}}@media(max-width:460px){.settings .fields{grid-template-columns:1fr}.settings .wide{grid-column:auto}.two{grid-template-columns:1fr}.hero{padding:30px 0}.section-head{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<header class="site-header"><div class="shell"><a class="brand" href="index.html">BGA Policy</a><span class="product">Custom graphics studio</span><a href="index.html">Snapshot generator ↗</a></div></header>
+<section class="hero"><div class="shell"><p class="eyebrow">Chicago budget graphics · Create your own</p><h1>Your data. A clearer picture.</h1><p>Build a graphic in the Budget Snapshot style. Paste from a spreadsheet, adjust your labels, and export an interactive chart for your site.</p></div></section>
+<main class="shell workspace">
+<aside class="settings">
+<section class="card"><h2>Make it yours</h2><div class="fields">
+<label class="wide">Chart type<select id="type"><option value="line">Line</option><option value="area">Line with shaded area</option><option value="column" selected>Grouped columns</option><option value="stacked">Stacked columns</option><option value="percent">100% stacked columns</option><option value="bar">Horizontal bars</option><option value="scatter">Scatter plot</option><option value="donut">Donut</option><option value="table">Data table</option></select></label>
+<label class="wide">Title<textarea id="title" rows="2">Department budget over time</textarea></label>
+<label class="wide">Subtitle<textarea id="subtitle" rows="2">Appropriations by funding source, 2022–2026</textarea></label>
+<label>X-axis title<input id="xTitle" value="Year"></label>
+<label>Y-axis title<input id="yTitle" value="Appropriations ($)"></label>
+<label>Column label angle<select id="labelAngle"><option value="0">0° — horizontal</option><option value="-30">−30°</option><option value="-45">−45°</option><option value="-60">−60°</option><option value="-90">−90° — vertical</option><option value="30">30°</option><option value="45">45°</option><option value="60">60°</option><option value="90">90° — vertical</option></select></label>
+<label>Value format<select id="format"><option value="number">Number</option><option value="currency" selected>Dollars ($)</option><option value="percent">Percent (25 = 25%)</option></select></label>
+<label>Decimal places<select id="decimals"><option>0</option><option selected>1</option><option>2</option><option>3</option></select></label>
+<label>Plot height<input id="height" type="number" min="240" max="800" step="20" value="360"></label>
+<label>Palette<select id="palette"><option value="snapshot">Snapshot blues</option><option value="contrast">Blue, gold & plum</option><option value="muted">Muted editorial</option></select></label>
+<label class="wide">Source note<textarea id="source" rows="2">Source: Illustrative example data. Replace before publishing.</textarea></label>
+<label class="wide">Additional note<textarea id="note" rows="2" placeholder="Definitions, missing data, or methodology"></textarea></label>
+<label class="check wide"><input id="legend" type="checkbox" checked>Show legend</label>
+<label class="check wide"><input id="values" type="checkbox">Show value labels</label>
+</div><p class="note">For horizontal bars, X is the value axis and Y is the category axis. Scatter uses numeric values in the first column as X. Donut uses the first value column.</p></section>
+<section class="card"><h3>Keep your work</h3><p class="note">Download a project to reopen and edit later. Your current work also saves in this browser.</p><div class="toolbar"><button id="saveProject">Save project</button><button id="openProject">Open project</button><input id="projectFile" type="file" accept=".json,application/json" hidden></div></section>
+</aside>
+<div class="main-column">
+<section class="card"><div class="section-head"><h2>Live preview</h2><button id="previewSize" aria-pressed="false">Preview at phone width</button></div><div id="status" class="status" role="status" aria-live="polite"></div><div class="preview-stage" id="previewStage"><div class="graphic" id="preview"></div></div><p class="note">Hover, tap, or Tab to a mark for its value. Press Escape to dismiss. Blank cells stay missing; zero stays zero.</p></section>
+<section class="card"><div class="section-head"><h2>Your data</h2><div class="toolbar"><button id="addRow">+ Row</button><button id="addColumn">+ Series</button></div></div><p class="note">Copy a range from Excel or Google Sheets and paste into any cell. Include column headers when pasting at A1. The first row names the series; the first column supplies categories. Paste replaces cells starting at the selected cell and expands the grid. Click × to remove a row or column.</p><div id="sheet" class="sheet-wrap" aria-label="Editable chart data"></div>
+<details><summary>Paste a whole table or import CSV</summary><label for="pasteData" class="note">Tab-separated or comma-separated text, including a header row</label><textarea id="pasteData" class="paste-input" rows="5" placeholder="Year&#9;Budget spent&#9;Budget unspent&#10;2024&#9;12000000&#9;3000000"></textarea><div class="toolbar"><button id="replaceData">Replace table with pasted data</button><button id="importCsv">Import CSV / TSV</button><input id="csvFile" type="file" accept=".csv,.tsv,text/csv,text/tab-separated-values" hidden></div></details>
+<details><summary>Start from an example</summary><p class="note">Replaces the data and labels. Save your project first if you want to keep it.</p><div class="toolbar"><button data-example="budget">Budget comparison</button><button data-example="vacancies">Filled & vacant positions</button><button data-example="change">Positive & negative changes</button><button data-example="scatter">Scatter comparison</button><button data-example="donut">Spending breakdown</button></div></details>
+</section>
+<section class="card"><h2>Export your graphic</h2><div class="toolbar"><button id="exportHtml" class="primary" data-export>Download HTML</button><button id="exportAstro" data-export>Export for Astro (.zip)</button><button id="exportSvg" data-export>Download interactive SVG</button><button id="exportCsv" data-export>Download data CSV</button></div><p class="note">HTML includes the chart and interactive tooltips. Upload the HTML file to your site and use its URL in the iframe below. Exports contain frozen data and work without a network connection; system fonts are used when the brand fonts are unavailable.</p>
+<label style="margin-bottom:12px">Astro graphic ID (optional)<input id="graphicId" placeholder="custom-my-chart" pattern="[a-z0-9]+(-[a-z0-9]+)*"></label><div class="toolbar" style="margin-bottom:12px"><button id="copyGraphicId" type="button">Copy graphic ID</button><button id="copyAstroMarker" type="button">Copy marker</button></div><label>Story marker<input id="astroMarker" readonly aria-label="Astro story marker"></label><p class="note">The Astro ZIP includes an article marker, manifest, reusable .astro component, interactive chart, data, and setup instructions. Use a unique graphic ID with lowercase letters, numbers, and hyphens when adding it alongside existing charts.</p><label>Hosted HTML URL<input id="embedUrl" type="url" placeholder="https://your-site.org/graphics/my-chart.html"></label><label style="margin-top:12px">Iframe embed code<textarea id="embedCode" class="export-code" rows="3" readonly aria-label="Iframe embed code"></textarea></label><div class="toolbar" style="margin-top:10px"><button id="copyEmbed">Copy embed code</button></div><p class="note">The iframe uses a fixed height; review it at your article’s desktop and phone widths. SVG interactivity works when opened directly, inlined, or embedded with &lt;object&gt;. An &lt;img&gt; shows the graphic with no scripted interactions. Site security settings must allow inline scripts for custom tooltips.</p><p id="notice" role="status" aria-live="polite"></p></section>
+</div></main><footer class="shell">BGA Policy · Custom graphics generator · <a href="CUSTOM-GRAPHICS.md">Usage & export guide</a></footer>
+<script id="graphics-core">
+'use strict';
+const CustomGraphics = (() => {
+const palettes = {snapshot:['#3e6f8c','#8eafc3','#294f68','#b5cbd9','#6f808b','#d8e1e6','#8b6472','#e9b84a'],contrast:['#3e6f8c','#e9b84a','#96536f','#8b6472','#294f68','#b5cbd9','#a17629','#67877c'],muted:['#3e6f8c','#8b6472','#67877c','#b59a68','#8eafc3','#6f808b','#294f68','#b5cbd9']};
+const types=['line','area','column','stacked','percent','bar','scatter','donut','table'];
+const escape = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+function parseDelimited(text) {
+ text=String(text).replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n');
+ // Detect delimiters outside quoted fields, including quoted multiline headers.
+ let quoted=false, tabs=0, commas=0;
+ for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"')i++;else quoted=!quoted;}else if(!quoted){if(c==='\n')break;if(c==='\t')tabs++;if(c===',')commas++;}}
+ const delimiter=tabs?'\t':','; const rows=[];let row=[],cell='';quoted=false;
+ for(let i=0;i<text.length;i++) {const c=text[i];if(c==='"'&&(quoted||cell==='')){if(quoted&&text[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(!quoted&&(c===delimiter||c==='\n')){row.push(cell);cell='';if(c==='\n'){rows.push(row);row=[];}}else cell+=c;}
+ if(quoted)throw Error('A quoted cell is missing its closing quote.');
+ row.push(cell);rows.push(row);while(rows.length&&rows.at(-1).every(v=>v===''))rows.pop();
+ if(!rows.length)throw Error('Paste a header row and at least one data row.');
+ return rectangular(rows,1);
+}
+function rectangular(rows,minWidth=2) {
+ if(!Array.isArray(rows)||!rows.length||rows.some(r=>!Array.isArray(r)))throw Error('Data must be a table of rows.');
+ const width=Math.max(minWidth,...rows.map(r=>r.length));
+ if(rows.length>501||width>21)throw Error('Use at most 500 data rows and 20 value columns. No data was imported.');
+ return rows.map(row=>Array.from({length:width},(_,i)=>String(row[i]??'')));
+}
+function number(value) {
+ let text=String(value??'').trim();if(!text||/^(?:n\/?a|null|—|–)$/i.test(text))return null;
+ const negative=/^\(.*\)$/.test(text);if(negative)text=text.slice(1,-1).trim();
+ text=text.replace(/^\$/,'').replace(/%$/,'').trim();
+ if(!/^[+-]?(?:(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(text))throw Error(`“${value}” is not a number.`);
+ const result=Number(text.replace(/,/g,''))*(negative?-1:1);if(!Number.isFinite(result))throw Error('Values must be finite numbers.');return result;
+}
+function model(config,grid) {
+ if(!types.includes(config.type))throw Error('Choose a supported chart type.');
+ const rows=rectangular(grid);if(rows.length<2)throw Error('Add at least one data row.');
+ let used=rows[0].length;while(used>2&&rows.every(r=>!r[used-1].trim()))used--;
+ const headers=rows[0].slice(0,used).map((v,i)=>v.trim()||(i?'Series '+i:'Category'));
+ const series=headers.slice(1);const data=[];
+ rows.slice(1).forEach((r,index)=>{r=r.slice(0,used);if(r.every(v=>!v.trim()))return;
+ if(!r[0].trim())throw Error(`Row ${index+2}: enter a category in the first column.`);
+ const values=r.slice(1).map((v,j)=>{try{return number(v);}catch(error){throw Error(`Row ${index+2}, ${headers[j+1]}: ${error.message}`);}});
+ let x=index;if(config.type==='scatter'){try{x=number(r[0]);}catch{throw Error(`Row ${index+2}: scatter X values must be numeric.`);}if(x===null)throw Error(`Row ${index+2}: enter an X value.`);}
+ data.push({label:r[0],values,x});});
+ if(!data.length||!data.some(r=>r.values.some(v=>v!==null)))throw Error('Enter at least one numeric value.');
+ if(['percent','donut'].includes(config.type)&&data.some(r=>(config.type==='donut'?r.values.slice(0,1):r.values).some(v=>v!==null&&v<0)))throw Error('Donut and 100% stacked charts require nonnegative values.');
+ if(config.type==='donut'&&!(data.reduce((s,r)=>s+(r.values[0]??0),0)>0))throw Error('A donut needs a positive total in the first value column.');
+ if(config.type==='donut'&&!Number.isFinite(data.reduce((s,r)=>s+(r.values[0]??0),0)))throw Error('The donut total is too large.');
+ if(['stacked','percent'].includes(config.type)&&data.some(r=>!Number.isFinite(r.values.reduce((s,v)=>s+Math.abs(v??0),0))))throw Error('A stacked total is too large.');
+ return {headers,series,data};
+}
+function format(value,config,compact=false) {
+ if(value===null)return '—';const decimals=Math.min(3,Math.max(0,Number(config.decimals)||0));
+ const unit=config.format==='currency'?'$':'';const suffix=config.format==='percent'?'%':'';
+ const abs=Math.abs(value);let divisor=1,short='';if(compact){if(abs>=1e9){divisor=1e9;short='B';}else if(abs>=1e6){divisor=1e6;short='M';}else if(abs>=1e3){divisor=1e3;short='K';}}
+ return (value<0?'−':'')+unit+(abs/divisor).toLocaleString('en-US',{minimumFractionDigits:compact?0:decimals,maximumFractionDigits:decimals})+short+suffix;
+}
+function wrap(value,limit) {
+ const lines=[];for(const paragraph of String(value||'').split('\n')){let line='';for(const word of paragraph.split(/\s+/).filter(Boolean)){if(line&&line.length+word.length+1>limit){lines.push(line);line='';}for(let i=0;i<word.length;i+=limit){const part=word.slice(i,i+limit);if(i){lines.push(line);line='';}line+=(line?' ':'')+part;}}lines.push(line);}return lines;
+}
+function csv(grid) {return '\uFEFF'+grid.map(row=>row.map(v=>{let s=String(v??'');if(/^[=+@\-\t\r]/.test(s)&&!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}).join(',')).join('\r\n');}
+function tooltipRuntime(svg) {
+ const group=svg.querySelector('[data-tooltip-box]');if(!group)return;
+ const box=group.querySelector('rect'), label=group.querySelector('text');
+ function hide(){group.setAttribute('visibility','hidden');}
+ function show(mark){
+ const fallback=(mark.getAttribute('data-tip')||'').split('\n');
+ const title=mark.getAttribute('data-tip-title')||fallback[0]||'';
+ const amount=mark.getAttribute('data-tip-value')||fallback[1]||'';
+ const detail=mark.getAttribute('data-tip-detail')||fallback.slice(2).join('\n');
+ // Lining figures avoid old-style numerals; every field uses the same typeface.
+ label.setAttribute('font-family','Synthese,Helvetica Neue,Helvetica,Arial,sans-serif');
+ label.setAttribute('style',"font-variant-numeric:lining-nums tabular-nums;font-feature-settings:'lnum' 1,'tnum' 1");
+ label.setAttribute('xml:space','preserve');label.replaceChildren();let cursor=22;
+ function span(value,className,size=12,weight='400'){
+ const t=svg.ownerDocument.createElementNS('http://www.w3.org/2000/svg','tspan');
+ t.setAttribute('class',className);t.setAttribute('font-size',String(size));t.setAttribute('font-weight',weight);t.setAttribute('fill','#ffffff');t.textContent=value;return t;
+ }
+ function line(value,className,size,weight,lineHeight){const t=span(value,className,size,weight);t.setAttribute('x','12');t.setAttribute('y',String(cursor));label.append(t);cursor+=lineHeight;return t;}
+ function wrapped(value,limit){
+ const result=[];for(const paragraph of value.split('\n')){let current='';for(const word of paragraph.split(/\s+/)){if(current&&current.length+word.length+1>limit){result.push(current);current='';}current+=(current?' ':'')+word;}result.push(current);}return result;
+ }
+ for(const value of wrapped(title,46))line(value,'yr',12,'700',17);cursor+=4;
+ // Keep the number intact rather than splitting digits across lines.
+ line(amount,'amt',18,'600',24);cursor+=3;
+ for(const row of detail.split('\n').filter(Boolean)){
+ const split=row.lastIndexOf(': ');
+ if(split<0){for(const value of wrapped(row,46))line(value,'agency',12,'700',18);continue;}
+ const name=row.slice(0,split+1),value=row.slice(split+2),nameLines=wrapped(name,34);
+ nameLines.forEach((part,index)=>{
+ const t=line('','agency',12,'400',18);t.append(span(part,'detail-label',12,'700'));
+ if(index===nameLines.length-1){
+ if(part.length+value.length+1>46){const valueLine=line('','agency',12,'400',18);valueLine.append(span(value,'detail-value'));}
+ else t.append(span(' '+value,'detail-value'));
+ }
+ });
+ }
+ let width=200;try{width=Math.max(138,label.getBBox().width+24);}catch{}
+ const height=cursor+2;box.setAttribute('width',width);box.setAttribute('height',height);
+ const b=mark.getBBox(), vb=svg.viewBox.baseVal;const x=Math.max(4,Math.min(b.x+b.width/2-width/2,vb.width-width-4));const y=Math.max(4,Math.min(b.y-height-8,vb.height-height-4));
+ group.setAttribute('transform',`translate(${x},${y})`);group.setAttribute('visibility','visible');
+ }
+ svg.querySelectorAll('[data-tip]').forEach(mark=>{mark.querySelector('title')?.remove();mark.addEventListener('pointerenter',()=>show(mark));mark.addEventListener('pointerleave',hide);mark.addEventListener('focus',()=>show(mark));mark.addEventListener('blur',hide);mark.addEventListener('click',()=>show(mark));});
+ svg.addEventListener('keydown',event=>{if(event.key==='Escape')hide();});svg.addEventListener('pointerdown',event=>{if(!event.target.closest('[data-tip]'))hide();});
+}
+function render(config,grid,interactive=true) {
+ const m=model(config,grid), {series,data}=m;const colors=palettes[config.palette]||palettes.snapshot;const W=900,pad=28;
+ const font='Synthese,Helvetica Neue,Helvetica,Arial,sans-serif', display='Proxima Nova,Helvetica Neue,Arial,sans-serif';
+ const out=[];const text=(x,y,value,size=12,extra='')=>`<text x="${x}" y="${y}" font-size="${size}" ${extra}>${escape(value)}</text>`;
+ const lines=(x,y,arr,size=12,lineHeight=18,extra='')=>arr.map((s,i)=>text(x,y+i*lineHeight,s,size,extra)).join('');
+ let top=36;const titleLines=wrap(config.title||'Untitled graphic',53);out.push(lines(pad,top,titleLines,28,31,`font-family="${display}" font-weight="700"`));top+=titleLines.length*31;
+ if(config.subtitle){const a=wrap(config.subtitle,100);out.push(lines(pad,top,a,14,20,'fill="#6f808b"'));top+=a.length*20+4;}
+ let legendEntries=config.type==='donut'?data.map((r,i)=>[r.label,colors[i%colors.length]]):series.map((s,i)=>[s,colors[i%colors.length]]);
+ if(config.legend&&config.type!=='table'){
+ let lx=pad,ly=top+12;for(const [name,color] of legendEntries){const a=wrap(name,38);const width=Math.min(340,Math.max(...a.map(s=>s.length))*7+29);if(lx+width>W-pad){lx=pad;ly+=34;}out.push(`<rect x="${lx}" y="${ly-9}" width="12" height="10" fill="${color}"/>`+lines(lx+19,ly,a,11,13,'fill="#536b7b"'));lx+=width+12;if(a.length>2){lx=pad;ly+=a.length*13+8;}}top=ly+30;
+ }else top+=12;
+ const plotH=Math.max(240,Math.min(800,Number(config.height)||360));let bottom;
+ const tip=(shape,label,value,seriesName,extra='',stack=null)=>{
+ const title=stack?label+' · Total':label,amount=format(stack?stack.total:value,config);
+ const detail=stack?stack.detail:seriesName+extra;
+ const description=stack?`${label}\nTotal: ${amount}\n${detail}`:`${label}\n${seriesName}: ${amount}${extra}`;
+ return shape.replace('>',` tabindex="0" role="img" aria-label="${escape(description.replace(/\n/g,', '))}" data-tip-title="${escape(title)}" data-tip-value="${escape(amount)}" data-tip-detail="${escape(detail).replace(/\n/g,'&#10;')}" data-tip="${escape(description).replace(/\n/g,'&#10;')}"><title>${escape(description)}</title>`);
+ };
+ if(config.type==='table') {
+ const cols=m.headers.length,cw=(W-pad*2)/cols;let y=top;const headerLines=m.headers.map(s=>wrap(s,Math.max(5,Math.floor(cw/7)-2)));const hh=Math.max(...headerLines.map(a=>a.length))*17+20;
+ out.push(`<rect x="${pad}" y="${y}" width="${W-2*pad}" height="${hh}" fill="#edf3f6"/>`);
+ headerLines.forEach((a,i)=>out.push(lines(pad+i*cw+8,y+20,a,12,17,'font-weight="700"')));y+=hh;
+ data.forEach((r,index)=>{const cells=[r.label,...r.values.map(v=>format(v,config))].map(v=>wrap(v,Math.max(5,Math.floor(cw/7)-2))),rh=Math.max(38,...cells.map(a=>a.length*17+16));if(index%2===0)out.push(`<rect x="${pad}" y="${y}" width="${W-2*pad}" height="${rh}" fill="#f7fafc"/>`);cells.forEach((a,j)=>out.push(lines(pad+j*cw+8,y+23,a,12,17)));y+=rh;});bottom=y+18;
+ } else if(config.type==='donut') {
+ const total=data.reduce((s,r)=>s+(r.values[0]??0),0),cx=W/2,cy=top+plotH/2,R=Math.min(plotH/2-15,185),inner=R*.59;let angle=-Math.PI/2;
+ data.forEach((r,i)=>{const v=r.values[0];if(v===null||v===0)return;const span=v/total*Math.PI*2,end=angle+span;const p=(radius,a)=>[cx+radius*Math.cos(a),cy+radius*Math.sin(a)].join(' ');let d;
+ if(span>=Math.PI*2-1e-9)d=`M ${cx} ${cy-R} A ${R} ${R} 0 1 1 ${cx} ${cy+R} A ${R} ${R} 0 1 1 ${cx} ${cy-R} M ${cx} ${cy-inner} A ${inner} ${inner} 0 1 0 ${cx} ${cy+inner} A ${inner} ${inner} 0 1 0 ${cx} ${cy-inner}`;
+ else d=`M ${p(R,angle)} A ${R} ${R} 0 ${span>Math.PI?1:0} 1 ${p(R,end)} L ${p(inner,end)} A ${inner} ${inner} 0 ${span>Math.PI?1:0} 0 ${p(inner,angle)} Z`;
+ out.push(tip(`<path d="${d}" fill="${colors[i%colors.length]}" fill-rule="evenodd" stroke="white" stroke-width="2">`,r.label,v,series[0],`\n${(v/total*100).toFixed(1)}% of total`)+'</path>');
+ if(config.values){const a=angle+span/2,rr=(R+inner)/2;if(span>.13)out.push(text(cx+rr*Math.cos(a),cy+rr*Math.sin(a)+4,(v/total*100).toFixed(1)+'%',12,'fill="white" text-anchor="middle" pointer-events="none"'));}angle=end;});
+ out.push(text(cx,cy-6,'TOTAL',11,'text-anchor="middle" fill="#6f808b"'),text(cx,cy+22,format(total,config,true),25,'text-anchor="middle" font-weight="700"'));bottom=top+plotH+12;
+ } else {
+ const horizontal=config.type==='bar',stacked=['stacked','percent'].includes(config.type),percent=config.type==='percent',scatter=config.type==='scatter';
+ let min=0,max=0;for(const r of data){if(stacked){const vs=r.values.filter(v=>v!==null);max=Math.max(max,vs.filter(v=>v>=0).reduce((s,v)=>s+v,0));min=Math.min(min,vs.filter(v=>v<0).reduce((s,v)=>s+v,0));}else for(const v of r.values){if(v!==null){min=Math.min(min,v);max=Math.max(max,v);}}}
+ if(percent){min=0;max=100;}else{if(max===min)max=min+1;const span=max-min;if(!Number.isFinite(span))throw Error('The value range is too large to plot.');if(max>0)max+=span*.1;if(min<0)min-=span*.1;}
+ const requestedAngle=Number(config.labelAngle)||0;
+ const labelAngle=['column','stacked','percent'].includes(config.type)?Math.max(-90,Math.min(90,requestedAngle)):0;
+ const labelLines=data.map(r=>wrap(r.label,horizontal?26:labelAngle?32:Math.max(5,Math.min(18,Math.floor(720/data.length/7)))));
+ const radians=Math.abs(labelAngle)*Math.PI/180;
+ const labelWidth=Math.max(...labelLines.map(a=>Math.max(...a.map(s=>s.length))*6.5));
+ const labelBlockHeight=Math.max(...labelLines.map(a=>a.length))*14;
+ const labelProjection=labelWidth*Math.cos(radians)+labelBlockHeight*Math.sin(radians);
+ const left=horizontal?220:labelAngle<0?Math.max(100,Math.ceil(labelProjection)+pad):100;
+ const right=W-(labelAngle>0?Math.max(35,Math.ceil(labelProjection)+pad):35),pw=right-left;let ph=plotH;
+ const rowHeights=labelLines.map(a=>Math.max(34,a.length*15+12,series.length*15+10));if(horizontal)ph=Math.max(plotH,rowHeights.reduce((s,v)=>s+v,0));
+ const yBottom=top+ph;
+ const valuePos=v=>horizontal?left+(v-min)/(max-min)*pw:yBottom-(v-min)/(max-min)*ph;
+ const fmt=v=>percent?v.toFixed(0)+'%':format(v,config,true);
+ for(let i=0;i<=5;i++){const v=min+(max-min)*i/5,p=valuePos(v);if(horizontal){out.push(`<line x1="${p}" x2="${p}" y1="${top}" y2="${yBottom}" stroke="#d8e1e6"/>`,text(p,yBottom+23,fmt(v),11,'text-anchor="middle" fill="#6f808b"'));}else{out.push(`<line x1="${left}" x2="${right}" y1="${p}" y2="${p}" stroke="#d8e1e6"/>`,text(left-12,p+4,fmt(v),11,'text-anchor="end" fill="#6f808b"'));}}
+ const zero=valuePos(0);out.push(horizontal?`<line x1="${zero}" x2="${zero}" y1="${top}" y2="${yBottom}" stroke="#6f808b"/>`:`<line x1="${left}" x2="${right}" y1="${zero}" y2="${zero}" stroke="#6f808b"/>`);
+ let xMin=0,xMax=1;if(scatter){xMin=Math.min(...data.map(r=>r.x));xMax=Math.max(...data.map(r=>r.x));if(xMin===xMax){const delta=Math.max(1,Math.abs(xMin)*.1);xMin-=delta;xMax+=delta;}if(!Number.isFinite(xMax-xMin))throw Error('The X range is too large to plot.');}
+ const xp=(r,i)=>scatter?left+(r.x-xMin)/(xMax-xMin)*pw:left+pw*(i+.5)/data.length;
+ if(['line','area','scatter'].includes(config.type)){
+ series.forEach((s,j)=>{let segment=[];const flush=()=>{if(!segment.length)return;const d=segment.map((p,i)=>(i?'L':'M')+p.join(' ')).join(' ');if(config.type==='area')out.push(`<path d="${d} L ${segment.at(-1)[0]} ${zero} L ${segment[0][0]} ${zero} Z" fill="${colors[j%colors.length]}" opacity=".14"/>`);if(!scatter)out.push(`<path d="${d}" fill="none" stroke="${colors[j%colors.length]}" stroke-width="3"/>`);segment=[];};
+ data.forEach((r,i)=>{if(r.values[j]===null){flush();return;}segment.push([xp(r,i),valuePos(r.values[j])]);});flush();
+ data.forEach((r,i)=>{const v=r.values[j];if(v===null)return;const x=xp(r,i),y=valuePos(v);out.push(tip(`<circle cx="${x}" cy="${y}" r="5" fill="${colors[j%colors.length]}" stroke="white" stroke-width="1.5">`,r.label,v,s)+'</circle>');if(config.values)out.push(text(x,y-12,format(v,config,true),11,'text-anchor="middle"'));});});
+ }else{
+ let rowY=top;
+ data.forEach((r,i)=>{let positive=0,negative=0;const complete=r.values.every(v=>v!==null),total=r.values.reduce((s,v)=>s+(v??0),0);const band=pw/data.length,group=band*.72,bw=group/(stacked?1:series.length),rh=rowHeights[i];
+ if(horizontal)out.push(lines(left-12,rowY+rh/2-(labelLines[i].length-1)*7.5+4,labelLines[i],12,15,'text-anchor="end"'));
+ r.values.forEach((raw,j)=>{if(raw===null||(stacked&&!complete)||(percent&&total===0))return;const v=percent?raw/total*100:raw;let start=0,end=v;if(stacked){start=v>=0?positive:negative;end=start+v;if(v>=0)positive=end;else negative=end;}const a=valuePos(start),b=valuePos(end);let x,y,w,h;
+ if(horizontal){x=Math.min(a,b);y=rowY+rh/2-series.length*7+j*14;w=Math.abs(b-a);h=11;}else{x=left+i*band+(band-group)/2+(stacked?0:j*bw);y=Math.min(a,b);w=Math.max(1,bw-2);h=Math.abs(b-a);}
+ const shape=horizontal&&raw===0?`<line x1="${x}" x2="${x}" y1="${y}" y2="${y+h}" stroke="${colors[j%colors.length]}" stroke-width="4">`:!horizontal&&raw===0?`<line x1="${x}" x2="${x+w}" y1="${y}" y2="${y}" stroke="${colors[j%colors.length]}" stroke-width="4">`:`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${colors[j%colors.length]}">`;
+ const close=shape.startsWith('<line')?'</line>':'</rect>';out.push(tip(shape,r.label,raw,series[j],percent?`\nShare: ${v.toFixed(1)}%`:'',stacked?{total,detail:r.values.map((value,k)=>`${series[k]}: ${format(value,config)}${percent?` (${(value/total*100).toFixed(1)}%)`:''}`).join('\n')}:null)+close);
+ if(config.values){if(stacked){if(h>18)out.push(text(x+w/2,y+h/2+4,percent?v.toFixed(0)+'%':format(raw,config,true),10,'text-anchor="middle" fill="white" pointer-events="none"'));}else if(horizontal)out.push(text(raw<0?x-5:x+w+5,y+10,format(raw,config,true),10,`text-anchor="${raw<0?'end':'start'}"`));else out.push(text(x+w/2,raw<0?y+h+14:y-6,format(raw,config,true),10,'text-anchor="middle"'));}
+ });
+ if(stacked&&complete&&config.values&&(!percent||total>0)){const totalY=positive===0&&negative<0?valuePos(negative)+16:valuePos(positive)-10;out.push(text(left+(i+.5)*band,totalY,'Total: '+format(total,config,true),11,'text-anchor="middle" font-weight="700" fill="#294f68"'));}
+ rowY+=rh;});
+ }
+ let labelH=0;if(!horizontal){if(scatter){for(let i=0;i<=5;i++){const v=xMin+(xMax-xMin)*i/5;out.push(text(left+pw*i/5,yBottom+23,v.toLocaleString('en-US',{maximumFractionDigits:2}),11,'text-anchor="middle" fill="#6f808b"'));}labelH=32;}else{const stride=['line','area'].includes(config.type)?Math.max(1,Math.ceil(data.length/16)):1;data.forEach((r,i)=>{if(i%stride!==0)return;if(labelAngle){out.push(`<g data-column-label="" transform="translate(${xp(r,i)} ${yBottom+20}) rotate(${labelAngle})">${lines(0,0,labelLines[i],11,14,`text-anchor="${labelAngle<0?'end':'start'}" fill="#536b7b"`)}</g>`);labelH=Math.max(labelH,Math.ceil(labelWidth*Math.sin(radians)+labelLines[i].length*14*Math.cos(radians))+24);}else{out.push(lines(xp(r,i),yBottom+22,labelLines[i],11,14,'text-anchor="middle" fill="#536b7b"'));labelH=Math.max(labelH,labelLines[i].length*14+15);}});}}else labelH=34;
+ if(config.xTitle){out.push(text(left+pw/2,yBottom+labelH+25,config.xTitle,13,'text-anchor="middle" font-weight="600"'));labelH+=37;}
+ if(config.yTitle)out.push(`<text transform="translate(20 ${top+ph/2}) rotate(-90)" text-anchor="middle" font-size="13" font-weight="600">${escape(config.yTitle)}</text>`);
+ bottom=yBottom+labelH+20;
+ }
+ if(data.some(r=>r.values.some(v=>v===null))){out.push(text(pad,bottom+4,['stacked','percent'].includes(config.type)?'Missing components leave a gap for that category. Blank cells are not zero.':'Blank cells indicate missing data and are not plotted.',11,'fill="#6f808b"'));bottom+=24;}
+ if(config.type==='donut'&&series.length>1){out.push(text(pad,bottom+4,`Showing ${series[0]} (first value column).`,11,'fill="#6f808b"'));bottom+=24;}
+ for(const value of [config.source,config.note]){if(value){const a=wrap(value,118);out.push(lines(pad,bottom+12,a,11,16,'fill="#6f808b"'));bottom+=a.length*16+12;}}
+ const H=Math.ceil(bottom+20);
+ out.push('<g data-tooltip-box="" visibility="hidden" pointer-events="none" aria-hidden="true" style="filter:drop-shadow(0 8px 12px rgba(33,55,71,.18))"><rect rx="4" fill="#294f68" opacity=".96" width="200" height="54"/><text x="12" y="23" font-size="12" fill="white"/></g>');
+ const runtime=interactive?'\x3Cscript><![CDATA[('+tooltipRuntime.toString()+')(document.currentScript.ownerSVGElement);]]><'+'/script>':'';
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="group" aria-labelledby="graphic-title graphic-description" style="max-width:100%;height:auto;background:white;color:#213747;font-family:${font};fill:#213747"><title id="graphic-title">${escape(config.title||'Untitled graphic')}</title><desc id="graphic-description">${escape([config.subtitle,config.source,config.note,'Interactive chart. Focus a mark for its value.'].filter(Boolean).join(' '))}</desc><metadata>${escape(JSON.stringify({generator:'BGA Custom Graphics',config,headers:m.headers,data:m.data}))}</metadata><style>[data-tip]{cursor:default;outline:none}[data-tip]:focus{stroke:#e9b84a;stroke-width:3}text{font-variant-numeric:tabular-nums}</style><rect width="100%" height="100%" fill="white"/>${out.join('')}${runtime}</svg>`;
+ if(/(?:="(?:NaN|Infinity|-Infinity)"|NaN NaN)/.test(svg))throw Error('The data exceeds the supported plot range.');
+ return {svg,width:W,height:H,model:m};
+}
+function htmlExport(config,grid) {
+ const {svg}=render(config,grid);
+ // SVG CDATA also protects script operators from HTML character-reference parsing.
+ const inlineSvg=svg;
+ return '\x3C!doctype html>\n\x3Chtml lang="en">\x3Chead>\x3Cmeta charset="utf-8">\x3Cmeta name="viewport" content="width=device-width,initial-scale=1">\x3Ctitle>'+escape(config.title)+'\x3C/title>\x3Cstyle>body{margin:0;color:#213747;background:white;font:13px/1.6 "Synthese","Helvetica Neue",Arial,sans-serif}main{max-width:1000px;margin:auto}svg{display:block;width:100%;height:auto}\x3C/style>\x3C/head>\x3Cbody>\x3Cmain>'+inlineSvg+'\x3C/main>\x3C/body>\x3C/html>';
+}
+function astroId(config) {
+ const id=String(config.graphicId||'').trim()||'custom-'+(String(config.title||'graphic').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||'graphic');
+ if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id))throw Error('Astro graphic ID must use lowercase letters, numbers, and single hyphens.');
+ if(['summary','appropriations','workforce','vacancies'].includes(id))throw Error('Use a unique custom graphic ID to avoid replacing a snapshot graphic.');
+ return id;
+}
+function astroFiles(config,grid) {
+ const id=astroId(config),folder=id+'/',output=render(config,grid);
+ // Namespace accessibility IDs so different graphics can share one article.
+ const svg=output.svg.replace('<svg ',`<svg data-budget-graphic="${id}" `)
+  .replace('id="graphic-title"',`id="${id}-title"`).replace('id="graphic-description"',`id="${id}-description"`)
+  .replace('aria-labelledby="graphic-title graphic-description"',`aria-labelledby="${id}-title ${id}-description"`);
+ const htmlSvg=svg;
+ const fragment=`<figure class="bga-custom-graphic" data-budget-figure="${id}" style="margin:24px 0;width:100%;">${htmlSvg.replace('style="max-width:100%;','style="width:100%;max-width:100%;')}</figure>`;
+ const marker=`[budget-graphic id="${id}"]`;
+ const manifest={schemaVersion:1,generator:'BGA Custom Graphics',exportedAt:new Date().toISOString(),graphics:[{id,title:config.title,source:config.source||'',note:config.note||'',html:id+'.html',svg:id+'.svg',csv:id+'.csv',project:id+'.json',component:id+'.astro',placeholder:marker}]};
+ const component=`---\nimport graphic from './${id}.html?raw';\n---\n<Fragment set:html={graphic} />\n`;
+ const readme=`BGA custom graphic — Astro export
+
+Graphic ID: ${id}
+Article marker: ${marker}
+
+Unzip and open preview.html to review the frozen chart and interactive tooltips offline.
+
+OPTION 1: AN ASTRO PAGE OR COMPONENT
+Copy this entire ${id} folder into src/graphics/ in your Astro project.
+Import the included component in an .astro page's frontmatter:
+
+import CustomGraphic from '../graphics/${id}/${id}.astro';
+
+Adjust the relative import path to your page, then insert <CustomGraphic /> in its markup.
+The component imports the HTML as raw text; no client framework or data fetch is needed.
+
+OPTION 2: THIS PROJECT'S WORDPRESS SNAPSHOT MARKERS
+If the article has no graphics folder yet:
+1. Copy this entire folder to bga-budget-snapshots-astro/src/graphics/${id}/.
+2. Set graphicsFolder: '${id}' on that article in src/config/snapshots.js.
+3. Put ${marker} in its own WordPress Paragraph block.
+4. Rebuild the Astro project.
+
+If the article already uses a graphicsFolder:
+1. Copy ${id}.html, ${id}.svg, ${id}.csv, ${id}.json and ${id}.astro into that existing folder.
+2. Append the single entry in this manifest's graphics array to the existing manifest's graphics array. Keep all existing entries and top-level metadata.
+3. Keep the existing budget-graphics.css and budget-tooltips.js files. Do not overwrite the existing manifest.
+4. Add ${marker} as its own WordPress Paragraph block and rebuild.
+
+The custom fragment contains its own scoped tooltip initialization, so it works alongside the snapshot runtime. Each exported graphic ID must be unique, and each marker appears once per article. Use a different custom graphic ID when exporting another chart.
+
+The SVG and HTML retain your settings, titles, rotated labels, source notes, and current data. The JSON is an editable generator project. CSV retains raw supplied values. No View data panel or logo is added. Fonts use installed brand fonts or system fallbacks. The ZIP needs no external libraries or network requests. Site policy must allow inline scripts for custom tooltips.
+`;
+ return {id,marker,files:{
+  [folder+id+'.html']:fragment,[folder+id+'.svg']:svg,[folder+id+'.csv']:csv(grid),
+  [folder+id+'.json']:JSON.stringify({version:1,config,grid},null,2),[folder+id+'.astro']:component,
+  [folder+'manifest.json']:JSON.stringify(manifest,null,2),
+  [folder+'budget-graphics.css']:'/* Custom graphics have scoped, embedded styles. Keep existing snapshot styles when merging. */\n',
+  [folder+'budget-tooltips.js']:'/* Custom graphics initialize tooltips inside each inline SVG. Keep the snapshot runtime when merging. */\n',
+  [folder+'preview.html']:htmlExport(config,grid),[folder+'README.txt']:readme
+ }};
+}
+function zipFiles(files){
+  const encoder=new TextEncoder();
+  const parts=[],directory=[];
+  let offset=0;
+  function header(size){return {bytes:new Uint8Array(size),view:null}}
+  function crc32(bytes){
+    let crc=0xffffffff;
+    for(const byte of bytes){crc^=byte;for(let bit=0;bit<8;bit++)crc=(crc>>>1)^((crc&1)?0xedb88320:0)}
+    return (crc^0xffffffff)>>>0;
+  }
+  for(const [path,content] of Object.entries(files)){
+    const name=encoder.encode(path),data=encoder.encode(content),crc=crc32(data);
+    const local=header(30);local.view=new DataView(local.bytes.buffer);
+    const v=local.view;
+    v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,0x800,true);
+    v.setUint16(12,0x21,true); // 1980-01-01, valid DOS date.
+    v.setUint32(14,crc,true);v.setUint32(18,data.length,true);v.setUint32(22,data.length,true);v.setUint16(26,name.length,true);
+    parts.push(local.bytes,name,data);
+    const central=header(46),c=new DataView(central.bytes.buffer);
+    c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x800,true);c.setUint16(14,0x21,true);
+    c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);c.setUint16(28,name.length,true);c.setUint32(42,offset,true);
+    directory.push(central.bytes,name);
+    offset+=30+name.length+data.length;
+  }
+  const directorySize=directory.reduce((sum,part)=>sum+part.length,0);
+  const end=new Uint8Array(22),e=new DataView(end.buffer),count=Object.keys(files).length;
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,count,true);e.setUint16(10,count,true);e.setUint32(12,directorySize,true);e.setUint32(16,offset,true);
+  return new Blob([...parts,...directory,end],{type:'application/zip'});
+}
+return {escape,parseDelimited,rectangular,number,model,format,wrap,csv,render,htmlExport,tooltipRuntime,types,palettes,astroId,astroFiles,zipFiles};
+})();
+</script>
+<script id="graphics-app">
+'use strict';
+(() => {
+const $=id=>document.getElementById(id);const keys=['type','title','subtitle','xTitle','yTitle','labelAngle','format','decimals','height','palette','graphicId','source','note','legend','values'];
+let grid=[['Year','Budget spent','Budget unspent'],['2022','11000000','3000000'],['2023','12500000','2500000'],['2024','13800000','2200000'],['2025','14200000','2800000'],['2026','15000000','2500000']];
+let current=null,saveTimer;const storageKey='bga-custom-graphics-v1';
+function config(){return Object.fromEntries(keys.map(k=>[k,$(k).type==='checkbox'?$(k).checked:$(k).value]));}
+function setConfig(c){for(const k of keys){if(c[k]!==undefined){if($(k).type==='checkbox')$(k).checked=!!c[k];else $(k).value=String(c[k]);}}}
+function notice(message){$('notice').textContent=message;}
+function saveDraft(){clearTimeout(saveTimer);saveTimer=setTimeout(()=>{try{localStorage.setItem(storageKey,JSON.stringify({version:1,config:config(),grid}));}catch{notice('Browser storage is unavailable. Save a project to keep your work.');}},300);}
+function update(){
+ $('labelAngle').disabled=!['column','stacked','percent'].includes($('type').value);
+ try{current=CustomGraphics.render(config(),grid,false);$('preview').innerHTML=current.svg;CustomGraphics.tooltipRuntime($('preview').querySelector('svg'));$('status').className='status';const m=current.model;$('status').textContent=`${m.data.length} categories · ${m.series.length} series · Preview reflects your current data.`;document.querySelectorAll('[data-export]').forEach(b=>b.disabled=false);}
+ catch(e){current=null;$('preview').replaceChildren();$('status').className='status error';$('status').textContent=e.message;document.querySelectorAll('[data-export]').forEach(b=>b.disabled=true);}
+ try{const id=CustomGraphics.astroId(config());$('graphicId').placeholder=id;$('astroMarker').value=`[budget-graphic id="${id}"]`;['exportAstro','copyGraphicId','copyAstroMarker'].forEach(key=>$(key).disabled=!current);}catch(e){$('astroMarker').value=e.message;['exportAstro','copyGraphicId','copyAstroMarker'].forEach(key=>$(key).disabled=true);}
+ updateEmbed();saveDraft();
+}
+function columnName(index){let s='';for(let n=index+1;n>0;n=Math.floor((n-1)/26))s=String.fromCharCode(65+(n-1)%26)+s;return s;}
+function drawSheet(focus){
+ const width=grid[0].length;let html='<table class="sheet"><caption class="note" style="text-align:left;padding:8px">Row 1 = headers · Column A = categories / X values</caption><thead><tr><th scope="col">#</th>';
+ for(let c=0;c<width;c++)html+=`<th scope="col">${columnName(c)}${c>0?` <button type="button" data-delete-column="${c}" aria-label="Delete column ${columnName(c)}" style="border:0;padding:0 5px;min-height:24px">×</button>`:''}</th>`;
+ html+='<th scope="col">Remove</th></tr></thead><tbody>';
+ grid.forEach((row,r)=>{html+=`<tr><th scope="row">${r+1}</th>`;row.forEach((v,c)=>{html+=`<td><input data-row="${r}" data-col="${c}" aria-label="${columnName(c)}${r+1}${r===0?', header':''}" value="${CustomGraphics.escape(v)}" autocomplete="off" spellcheck="false"></td>`;});html+=`<td class="delete">${r>0?`<button type="button" data-delete-row="${r}" aria-label="Delete row ${r+1}">×</button>`:''}</td></tr>`;});
+ $('sheet').innerHTML=html+'</tbody></table>';if(focus){const cell=$('sheet').querySelector(`[data-row="${focus[0]}"][data-col="${focus[1]}"]`);cell?.focus();}
+ $('addRow').disabled=grid.length>=501;$('addColumn').disabled=width>=21;
+}
+function replaceGrid(rows){grid=CustomGraphics.rectangular(rows);drawSheet();update();}
+$('sheet').addEventListener('input',event=>{const el=event.target;if(el.matches('input[data-row]')){grid[Number(el.dataset.row)][Number(el.dataset.col)]=el.value;update();}});
+$('sheet').addEventListener('paste',event=>{
+ const el=event.target;if(!el.matches('input[data-row]'))return;const text=event.clipboardData.getData('text/plain');if(!/[\t\r\n]/.test(text))return;event.preventDefault();
+ try{const incoming=CustomGraphics.parseDelimited(text),r=Number(el.dataset.row),c=Number(el.dataset.col);const rowCount=Math.max(grid.length,r+incoming.length),colCount=Math.max(grid[0].length,c+incoming[0].length);if(rowCount>501||colCount>21)throw Error('Paste would exceed 500 data rows or 20 value columns.');
+ const next=Array.from({length:rowCount},(_,i)=>Array.from({length:colCount},(_,j)=>grid[i]?.[j]??''));incoming.forEach((row,i)=>row.forEach((v,j)=>{next[r+i][c+j]=v;}));replaceGrid(next);$('sheet').querySelector(`[data-row="${r}"][data-col="${c}"]`)?.focus();notice('Spreadsheet range pasted.');}catch(e){notice(e.message);}
+});
+$('sheet').addEventListener('keydown',event=>{const el=event.target;if(!el.matches('input[data-row]'))return;let r=Number(el.dataset.row),c=Number(el.dataset.col);if(event.key==='Enter'){event.preventDefault();r+=event.shiftKey?-1:1;if(r===grid.length&&r<501){grid.push(Array(grid[0].length).fill(''));drawSheet();update();}$('sheet').querySelector(`[data-row="${r}"][data-col="${c}"]`)?.focus();}else if(['ArrowUp','ArrowDown'].includes(event.key)){event.preventDefault();r+=event.key==='ArrowUp'?-1:1;$('sheet').querySelector(`[data-row="${r}"][data-col="${c}"]`)?.focus();}});
+$('sheet').addEventListener('click',event=>{const col=event.target.closest('[data-delete-column]'),row=event.target.closest('[data-delete-row]');if(col){if(grid[0].length<=2){notice('Keep a category column and at least one value column.');return;}grid.forEach(r=>r.splice(Number(col.dataset.deleteColumn),1));}else if(row)grid.splice(Number(row.dataset.deleteRow),1);else return;drawSheet();update();});
+$('addRow').onclick=()=>{grid.push(Array(grid[0].length).fill(''));drawSheet([grid.length-1,0]);update();};
+$('addColumn').onclick=()=>{grid.forEach((r,i)=>r.push(i===0?'Series '+r.length:''));drawSheet([0,grid[0].length-1]);update();};
+keys.forEach(k=>$(k).addEventListener('input',update));
+$('replaceData').onclick=()=>{try{replaceGrid(CustomGraphics.parseDelimited($('pasteData').value));notice('Data table replaced.');}catch(e){notice(e.message);}};
+$('importCsv').onclick=()=>$('csvFile').click();$('csvFile').onchange=async()=>{try{const file=$('csvFile').files[0];if(file){replaceGrid(CustomGraphics.parseDelimited(await file.text()));notice('Data imported from '+file.name);}}catch(e){notice(e.message);}finally{$('csvFile').value='';}};
+function slug(){return (config().title||'custom-graphic').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,80)||'custom-graphic';}
+function download(name,text,type){const a=document.createElement('a'),url=URL.createObjectURL(new Blob([text],{type}));a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);notice('Downloaded '+name);}
+$('exportHtml').onclick=()=>{if(current)download(slug()+'.html',CustomGraphics.htmlExport(config(),grid),'text/html;charset=utf-8');};
+async function copyPlainText(text){
+ // Offer only text/plain, so rich-text editors receive no HTML or formatting.
+ try{if(navigator.clipboard?.write&&window.ClipboardItem){await navigator.clipboard.write([new window.ClipboardItem({'text/plain':new Blob([text],{type:'text/plain'})})]);return;}}catch{}
+ try{if(navigator.clipboard?.writeText){await navigator.clipboard.writeText(text);return;}}catch{}
+ const previous=document.activeElement,textarea=document.createElement('textarea');textarea.value=text;textarea.setAttribute('readonly','');textarea.setAttribute('style','position:fixed;left:-9999px');document.body.append(textarea);
+ try{textarea.select();if(!document.execCommand?.('copy'))throw Error('Clipboard unavailable');}finally{textarea.remove();previous?.focus();}
+}
+$('copyGraphicId').onclick=async()=>{if($('copyGraphicId').disabled)return;const id=CustomGraphics.astroId(config());try{await copyPlainText(id);notice('Graphic ID copied as plain text: '+id);}catch{notice('Copy this graphic ID: '+id);}};
+$('copyAstroMarker').onclick=async()=>{if($('copyAstroMarker').disabled)return;try{await copyPlainText($('astroMarker').value);notice('Story marker copied as plain text. Paste it into its own WordPress paragraph.');}catch{$('astroMarker').focus();$('astroMarker').select();notice('Select and copy the story marker above.');}};
+$('exportAstro').onclick=()=>{if(!current)return;try{const result=CustomGraphics.astroFiles(config(),grid);download(result.id+'-astro.zip',CustomGraphics.zipFiles(result.files),'application/zip');notice('Astro ZIP downloaded. Article marker: '+result.marker+' — see README.txt for setup.');}catch(e){notice(e.message);}};
+$('exportSvg').onclick=()=>{if(current)download(slug()+'.svg','<?xml version="1.0" encoding="UTF-8"?>\n'+CustomGraphics.render(config(),grid).svg,'image/svg+xml;charset=utf-8');};
+$('exportCsv').onclick=()=>{if(current)download(slug()+'.csv',CustomGraphics.csv(grid),'text/csv;charset=utf-8');};
+$('saveProject').onclick=()=>download(slug()+'.json',JSON.stringify({version:1,config:config(),grid},null,2),'application/json');
+function readProject(raw){const p=JSON.parse(raw);if(p.version!==1||!p.config||typeof p.config!=='object'||!Array.isArray(p.grid))throw Error('Choose a BGA Custom Graphics project JSON file.');const data=CustomGraphics.rectangular(p.grid);if(!CustomGraphics.types.includes(p.config.type))throw Error('Project has an unknown chart type.');return {...p,config:{labelAngle:'0',...p.config},grid:data};}
+$('openProject').onclick=()=>$('projectFile').click();$('projectFile').onchange=async()=>{try{const file=$('projectFile').files[0];if(file){const p=readProject(await file.text());setConfig(p.config);replaceGrid(p.grid);notice('Project opened.');}}catch(e){notice('Could not open project: '+e.message);}finally{$('projectFile').value='';}};
+function updateEmbed(){const url=$('embedUrl').value.trim()||'https://your-site.org/graphics/'+slug()+'.html';let valid=false;try{valid=['https:','http:'].includes(new URL(url).protocol);}catch{}$('embedCode').value=valid?`<iframe src="${CustomGraphics.escape(url)}" title="${CustomGraphics.escape(config().title||'Custom graphic')}" width="100%" height="${(current?.height||650)+100}" style="border:0;display:block;" loading="lazy"></iframe>`:'Enter a valid https:// or http:// URL.';$('copyEmbed').disabled=!valid;}
+$('embedUrl').addEventListener('input',updateEmbed);$('copyEmbed').onclick=async()=>{try{await navigator.clipboard.writeText($('embedCode').value);notice('Embed code copied.');}catch{$('embedCode').focus();$('embedCode').select();notice('Select and copy the embed code above.');}};
+$('previewSize').onclick=()=>{const narrow=$('previewStage').classList.toggle('narrow');$('previewSize').setAttribute('aria-pressed',String(narrow));$('previewSize').textContent=narrow?'Preview at full width':'Preview at phone width';};
+const examples={
+ budget:{config:{type:'column',title:'Department budget over time',subtitle:'Appropriations by funding source, 2022–2026',xTitle:'Year',yTitle:'Appropriations ($)',format:'currency'},grid:[['Year','Local funds','Grant funds'],['2022','11000000','3000000'],['2023','12500000','2500000'],['2024','13800000','2200000'],['2025','14200000','2800000'],['2026','15000000','2500000']]},
+ vacancies:{config:{type:'stacked',title:'Full-time positions and vacancies',subtitle:'Monthly staffing, January–June 2026',xTitle:'Month',yTitle:'Positions',format:'number'},grid:[['Month','Filled positions','Persistent vacancies','Other vacancies'],['January','120','14','16'],['February','118','14','18'],['March','122','14','14'],['April','125','14','11'],['May','128','14','8'],['June','127','14','9']]},
+ change:{config:{type:'bar',title:'Changes in appropriations',subtitle:'Year-over-year change by account',xTitle:'Change ($)',yTitle:'Account',format:'currency'},grid:[['Account','Change'],['Salaries','1250000'],['Contractual services','-450000'],['Equipment','300000'],['Commodities','-120000'],['Other','0']]},
+ scatter:{config:{type:'scatter',title:'Budget and spending comparison',subtitle:'Each point represents a department',xTitle:'Budgeted positions',yTitle:'Actual spending ($)',format:'currency'},grid:[['Positions','Actual spending'],['50','3200000'],['90','5100000'],['120','8900000'],['180','12000000'],['250','14500000']]},
+ donut:{config:{type:'donut',title:'Where the budget goes',subtitle:'Appropriations by account',xTitle:'',yTitle:'',format:'currency'},grid:[['Account','Appropriations'],['Salaries','12500000'],['Contractual services','3200000'],['Equipment','1400000'],['Commodities','800000'],['Other','600000']]}
+};
+document.querySelectorAll('[data-example]').forEach(b=>b.onclick=()=>{const example=examples[b.dataset.example];setConfig({...example.config,source:'Source: Illustrative example data. Replace before publishing.',note:''});replaceGrid(example.grid);notice('Example loaded. Replace illustrative data before publishing.');});
+try{const draft=localStorage.getItem(storageKey);if(draft){const p=readProject(draft);setConfig(p.config);grid=p.grid;notice('Restored your last project from this browser.');}}catch{notice('Starting a new graphic. Save a project to keep your work.');}
+drawSheet();update();
+})();
+</script>
+</body>
+</html>
