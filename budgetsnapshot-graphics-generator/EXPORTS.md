@@ -49,7 +49,7 @@ Manifest entries provide suggested markers such as `[budget-graphic id="appropri
 
 ## Departmental budgets with estimated fringe
 
-Select a department to view its 2018–2026 stacked chart: departmental appropriations + calculated full-time fringe + estimated part-time fringe. The chart uses an embedded snapshot of `departmental fringe by year - master.csv`, matched by department number. The CSV snapshot must be updated in `index.html` when the source file changes. Its years and figures remain the same across budget cycles.
+Select a department to view its 2018–2027 stacked chart: departmental appropriations + calculated full-time fringe + estimated part-time fringe. The chart uses an embedded snapshot of `departmental fringe by year - master.csv`, matched by department number. The CSV snapshot must be updated in `index.html` when the source file changes. Its years and figures remain the same across budget cycles.
 
 CSV departments are included in the department picker, even if absent from the current City API. If the API department list fails, the picker falls back to CSV departments and the fringe chart remains usable. Absent years remain gaps. The editor can fill a missing year once all three component amounts are entered.
 
@@ -77,3 +77,11 @@ Each available graphic has **Download data (CSV)**. The dashboard also has **Dow
 Downloads use the current edited values, retain full numeric precision, identify percentages in percent units, and leave missing values blank. Real zeros remain zero. Persistent-vacancy graphics and downloads include every title. Appropriation downloads always include the year, nominal appropriation, inflation factor, and inflation-adjusted appropriation, with the dollar year in the headings. The inflation toggle does not change these download columns. Downloads contain only chart labels and values; sources, snapshot metadata, editing flags, and About sheets are omitted.
 
 Astro ZIPs contain a CSV beside each graphic and name it in the manifest. Exported HTML includes a **Download data (CSV)** link that embeds the same frozen data, so public pages and offline previews need no API or extra script for downloads. Re-export and replace existing graphics packages to add these links to already published graphics; older exports remain compatible. Public pages offer per-graphic downloads; the combined workbook is a dashboard control.
+
+## Departmental fund comparison
+
+The **Fund Comparison** table compares the selected department’s prior-year ordinance with the current budget cycle’s proposed appropriations. In the 2027 cycle, it compares the 2026 ordinance (`6694-f78c`) with the 2027 recommendations (`pptx-hhw3`). Rows are summed by fund code and sorted by proposed amount; fund codes are omitted from the displayed table and CSV.
+
+Columns show fund name, budgeted amount, proposed amount, net change, percent change from the budgeted amount, and share of all proposed departmental funds. A fund absent from one year counts as $0 only after both department-years load successfully. New positive allocations with a zero baseline display **New Fund**. Removed allocations show −100.0%; zero-to-zero changes and shares with a zero total are unavailable.
+
+Use **Edit graphic** to adjust fund names or amounts; changes and all fund shares recalculate together. Download SVG, CSV, individual Astro ZIP, and all-graphics exports are supported. Export ID: `fund-comparison`. The table switches to stacked fund details on narrow screens.

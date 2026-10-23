@@ -55,6 +55,18 @@ test('stacked charts leave incomplete categories as gaps and 100% rejects negati
  assert.throws(()=>api.render({...config,type:'stacked'},[['X','Y','Z'],['A','1e308','1e308']]),/too large/);
 });
 
+test('horizontal percentage stacks align segments in each row and preserve raw tooltip values',()=>{
+ const output=api.render({...config,type:'percent',orientation:'horizontal',values:true},[['Department','Corporate Fund','Other Local Funds','Grant Funds'],['CPD','5000','3000','2000'],['Missing','1','','3']]);
+ const $=load(output.svg,{xmlMode:true}),marks=$('rect[data-tip]');
+ assert.equal(marks.length,3);
+ assert.equal(new Set(marks.map((_,el)=>$(el).attr('y')).get()).size,1);
+ const x=marks.map((_,el)=>Number($(el).attr('x'))).get(),w=marks.map((_,el)=>Number($(el).attr('width'))).get();
+ assert.ok(Math.abs(x[0]+w[0]-x[1])<1e-9);assert.ok(Math.abs(x[1]+w[1]-x[2])<1e-9);
+ assert.ok(Math.abs(w.reduce((a,b)=>a+b)-645)<1e-9);
+ assert.match(marks.first().attr('data-tip-detail'),/Corporate Fund: \$5,000\.0 \(50\.0%\)/);
+ assert.match($('svg').text(),/Missing components leave a gap/);
+});
+
 test('donut uses the first series, handles one whole circle and rejects impossible totals',()=>{
  const $=load(api.render({...config,type:'donut'},[['Category','Budget','Unused'],['A','10','999'],['B','0','999'],['C','','999']]).svg,{xmlMode:true});
  assert.equal($('[data-tip]').length,1);assert.equal(($('path').attr('d').match(/ A /g)||[]).length,4);assert.match($('svg').text(),/first value column/);

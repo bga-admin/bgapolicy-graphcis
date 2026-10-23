@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2027 Overview Graphics — BGA Policy</title><link rel="stylesheet" href="https://use.typekit.net/qxf4xdj.css">
+<style>
+/*__BASE_STYLES__*/
+[hidden]{display:none!important}.card>header h2{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.hero{padding:48px 0}.hero h1{font-size:clamp(2.4rem,5vw,4rem)}.hero__intro{font-size:1.05rem;margin-top:20px}.generator{padding-top:32px}.overview-controls{margin:24px auto;max-width:860px}.overview-controls label{display:inline-flex;gap:8px;align-items:center}.overview-controls select{padding:10px;font:inherit;border:1px solid var(--border);border-radius:4px;color:var(--text);background:white}.overview-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.overview-nav a{font-size:12px;border:1px solid var(--border);border-radius:20px;padding:6px 12px;text-decoration:none;background:white}.card[hidden]{display:none!important}.card{scroll-margin-top:80px}.chart-wrap{min-height:0;overflow:auto}.chart-wrap svg{overflow:hidden}.chart-wrap.phone{max-width:375px;margin-inline:auto}.selection{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);margin:16px 0}.selection input{accent-color:var(--primary)}.graphic-editor textarea{width:100%;min-height:64px;border:1px solid var(--border);border-radius:4px;padding:8px;font:inherit}.editor-text-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.editor-text-fields .wide{grid-column:1/-1}.editor-data-wrap{max-height:340px;overflow:auto}.editor-data-wrap table{min-width:650px}.editor-data-wrap input{min-width:130px}.editor-data-wrap td{padding:4px}.editor-data-wrap tr:first-child input{font-weight:700;background:#f6f8f9}.marker{width:100%;padding:9px;border:1px solid var(--border);border-radius:4px;background:#f6f8f9;color:var(--primary-dark);font:12px monospace}.card .foot{margin-bottom:0}.optional{max-width:860px;margin:32px auto}.optional>.card{margin-top:24px}.optional>summary{font-size:16px}.error{color:#8b6472}.section-title{max-width:860px;margin:38px auto 18px;font-size:24px}.section-title[hidden]{display:none}.overview-controls .foot{margin-top:10px}.edited-badge{font-size:11px;background:#edf3f6;padding:4px 8px;border-radius:12px}#feedback{min-height:24px}@media(max-width:600px){.editor-text-fields{grid-template-columns:1fr}.shell{width:calc(100% - 24px)}.card{padding:16px}.toolbar{gap:8px}.toolbar button{padding:8px 10px}}
+</style></head><body>
+<header class="site-header"><div class="shell site-header__inner"><a class="brand" href="../../index.html">BGA Policy</a><span class="product">Overview Graphics Generator</span><a href="../../custom-graphics.html">Custom graphics</a></div></header>
+<section class="hero"><div class="shell hero__inner"><p class="eyebrow">2027 Chicago Budget Proposal</p><h1>Overview graphics</h1><p class="hero__intro">The article’s charts, in article order. Edit the data and labels, preview at phone width, then export each graphic or the complete set.</p></div></section>
+<main class="shell generator">
+<section class="overview-controls" aria-label="Overview tools">
+<div class="toolbar"><button id="export-all" type="button">Export selected for Astro (.zip)</button><button id="save-all" type="button">Save project</button><button id="open-project" type="button">Open project</button><button id="phone-all" type="button" aria-pressed="false">Preview at phone width</button><input type="file" id="project-file" accept=".json,application/json" hidden></div>
+<p class="foot" id="selection-count"></p><p class="foot">Source snapshot: October 21, 2026. <a href="comparison.md">Document comparison</a> · <a href="../../2027-OVERVIEW.md">Data &amp; calculation notes</a> · <a href="2027-overview-astro.zip">Download original article set</a></p>
+<label>Show section <select id="section-filter"><option value="all">All article sections</option></select></label>
+<nav class="overview-nav" aria-label="Jump to section"></nav>
+<p id="feedback" class="foot" role="status" aria-live="polite"></p>
+</section>
+<div id="article-graphics"></div>
+<details class="optional"><summary>Additional workbook charts — not used in the article</summary><p class="foot">These remain available for other uses. They are excluded from the default article export.</p><div id="optional-graphics"></div></details>
+</main>
+<script id="overview-data" type="application/json">__OVERVIEW_DATA__</script>
+<script id="graphics-core">__GRAPHICS_CORE__</script>
+<script id="overview-core">__OVERVIEW_CORE__</script>
+<script id="overview-editor">
+(() => {
+ 'use strict';
+ const api=CustomGraphics,overview=OverviewGraphics,$=id=>document.getElementById(id),esc=api.escape;
+ const defaults=JSON.parse($('overview-data').textContent),key='bga-overview-2027-v2';
+ let charts=structuredClone(defaults),phone=false;
+ const feedback=text=>{$('feedback').textContent=text;};
+ function validate(incoming){
+  if(!Array.isArray(incoming)||incoming.length!==defaults.length)throw Error('Choose a complete 2027 overview project.');
+  const byId=new Map(incoming.map(c=>[c.config?.graphicId,c]));
+  return defaults.map(base=>{const c=byId.get(base.config.graphicId);if(!c||!api.types.includes(c.config.type))throw Error('Project is missing a known graphic.');const grid=api.rectangular(c.grid);api.model(c.config,grid);if(base.kind==='summary'&&(grid.length!==3||grid[0].length!==7))throw Error('The summary requires two measures and seven columns.');if(base.kind==='price-toggle'&&grid[0].length!==3)throw Error('The price chart requires original and inflation-adjusted columns.');return {...base,config:{...base.config,...c.config,...(['Source: City of Chicago budget data; BGA Policy.','Source: City of Chicago Department of Finance; BGA Policy.'].includes(c.config.source)?{source:''}:{}),...(['overview-2027-department-vacancies','overview-2027-department-vacancy-rates'].includes(base.config.graphicId)&&c.config.type==='bar'?{type:'stacked',orientation:'horizontal',values:true}:{}),...(base.kind==='summary'&&c.config.title==='Snapshot: Appropriation & Staffing Changes from 2026 Budget'?{title:base.config.title}:{}),...(base.config.graphicId==='overview-2027-fringe-share-change'&&c.config.format==='number'?{format:'percent'}:{})},grid,basis:c.basis==='adjusted'?'adjusted':'original',included:c.included??!base.optional};});
+ }
+ try{const stored=localStorage.getItem(key);if(stored)charts=validate(JSON.parse(stored));}catch{feedback('Starting from the supplied data.');}
+ charts.forEach(c=>{c.included??=!c.optional;});
+ function persist(){try{localStorage.setItem(key,JSON.stringify(charts));}catch{}}
+ function download(name,content,type='application/octet-stream'){
+  const url=URL.createObjectURL(content instanceof Blob?content:new Blob([content],{type})),link=document.createElement('a');link.href=url;link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);feedback('Downloaded '+name);
+ }
+ async function copy(text){
+  try{await navigator.clipboard.writeText(text);}catch{const field=document.createElement('textarea');field.value=text;field.style.position='fixed';field.style.left='-9999px';document.body.append(field);field.select();try{if(!document.execCommand('copy'))throw Error('Select and copy the marker field.');}finally{field.remove();}}
+ }
+ function selectedCount(){$('selection-count').textContent=charts.filter(c=>c.included).length+' graphics selected for export. Titles and legend labels follow the source data.';}
+ function renderCard(card,chart){
+  const output=card.querySelector('.chart-wrap'),error=card.querySelector('.status');
+  try{api.model(chart.config,chart.grid);overview.mount(output,chart);error.hidden=true;card.querySelectorAll('[data-export]').forEach(b=>b.disabled=false);card.querySelector('.edited-badge').hidden=JSON.stringify(chart.config)===JSON.stringify(defaults.find(c=>c.config.graphicId===chart.config.graphicId).config)&&JSON.stringify(chart.grid)===JSON.stringify(defaults.find(c=>c.config.graphicId===chart.config.graphicId).grid);}
+  catch(e){error.hidden=false;error.textContent=e.message;card.querySelectorAll('[data-export]').forEach(b=>b.disabled=true);}
+ }
+ function dataTable(chart){return '<table><tbody>'+chart.grid.map((row,r)=>'<tr>'+row.map((v,c)=>`<td><input aria-label="Row ${r+1}, column ${c+1}" data-row="${r}" data-col="${c}" value="${esc(v)}"></td>`).join('')+'</tr>').join('')+'</tbody></table>';}
+ function cardMarkup(chart){const id=chart.config.graphicId;return `<section class="card" id="${id}" data-chart="${id}"><header><div class="eyebrow">${esc(chart.section)}</div><h2>${esc(chart.config.title)}</h2></header><label class="selection"><input type="checkbox" data-include ${chart.included?'checked':''}>Include in Astro export <span class="edited-badge" hidden>Edited</span></label><div class="status error" role="status" hidden></div><div class="chart-wrap${phone?' phone':''}"></div><div class="toolbar"><button type="button" data-action="svg" data-export>Download SVG</button><button type="button" data-action="html" data-export>Download HTML</button><button type="button" data-action="astro" data-export>Export for Astro (.zip)</button><button type="button" data-action="csv" data-export>Download data (CSV)</button></div><div class="graphic-marker"><label class="marker-label" for="marker-${id}">Story marker</label><input id="marker-${id}" class="marker" readonly value="${esc('[budget-graphic id="'+id+'"]')}"><button type="button" data-action="copy">Copy marker</button><button type="button" data-action="project">Save graphic project</button></div><details class="graphic-editor"><summary>Edit graphic</summary><p class="editor-note">Edit the title and data, including the first row’s legend labels. Changes update this preview and its exports. ${chart.kind==='price-toggle'?'The table retains both price views; the switch changes the visible view.':''}</p><div class="editor-text-fields">${['title','subtitle','source','note'].map(name=>`<label class="${name==='title'||name==='note'?'wide':''}">${name[0].toUpperCase()+name.slice(1)}<input data-config="${name}" value="${esc(chart.config[name])}"></label>`).join('')}</div><div class="editor-data-wrap">${dataTable(chart)}</div><button type="button" data-action="reset">Reset this graphic</button></details></section>`;}
+ function build(){
+  const sections=[...new Set(charts.filter(c=>!c.optional).map(c=>c.section))];
+  $('section-filter').innerHTML='<option value="all">All article sections</option>'+sections.map((s,i)=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+  document.querySelector('.overview-nav').innerHTML=sections.map((s,i)=>`<a href="#section-${i}">${esc(s)}</a>`).join('');
+  $('article-graphics').innerHTML=sections.map((s,i)=>`<h2 class="section-title" id="section-${i}" data-section="${esc(s)}">${esc(s)}</h2>`+charts.filter(c=>!c.optional&&c.section===s).map(cardMarkup).join('')).join('');
+  $('optional-graphics').innerHTML=charts.filter(c=>c.optional).map(cardMarkup).join('');
+  document.querySelectorAll('[data-chart]').forEach(card=>{
+   const chart=charts.find(c=>c.config.graphicId===card.dataset.chart);renderCard(card,chart);
+   card.addEventListener('overview-basis-change',event=>{chart.basis=event.detail.basis;persist();});
+   card.addEventListener('change',event=>{const el=event.target;
+    if(el.matches('[data-include]')){chart.included=el.checked;selectedCount();persist();return;}
+    if(el.matches('[data-config]')){chart.config[el.dataset.config]=el.value;card.querySelector('h2').textContent=chart.config.title;}
+    else if(el.matches('[data-row]'))chart.grid[Number(el.dataset.row)][Number(el.dataset.col)]=el.value;
+    else return;renderCard(card,chart);persist();
+   });
+   card.addEventListener('paste',event=>{const el=event.target;if(!el.matches('[data-row]'))return;const text=event.clipboardData.getData('text/plain');if(!/[\t\r\n]/.test(text))return;event.preventDefault();try{const data=api.parseDelimited(text),r=Number(el.dataset.row),c=Number(el.dataset.col);if(r+data.length>chart.grid.length||c+data[0].length>chart.grid[0].length)throw Error('Paste a range that fits this graphic’s table.');data.forEach((row,i)=>row.forEach((value,j)=>chart.grid[r+i][c+j]=value));card.querySelector('.editor-data-wrap').innerHTML=dataTable(chart);renderCard(card,chart);persist();}catch(e){feedback(e.message);}});
+   card.addEventListener('click',async event=>{const button=event.target.closest('[data-action]');if(!button)return;const id=chart.config.graphicId;try{
+    switch(button.dataset.action){
+     case 'svg':download(id+(chart.kind==='price-toggle'?'-'+(chart.basis||'original'):'')+'.svg',overview.render(chart).svg,'image/svg+xml');break;
+     case 'html':download(id+'.html',overview.htmlExport(chart),'text/html');break;
+     case 'astro':download(id+'-astro.zip',api.zipFiles(overview.astroFiles(chart).files));break;
+     case 'csv':download(id+'.csv',api.csv(chart.grid),'text/csv');break;
+     case 'copy':await copy('[budget-graphic id="'+id+'"]');feedback('Story marker copied as plain text.');break;
+     case 'project':download(id+'.json',overview.astroFiles(chart).files[id+'/'+id+'.json'],'application/json');break;
+     case 'reset':{const i=charts.indexOf(chart);charts[i]={...structuredClone(defaults[i]),included:chart.included};persist();build();feedback('Graphic reset to source data.');break;}
+    }
+   }catch(e){feedback('Export failed: '+e.message);}});
+  });selectedCount();
+ }
+ $('section-filter').addEventListener('change',event=>{const value=event.target.value;document.querySelectorAll('#article-graphics [data-chart]').forEach(card=>{card.hidden=value!=='all'&&charts.find(c=>c.config.graphicId===card.dataset.chart).section!==value;});document.querySelectorAll('[data-section]').forEach(h=>h.hidden=value!=='all'&&h.dataset.section!==value);});
+ $('phone-all').onclick=()=>{phone=!phone;document.querySelectorAll('.chart-wrap').forEach(el=>el.classList.toggle('phone',phone));$('phone-all').setAttribute('aria-pressed',String(phone));$('phone-all').textContent=phone?'Preview at full width':'Preview at phone width';};
+ $('export-all').onclick=()=>{try{const files={},selected=charts.filter(c=>c.included);if(!selected.length)throw Error('Select at least one graphic.');for(const chart of selected){api.model(chart.config,chart.grid);Object.assign(files,overview.astroFiles(chart).files);}files['markers.txt']=selected.map(c=>'[budget-graphic id="'+c.config.graphicId+'"] '+c.config.title).join('\n');download('2027-overview-astro.zip',api.zipFiles(files));}catch(e){feedback('Export failed: '+e.message);}};
+ $('save-all').onclick=()=>download('2027-overview-project.json',JSON.stringify({version:1,generator:'BGA Overview Graphics',charts},null,2),'application/json');
+ $('open-project').onclick=()=>$('project-file').click();
+ $('project-file').onchange=async()=>{try{const file=$('project-file').files[0];if(!file)return;const project=JSON.parse(await file.text());if(project.version!==1)throw Error('Unknown project version.');if(project.generator==='BGA Overview Graphics')charts=validate(project.charts);else{const index=charts.findIndex(c=>c.config.graphicId===project.config?.graphicId);if(index<0)throw Error('Choose an overview chart project.');const next=structuredClone(charts);next[index]={...next[index],config:project.config,grid:project.grid,basis:project.overview?.basis};charts=validate(next);}persist();build();feedback('Project opened.');}catch(e){feedback('Could not open project: '+e.message);}finally{$('project-file').value='';}};
+ build();
+})();
+</script></body></html>

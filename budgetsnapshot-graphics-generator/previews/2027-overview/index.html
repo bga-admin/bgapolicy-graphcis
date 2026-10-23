@@ -1,0 +1,656 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>2027 Overview Graphics — BGA Policy</title><link rel="stylesheet" href="https://use.typekit.net/qxf4xdj.css">
+<style>
+
+@font-face {
+  font-family: "Synthese";
+  src: local("Synthese"), local("Synthese Regular"), local("Synthese-Regular");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Synthese";
+  src: local("Synthese Medium"), local("Synthese-Medium"), local("Synthese");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Synthese";
+  src: local("Synthese Bold"), local("Synthese-Bold"), local("Synthese");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Proxima Nova";
+  src: local("Proxima Nova"), local("ProximaNova-Regular"), local("Proxima Nova Regular");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Proxima Nova";
+  src: local("Proxima Nova Semibold"), local("ProximaNova-Semibold"), local("Proxima Nova SemiBold");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Proxima Nova";
+  src: local("Proxima Nova Bold"), local("ProximaNova-Bold");
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+
+:root{
+  --bg:#f6f8f9;
+  --surface:#ffffff;
+  --primary:#3e6f8c;
+  --primary-dark:#294f68;
+  --accent:#e9b84a;
+  --text:#213747;
+  --muted:#6f808b;
+  --border:#d8e1e6;
+  --sky:#dce8ef;
+  --sky-light:#edf3f6;
+  --negative:#8b6472;
+  --display:"Proxima Nova","Helvetica Neue",Arial,sans-serif;
+  --sans:"Synthese","Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.63;letter-spacing:-.005em;-webkit-font-smoothing:antialiased}
+.shell{width:min(calc(100% - 40px),1180px);margin:0 auto}
+.site-header{position:sticky;top:0;z-index:50;border-bottom:1px solid var(--border);background:rgba(250,252,253,.96);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.site-header__inner{min-height:58px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.brand{color:var(--text);font:700 1rem/1 var(--display);letter-spacing:-.02em;text-decoration:none}
+.product{color:var(--muted);font:700 .68rem/1 var(--display);letter-spacing:.09em;text-transform:uppercase}
+.hero{position:relative;overflow:hidden;padding:clamp(52px,7vw,92px) 0 64px;background:radial-gradient(circle at 9% 10%,rgba(255,255,255,.95) 0,rgba(255,255,255,0) 27rem),radial-gradient(circle at 87% 24%,rgba(132,168,189,.32) 0,rgba(132,168,189,0) 29rem),linear-gradient(145deg,#e9f0f4 0%,#d8e5ec 52%,#e7eef2 100%);border-bottom:1px solid #ccd8df}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.28;background-image:linear-gradient(rgba(255,255,255,.27) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.22) 1px,transparent 1px);background-size:74px 74px;mask-image:linear-gradient(to bottom,rgba(0,0,0,.85),transparent 92%)}
+.hero::after{content:"";position:absolute;inset:0 0 0 auto;width:38%;background:linear-gradient(145deg,transparent 27%,rgba(255,255,255,.20) 27%,rgba(255,255,255,.20) 58%,transparent 58%);opacity:.78;pointer-events:none}
+.hero .shell{position:relative;z-index:2}
+.hero__inner{max-width:960px}
+.eyebrow{margin:0 0 16px;color:var(--primary);font:700 .72rem/1.3 var(--display);letter-spacing:.1em;text-transform:uppercase}
+h1,h2{font-family:var(--display);color:var(--text);font-feature-settings:"kern" 1,"liga" 1}
+h1{margin:0;font-size:clamp(2.85rem,6vw,5.2rem);line-height:.98;letter-spacing:-.032em;font-weight:700;text-wrap:balance}
+.hero__intro{max-width:800px;margin:30px 0 0;color:#405968;font-size:clamp(1.06rem,2vw,1.28rem);line-height:1.55}
+.generator{padding:48px 0 78px}
+.card{max-width:860px;margin:0 auto;background:var(--surface);border:1px solid var(--border);border-radius:4px;padding:clamp(18px,3vw,32px)}
+.card + .card{margin-top:34px}
+.card h2{margin:0;max-width:780px;font-size:clamp(1.45rem,2.6vw,2rem);line-height:1.1;letter-spacing:-.025em;font-weight:700;text-wrap:balance}
+.card .eyebrow{margin-bottom:10px;color:var(--muted);font-size:.76rem;letter-spacing:.055em}
+.status{margin:18px 0 12px;font-size:.82rem;color:var(--muted);line-height:1.5}
+.status.ready{display:none}
+.status.error{display:block;color:var(--negative);font-weight:600;background:#faf5f7;border-left:3px solid var(--negative);padding:10px 12px}
+.status.warning{display:block;color:#6f571c;background:#fffaf0;border-left:3px solid var(--accent);padding:10px 12px}
+.chart-wrap{position:relative;width:100%;min-height:300px;margin-top:16px}
+.chart-wrap svg{display:block;width:100%;height:auto;overflow:visible}
+.legend{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin:14px 0 0;font-size:.76rem;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{display:inline-block;width:14px;height:10px}
+.tooltip{position:absolute;z-index:5;pointer-events:none;min-width:138px;padding:10px 12px;background:rgba(41,79,104,.96);color:#fff;border-radius:4px;box-shadow:0 8px 24px rgba(33,55,71,.18);font-size:12px;line-height:1.5;opacity:0;transform:translate(-50%,-108%);transition:opacity .08s ease}
+.tooltip.show{opacity:1}
+.tooltip .yr{font-weight:700;font-size:12px;margin-bottom:2px}
+.tooltip .amt{font-family:var(--display);font-size:22px;font-weight:700;line-height:1.05}
+.tooltip .agency{opacity:.8;margin-top:4px;font-size:10px}
+.foot{margin-top:18px;font-size:.76rem;line-height:1.55;color:var(--muted)}
+details{margin-top:20px;padding-top:18px;border-top:1px solid var(--border);font-size:.82rem;color:var(--muted)}
+summary{cursor:pointer;color:var(--primary-dark);font-weight:700}
+.table-wrap{overflow:auto;margin-top:18px}
+table{width:100%;min-width:720px;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th,td{padding:13px 11px;border-bottom:1px solid var(--border);text-align:right;white-space:nowrap;font-size:.94rem}
+th:first-child,td:first-child{text-align:left}
+td:first-child{font-family:var(--display);font-weight:700}
+th{background:#eef3f6;font-size:.76rem;font-weight:700;line-height:1.35;text-transform:uppercase;letter-spacing:.055em;color:var(--muted)}
+a{color:var(--primary-dark);text-decoration-thickness:1px;text-underline-offset:3px}
+a:hover{color:#17374d}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+.graphic-marker{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:12px}
+.graphic-marker p{margin:0;font-size:.82rem;line-height:1.5;overflow-wrap:anywhere;user-select:text}
+.graphic-marker .marker-label{flex-basis:100%;font-size:.72rem;color:var(--muted)}
+.graphic-marker .marker-feedback{font-size:.72rem;color:var(--muted)}
+button{border:1px solid var(--border);background:var(--surface);color:var(--primary-dark);font:600 .82rem/1.4 var(--sans);min-height:42px;padding:10px 14px;border-radius:4px;cursor:pointer}
+button:hover:not(:disabled){border-color:var(--primary);background:var(--sky-light)}
+#exportAllAstro{background:var(--primary-dark);border-color:var(--primary-dark);color:var(--surface)}
+#exportAllAstro:hover:not(:disabled){background:var(--primary);border-color:var(--primary)}
+button:disabled{opacity:.5;cursor:not-allowed}
+button.price-switch{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:4px 0;border:0;background:transparent;color:var(--text);text-align:left}
+button.price-switch:hover:not(:disabled){background:transparent}
+.price-switch__track{position:relative;display:inline-block;flex:0 0 42px;width:42px;height:24px;border-radius:999px;background:#b6c2ca;transition:background .15s}
+.price-switch__track::after{content:"";position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #0003;transition:transform .15s}
+.price-switch[aria-checked="true"] .price-switch__track{background:var(--primary)}
+.price-switch[aria-checked="true"] .price-switch__track::after{transform:translateX(18px)}
+@media (prefers-reduced-motion:reduce){.price-switch__track,.price-switch__track::after{transition:none}}
+button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--primary);outline-offset:3px}
+.department-picker{display:flex;align-items:end;gap:16px;flex-wrap:wrap;margin-top:26px;padding:20px;background:var(--sky-light);border:1px solid var(--border);border-radius:4px}
+.department-picker label{display:grid;gap:8px;flex:1;min-width:min(240px,100%)}
+.department-picker label span{font:700 .7rem/1.3 var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.department-picker select{width:100%;min-height:44px;border:1px solid #c1cdd4;border-radius:4px;background:var(--surface);color:var(--text);font:600 .88rem var(--sans);padding:10px 34px 10px 12px}
+.department-picker select:focus{outline:2px solid var(--primary);outline-offset:2px;border-color:var(--primary)}
+.department-picker select:disabled{opacity:.6;cursor:wait}
+.department-picker .picker-note{font-size:.76rem;color:var(--muted);line-height:1.55;flex-basis:100%}
+/* Match the compact, striped budgeted workforce comparison table. */
+#summaryTable .table-wrap{margin-top:20px}
+.budget-summary{min-width:740px;table-layout:fixed;font-family:var(--sans)}
+.budget-summary th,.budget-summary td{padding:10px 12px;border-bottom:0;font-size:12.5px;line-height:1.4}
+.budget-summary thead th{background:var(--surface);color:var(--primary-dark);font-size:11.5px;letter-spacing:.04em;white-space:normal;vertical-align:bottom;border-bottom:1px solid var(--border)}
+.budget-summary thead th:first-child{width:16%}
+.budget-summary thead th:nth-child(2),.budget-summary thead th:nth-child(3){width:15%}
+.budget-summary thead th:nth-child(4){width:14%}
+.budget-summary thead th:nth-child(5){width:10%}
+.budget-summary thead th:nth-child(6),.budget-summary thead th:nth-child(7){width:15%}
+.budget-summary tbody th{background:transparent;color:var(--primary-dark);font:600 12.5px/1.4 var(--sans);letter-spacing:normal;text-transform:none;white-space:normal}
+.budget-summary tbody td{color:var(--muted)}
+.budget-summary tbody tr:nth-child(even){background:#f7fafc}
+.budget-summary td.change-positive{color:var(--primary);font-weight:700}
+.budget-summary td.change-negative{color:var(--negative);font-weight:700}
+.budget-summary td.change-neutral{color:var(--muted);font-weight:700}
+.hero .department-picker{background:rgba(255,255,255,.65);border-color:#c1cdd4}
+.hero #exportStatus{max-width:800px;margin-bottom:0;color:#405968}
+
+
+.editor-tools{display:flex;align-items:center;gap:12px;margin-top:16px}
+.edited-badge{color:var(--primary-dark);font:700 .7rem var(--sans);text-transform:uppercase;letter-spacing:.06em}
+.graphic-editor{margin-top:16px;padding:20px;background:var(--sky-light);border:1px solid var(--border);border-radius:4px}
+.graphic-editor[hidden],.edited-badge[hidden]{display:none}
+.editor-note,.editor-message{margin:0 0 14px;font-size:.76rem;line-height:1.5;color:var(--muted)}
+.editor-message{margin:12px 0 0;color:var(--primary-dark)}
+.editor-text-fields{display:grid;gap:12px}
+.editor-text-fields label{display:grid;gap:6px;font-size:.76rem;font-weight:600;color:var(--primary-dark)}
+.graphic-editor input{box-sizing:border-box;width:100%;min-width:0;min-height:38px;padding:8px 10px;border:1px solid #c1cdd4;border-radius:4px;background:#fff;color:var(--text);font:400 .82rem var(--sans)}
+.graphic-editor input:focus{outline:2px solid var(--primary);outline-offset:1px}
+.graphic-editor input:invalid{border-color:var(--negative)}
+.graphic-editor input:disabled{background:var(--bg);opacity:.6}
+.editor-data-wrap{max-height:360px;overflow:auto;margin:20px 0}
+.editor-data-table{min-width:600px;table-layout:auto}
+.editor-data-table caption{text-align:left;font-size:.82rem;font-weight:700;color:var(--primary-dark);margin-bottom:10px}
+.editor-data-table th,.editor-data-table td{padding:8px;font-size:.76rem;white-space:normal;text-align:left;vertical-align:middle}
+.editor-data-table thead th{position:sticky;top:0;background:var(--sky-light);z-index:1}
+.editor-data-table tbody th{font-weight:600;text-transform:none;letter-spacing:normal;min-width:90px;background:transparent;color:var(--primary-dark)}
+.editor-data-table input{min-width:100px}
+.editor-data-table input[type=text]{min-width:180px}
+
+@media(max-width:760px){
+  .product{display:none}
+  .shell{width:min(calc(100% - 28px),1180px)}
+  .hero{padding:30px 0 44px}
+  .generator{padding:28px 0 50px}
+  .card{padding:16px}
+  .card + .card{margin-top:24px}
+  .department-picker{padding:14px;gap:14px}
+  .chart-wrap{min-height:255px}
+}
+
+[hidden]{display:none!important}.card>header h2{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.hero{padding:48px 0}.hero h1{font-size:clamp(2.4rem,5vw,4rem)}.hero__intro{font-size:1.05rem;margin-top:20px}.generator{padding-top:32px}.overview-controls{margin:24px auto;max-width:860px}.overview-controls label{display:inline-flex;gap:8px;align-items:center}.overview-controls select{padding:10px;font:inherit;border:1px solid var(--border);border-radius:4px;color:var(--text);background:white}.overview-nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:20px}.overview-nav a{font-size:12px;border:1px solid var(--border);border-radius:20px;padding:6px 12px;text-decoration:none;background:white}.card[hidden]{display:none!important}.card{scroll-margin-top:80px}.chart-wrap{min-height:0;overflow:auto}.chart-wrap svg{overflow:hidden}.chart-wrap.phone{max-width:375px;margin-inline:auto}.selection{display:flex;gap:8px;align-items:center;font-size:12px;color:var(--muted);margin:16px 0}.selection input{accent-color:var(--primary)}.graphic-editor textarea{width:100%;min-height:64px;border:1px solid var(--border);border-radius:4px;padding:8px;font:inherit}.editor-text-fields{grid-template-columns:repeat(2,minmax(0,1fr))}.editor-text-fields .wide{grid-column:1/-1}.editor-data-wrap{max-height:340px;overflow:auto}.editor-data-wrap table{min-width:650px}.editor-data-wrap input{min-width:130px}.editor-data-wrap td{padding:4px}.editor-data-wrap tr:first-child input{font-weight:700;background:#f6f8f9}.marker{width:100%;padding:9px;border:1px solid var(--border);border-radius:4px;background:#f6f8f9;color:var(--primary-dark);font:12px monospace}.card .foot{margin-bottom:0}.optional{max-width:860px;margin:32px auto}.optional>.card{margin-top:24px}.optional>summary{font-size:16px}.error{color:#8b6472}.section-title{max-width:860px;margin:38px auto 18px;font-size:24px}.section-title[hidden]{display:none}.overview-controls .foot{margin-top:10px}.edited-badge{font-size:11px;background:#edf3f6;padding:4px 8px;border-radius:12px}#feedback{min-height:24px}@media(max-width:600px){.editor-text-fields{grid-template-columns:1fr}.shell{width:calc(100% - 24px)}.card{padding:16px}.toolbar{gap:8px}.toolbar button{padding:8px 10px}}
+</style></head><body>
+<header class="site-header"><div class="shell site-header__inner"><a class="brand" href="../../index.html">BGA Policy</a><span class="product">Overview Graphics Generator</span><a href="../../custom-graphics.html">Custom graphics</a></div></header>
+<section class="hero"><div class="shell hero__inner"><p class="eyebrow">2027 Chicago Budget Proposal</p><h1>Overview graphics</h1><p class="hero__intro">The article’s charts, in article order. Edit the data and labels, preview at phone width, then export each graphic or the complete set.</p></div></section>
+<main class="shell generator">
+<section class="overview-controls" aria-label="Overview tools">
+<div class="toolbar"><button id="export-all" type="button">Export selected for Astro (.zip)</button><button id="save-all" type="button">Save project</button><button id="open-project" type="button">Open project</button><button id="phone-all" type="button" aria-pressed="false">Preview at phone width</button><input type="file" id="project-file" accept=".json,application/json" hidden></div>
+<p class="foot" id="selection-count"></p><p class="foot">Source snapshot: October 21, 2026. <a href="comparison.md">Document comparison</a> · <a href="../../2027-OVERVIEW.md">Data &amp; calculation notes</a> · <a href="2027-overview-astro.zip">Download original article set</a></p>
+<label>Show section <select id="section-filter"><option value="all">All article sections</option></select></label>
+<nav class="overview-nav" aria-label="Jump to section"></nav>
+<p id="feedback" class="foot" role="status" aria-live="polite"></p>
+</section>
+<div id="article-graphics"></div>
+<details class="optional"><summary>Additional workbook charts — not used in the article</summary><p class="foot">These remain available for other uses. They are excluded from the default article export.</p><div id="optional-graphics"></div></details>
+</main>
+<script id="overview-data" type="application/json">[{"kind":"summary","sheet":"bloc","sourceRange":"bloc!A1:Z100","sourceChartId":null,"sourceTitle":"Snapshot: Appropriation & Staffing Changes from 2026 Budget","config":{"type":"table","title":"Budget Overview Snapshot: Appropriation & Staffing Changes from 2026 Budget","subtitle":"","xTitle":"","yTitle":"Appropriations","format":"number","decimals":1,"height":400,"palette":"snapshot","source":"","note":"Summary rates are the analyst-supplied workbook values.","legend":false,"values":false,"labelAngle":"0","graphicId":"overview-2027-summary","hideNotes":true},"grid":[["Metric","2026 Budgeted","2027 Proposed","Net Change","Percent Change","Average Annual Rate of Change (2011-2026)","Inflation-adjusted Rate of Change (2011-2025)"],["Appropriations","18668568460","19612341299","943772839","5.05541086892744","5.508138101707673","3.4908216436160053"],["Positions & FTEs","35851","36037","186","0.5188139800842375","-0.09551994428885241","N/A"]],"optional":false,"section":"Summary","order":0},{"sheet":"AppsHistory","sourceRange":"AppsHistory!A1:U25","sourceChartId":299413306,"sourceTitle":"Total City of Chicago Appropriations, Original and Inflation-adjusted (2025 CPI-U Chicago)","config":{"type":"line","title":"Total City of Chicago Appropriations, Original and Inflation-adjusted (2025 CPI-U Chicago)","subtitle":"","xTitle":"","yTitle":"Appropriations","format":"currency","decimals":1,"height":400,"palette":"snapshot","source":"","note":"Inflation-adjusted data ends in 2025. No 2026 or 2027 CPI adjustment is supplied. 2027 is proposed.","legend":true,"values":false,"labelAngle":"0","graphicId":"overview-2027-appropriations-nominal-real","hideNotes":true},"grid":[["Year","Total Appropriations","Total Appropriations in 2025 Dollars"],["2011","8700334637","11984503685.695108"],["2012","8614865000","11689254810.218966"],["2013","8745336000","11732058402.585983"],["2014","9114711000","12017624453.093266"],["2015","9555106000","12635666269.344492"],["2016","10056354000","13210942899.09471"],["2017","10677480000","13768181534.950918"],["2018","10752004000","13625435071.672377"],["2019","11400085000","14238561098.918375"],["2020","12607102000","15572296033.852478"],["2021","13522521000","16027038378.669992"],["2022","18115873000","19963273732.376556"],["2023","17974994000","19170272232.89465"],["2024","18341105000","18906417106.064697"],["2025","18842061980","18842061980"],["2026","18668568460",""],["2027 (proposed)","19612341299",""]],"kind":"price-toggle","optional":false,"section":"Overall Appropriations & Year-to-Year Budget Growth","order":1},{"sheet":"AppsHistory","sourceRange":"AppsHistory!A1:U25","sourceChartId":1199092773,"sourceTitle":"Appropriations in Billions of Dollars, City of Chicago Budgets 2011-2027 (proposed)","config":{"type":"stacked","title":"Appropriations in Billions of Dollars, City of Chicago Budgets 2011-2027 (proposed)","subtitle":"","xTitle":"","yTitle":"Appropriations","format":"currency","decimals":1,"height":400,"palette":"snapshot","source":"","note":"2027 figures are proposed; prior budget comparisons use the 2026 ordinance.","legend":true,"values":false,"labelAngle":"-60","graphicId":"overview-2027-appropriations-history","hideNotes":true},"grid":[["Year","Total Departmental Budgets","Total Finance General"],["2011","5799214608","2901120029"],["2012","5528952799","3085912201"],["2013","5513445122","3231890878"],["2014","5565140330","3549570670"],["2015","5614397623","3940708377"],["2016","5611623381","4444730619"],["2017","5926581734","4750898266"],["2018","5915120365","4836883635"],["2019","6452367357","4947717643"],["2020","6692547855","5914554145"],["2021","7841203402","5681317598"],["2022","11289094133","6826778867"],["2023","10213451863","7761542137"],["2024","10382870646","7958234354"],["2025","10776392261","8065669719"],["2026","10477633009","8190935451"],["2027 (proposed)","11074151801","8538189498"]],"optional":false,"section":"Overall Appropriations & Year-to-Year Budget Growth","order":2},{"sheet":"app by fund type","sourceRange":"'app by fund type'!A1:AK100","sourceChartId":830272987,"sourceTitle":"Appropriations by Fund Type, City of Chicago Budgets 2011-2027 (proposed)","config":{"type":"stacked","title":"Appropriations by Fund Type, City of Chicago Budgets 2011-2027 (proposed)","subtitle":"","xTitle":"","yTitle":"Appropriations","format":"currency","decimals":1,"height":400,"palette":"contrast","source":"","note":"CDBG becomes part of the grant category in 2026. The source’s rounded block explicitly records zero separate CDBG for 2026–2027.","legend":true,"values":false,"labelAngle":"-60","graphicId":"overview-2027-appropriations-by-fund","hideNotes":true},"grid":[["Year","Local","Grant","CDBG"],["2011","6567524000","2034517637","98293000"],["2012","6693285000","1837841000","83739000"],["2013","6938504000","1725241000","81591000"],["2014","7402555000","1614934000","97222000"],["2015","7987039000","1473567000","94500000"],["2016","8554560000","1419154000","82640000"],["2017","9048324000","1548041000","81115000"],["2018","9310802000","1359990000","81212000"],["2019","9589147000","1718951000","91987000"],["2020","10848444000","1652058000","106600000"],["2021","10532255000","2872594000","117672000"],["2022","12082961000","5865734000","167178000"],["2023","13341034000","4447770000","186190000"],["2024","13840800000","4375558000","124747000"],["2025","14124660980","4609117000","108284000"],["2026","14798710460","3869858000","0"],["2027 (proposed)","15647496299","3964845000","0"]],"optional":false,"section":"Appropriation Sources","order":3},{"sheet":"dept apps by fund type","sourceRange":"'dept apps by fund type'!A1:AK100","sourceChartId":294455619,"sourceTitle":"Department Appropriations by Funding Source - City of Chicago Budget, 2027 (proposed)","config":{"type":"percent","title":"Department Appropriations by Funding Source - City of Chicago Budget, 2027 (proposed)","subtitle":"","xTitle":"","yTitle":"","format":"currency","decimals":1,"height":500,"palette":"contrast","source":"","note":"Includes Finance General, matching the source tab. Blank funding components are absent fund categories and contribute zero; each row reconciles to its supplied total.","legend":true,"values":false,"labelAngle":"-60","orientation":"horizontal","colors":["#3e6f8c","#8eafc3","#e9b84a"],"graphicId":"overview-2027-department-funding-sources","hideNotes":true},"grid":[["Department","Corporate Fund","Other Local Funds","Grant Funds"],["DAH","8497724","0","0"],["BOEC","48453841","0","0"],["POLICE BOARD","496322","0","0"],["COPA","16978005","0","0"],["CCPSA","4104984","0","0"],["CACC","9530803","0","0"],["LAC","217612","0","0"],["ETHICS","952978","0","0"],["COUNCIL","38276342","1156284","0"],["CPD","2031444981","113372843","98874000"],["CFD","817457251","55049145","41877000"],["DHR","11110511","1785078","896000"],["DOB","32514745","7951849","0"],["DOL","39519647","11038718","123000"],["DPS","11260099","3300734","0"],["DOIT","24095987","0","10317000"],["MAYOR","12562589","5128062","575000"],["OIG","9909835","4564386","0"],["DSS","248327407","125753498","7833000"],["BACP","23039577","13609191","484000"],["DOF","106602854","61298797","7393000"],["CHR","1711033","0","1140000"],["FFM","309911236","247905943","7317000"],["PSA","69121175","49523461","16165000"],["TREASURER","4141746","4494982","0"],["CLERK","6188858","9512338","0"],["MOPD","3360922","0","5762000"],["DFSS","221287930","38645933","385973000"],["Finance General","2247172736","6291016762","0"],["CDPH","66418003","55373764","211677000"],["ENVIRONMENT","7614855","350995","45095000"],["DOH","23049684","15196388","132812000"],["OEMC","11291173","84310541","9784000"],["DPD","15888945","104263688","37925000"],["OBM","4512572","734277","42166000"],["CDOT","51943022","195711269","1749739000"],["DCASE","133580","47394234","14956000"],["DOA","0","1013204989","768575000"],["DWM","0","446951165","336399000"],["CPL","0","99795421","30988000"]],"optional":false,"section":"Appropriation Sources","order":4},{"sheet":"dept apps","sourceRange":"'dept apps'!A1:AK100","sourceChartId":1554593907,"sourceTitle":"Total Appropriations by Department, City of Chicago 2027 Budget (proposed)","config":{"type":"bar","title":"Total Appropriations by Department, City of Chicago 2027 Budget (proposed)","subtitle":"","xTitle":"Appropriations","yTitle":"","format":"currency","decimals":1,"height":400,"palette":"snapshot","source":"","note":"2027 figures are proposed; prior budget comparisons use the 2026 ordinance.","legend":false,"values":true,"labelAngle":"0","showShare":true,"graphicId":"overview-2027-department-appropriations","hideNotes":true},"grid":[["Department","2027 proposed appropriations"],["CPD","2243691824"],["CDOT","1997393291"],["DOA","1781779989"],["CFD","914383396"],["DWM","783350165"],["DFSS","645906863"],["FFM","565134179"],["DSS","381913905"],["CDPH","333468767"],["DOF","175294651"],["DOH","171058072"],["DPD","158077633"],["PSA","134809636"],["CPL","130783421"],["OEMC","105385714"],["DCASE","62483814"],["ENVIRONMENT","53060850"],["DOL","50681365"],["BOEC","48453841"],["OBM","47412849"],["DOB","40466594"],["COUNCIL","39432626"],["BACP","37132768"],["DOIT","34412987"],["MAYOR","18265651"],["COPA","16978005"],["CLERK","15701196"],["DPS","14560833"],["OIG","14474221"],["DHR","13791589"],["CACC","9530803"],["MOPD","9122922"],["TREASURER","8636728"],["DAH","8497724"],["CCPSA","4104984"],["CHR","2851033"],["ETHICS","952978"],["POLICE BOARD","496322"],["LAC","217612"]],"optional":false,"section":"Departmental Appropriations","order":5},{"sheet":"Fringe","sourceRange":"Fringe!A1:Z100","sourceChartId":1213978471,"sourceTitle":"Departmental Appropriations, City of Chicago 2027 Proposed Budget, with Estimated Fringe Cost of Pensions and Benefits (BGA Policy Estimate)","config":{"type":"stacked","title":"Departmental Appropriations, City of Chicago 2027 Proposed Budget, with Estimated Fringe Cost of Pensions and Benefits (BGA Policy Estimate)","subtitle":"","xTitle":"","yTitle":"","format":"currency","decimals":1,"height":520,"palette":"contrast","source":"","note":"Fringe estimates are supplied by BGA Policy; amounts retain the workbook’s full precision.","legend":true,"values":false,"labelAngle":"-60","graphicId":"overview-2027-appropriations-with-fringe","hideNotes":true},"grid":[["Department","Departmental Appropriations","Calculated Fringe (Full-time Positions)","Estimated Fringe (Part-time positions)"],["CPD","2243691824","1744302829.94","479710.6512"],["CDOT","1997393291","92550548.59","4016867.352"],["DOA","1781779989","167087331.47","2854724.728"],["CFD","914383396","716325497.77","0"],["DWM","783350165","131690910.93","11051391.03"],["DFSS","645906863","7259878.32","0"],["FFM","565134179","71839890.82","0"],["DSS","381913905","152555897.58","626905.9468"],["CDPH","333468767","30594007.55","59319.0384"],["DOF","175294651","43914383.61","286312.2218"],["CPL","130783421","62965221.73","1423577.181"],["DOH","171058072","4592321.72","0"],["DPD","158077633","14050819.57","0"],["OEMC","105385714","65219363.86","863538.426"],["PSA","134809636","26334229.44","0"],["DOL","50681365","31518727.62","91595.2826"],["DCASE","62483814","6318233.73","0"],["DOB","40466594","20721033.7","0"],["COUNCIL","39432626","18567252.2","0"],["ENVIRONMENT","53060850","4864362.02","0"],["BOEC","48453841","8895674.43","0"],["BACP","37132768","14746115.69","27185.3358"],["OBM","47412849","3370133.67","0"],["DOIT","34412987","10977122.59","0"],["COPA","16978005","11129911.42","0"],["MAYOR","18265651","8853237.24","0"],["DPS","14560833","9740599.08","0"],["OIG","14474221","8494534.99","0"],["CLERK","15701196","6979981.48","0"],["DHR","13791589","8797510.85","0"],["CACC","9530803","6339828.62","55519.7934"],["TREASURER","8636728","3109770.28","0"],["DAH","8497724","2954485.21","0"],["MOPD","9122922","2293918.72","0"],["CCPSA","4104984","2255945.01","0"],["CHR","2851033","1091417.71","0"],["ETHICS","952978","624691.96","0"],["POLICE BOARD","496322","153267.19","0"],["LAC","217612","78574.45","0"]],"optional":false,"section":"Departmental Appropriations","order":6},{"sheet":"fringe diff","sourceRange":"'fringe diff'!A1:AK100","sourceChartId":686639191,"sourceTitle":"Change by Department in Share of All Departmental Appropriations with Inclusion of Estimated Fringe","config":{"type":"bar","title":"Change by Department in Share of All Departmental Appropriations with Inclusion of Estimated Fringe","subtitle":"","xTitle":"Percentage point change","yTitle":"","format":"percent","decimals":1,"height":400,"palette":"snapshot","source":"","note":"Differences between departmental shares with and without estimated fringe; units are percentage points.","legend":false,"values":true,"labelAngle":"0","graphicId":"overview-2027-fringe-share-change","hideNotes":true},"grid":[["Department","Change in share (percentage points)"],["CPD","7.020050322636048"],["CFD","2.896930901852146"],["OEMC","0.22118719536074055"],["DSS","0.21129850235084915"],["CPL","0.15397467407313564"],["DOL","0.10521034893418635"],["DOB","0.053100951944996595"],["COUNCIL","0.040633909636235595"],["COPA","0.03894265265731302"],["DPS","0.034733923951025876"],["DHR","0.02996808543461961"],["OIG","0.026400694199576503"],["CACC","0.02286939882623619"],["MAYOR","0.020550331501193203"],["BACP","0.019720812751056107"],["CLERK","0.013354063235586983"],["CCPSA","0.006439808973835717"],["TREASURER","0.002354619620772644"],["ETHICS","0.002185640467025663"],["DAH","0.0015969301066758447"],["CHR","0.0012209409653055948"],["LAC","0.00006083421327631349"],["POLICE BOARD","-0.0000386964378455564"],["DOIT","-0.00028781940322243106"],["MOPD","-0.00429054702583032"],["BOEC","-0.045276395940695935"],["OBM","-0.08079047007391046"],["DOF","-0.08159620365760945"],["ENVIRONMENT","-0.0829401641232212"],["DCASE","-0.0936336688485675"],["PSA","-0.11513192399530606"],["DPD","-0.25010958198307226"],["DOH","-0.3432337848037726"],["CDPH","-0.5206852904845637"],["DWM","-0.7393232242222034"],["FFM","-0.7463588159000882"],["DFSS","-1.3649832708285798"],["DOA","-2.740002210688275"],["CDOT","-3.714103475275077"]],"optional":false,"section":"Departmental Appropriations","order":7},{"sheet":"dept apps net change","sourceRange":"'dept apps net change'!A1:AK100","sourceChartId":31784040,"sourceTitle":"Net Change in Budgeted Appropriations by Department, City of Chicago Budgets 2026-2027 (proposed)","config":{"type":"bar","title":"Net Change in Budgeted Appropriations by Department, City of Chicago Budgets 2026-2027 (proposed)","subtitle":"","xTitle":"Change in appropriations","yTitle":"","format":"currency","decimals":1,"height":400,"palette":"snapshot","source":"","note":"2027 figures are proposed; prior budget comparisons use the 2026 ordinance.","legend":false,"values":true,"labelAngle":"0","graphicId":"overview-2027-appropriations-net-change","hideNotes":true},"grid":[["Department","Change in appropriations"],["CDOT","159870728"],["CPD","133880224"],["DOA","115686460"],["FFM","61680105"],["DOF","47475769"],["DSS","32025344"],["BOEC","20586437"],["CPL","14767075"],["CFD","12701424"],["DPD","11594818"],["DWM","10631107"],["OBM","8860147"],["OEMC","5454594"],["DOL","2726728"],["TREASURER","2132477"],["MAYOR","1845939"],["COUNCIL","1668158"],["CACC","1353415"],["COPA","1196978"],["DOB","1098448"],["DHR","834036"],["DPS","637468"],["ENVIRONMENT","601955"],["CLERK","486544"],["DCASE","480217"],["BACP","349606"],["OIG","177199"],["DAH","108500"],["CCPSA","78219"],["CHR","77833"],["ETHICS","27381"],["LAC","7624"],["POLICE BOARD","-1878"],["MOPD","-556237"],["PSA","-822040"],["CDPH","-1580893"],["DOH","-2193954"],["DFSS","-7459110"],["DOIT","-41970053"]],"optional":false,"section":"Year-over-Year Appropriations Changes","order":8},{"sheet":"dept apps pct change","sourceRange":"'dept apps pct change'!A1:AK100","sourceChartId":33908906,"sourceTitle":"Percent Change in Departmental Appropriations, City of Chicago Budgets 2026-2027 (proposed)","config":{"type":"bar","title":"Percent Change in Departmental Appropriations, City of Chicago Budgets 2026-2027 (proposed)","subtitle":"","xTitle":"Change from 2026 ordinance","yTitle":"","format":"percent","decimals":1,"height":400,"palette":"snapshot","source":"","note":"2027 figures are proposed; prior budget comparisons use the 2026 ordinance.","legend":false,"values":true,"labelAngle":"0","graphicId":"overview-2027-appropriations-percent-change","hideNotes":true},"grid":[["Department","Change from 2026 ordinance"],["BOEC","73.87281929813054"],["DOF","37.14300129772689"],["TREASURER","32.78589648523712"],["OBM","22.98190928355683"],["CACC","16.550700541542117"],["CPL","12.72844345571787"],["FFM","12.251386608105985"],["MAYOR","11.242213018108965"],["DSS","9.153012578767902"],["CDOT","8.700340949228389"],["DPD","7.915480051363022"],["COPA","7.584918269260929"],["DOA","6.943575374753166"],["DHR","6.436678283314759"],["CPD","6.345600905787038"],["DOL","5.686057012588793"],["OEMC","5.45835371403823"],["DPS","4.578404717537751"],["COUNCIL","4.417268634632957"],["LAC","3.630683658113797"],["CLERK","3.197864795067281"],["ETHICS","2.9581988705667803"],["CHR","2.8066132987162846"],["DOB","2.7901948951317137"],["CCPSA","1.9424773981098973"],["CFD","1.408636791509457"],["DWM","1.375804943586625"],["DAH","1.2933258189315244"],["OIG","1.2394119558604582"],["ENVIRONMENT","1.1474793740889893"],["BACP","0.9504511874210271"],["DCASE","0.7744986149755151"],["POLICE BOARD","-0.3769570453633079"],["CDPH","-0.47183841344593513"],["PSA","-0.6060826086083313"],["DFSS","-1.1416434752104851"],["DOH","-1.2663367065040845"],["MOPD","-5.7467492785271945"],["DOIT","-54.946821964666505"]],"optional":false,"section":"Year-over-Year Appropriations Changes","order":9},{"sheet":"Actuals","sourceRange":"Actuals!A1:Z100","sourceChartId":47119509,"sourceTitle":"Citywide Local Fund Actuals, 2022-2025 (Avg. Spend 86.6%)","config":{"type":"stacked","title":"Citywide Local Fund Actuals, 2022-2025 (Avg. Spend 86.6%)","subtitle":"","xTitle":"","yTitle":"","format":"currency","decimals":1,"height":400,"palette":"snapshot","source":"","note":"Actuals include encumbrances. Citywide average spend is 86.6%; this differs from the article’s departmental average of 87.5%.","legend":true,"values":false,"labelAngle":"0","graphicId":"overview-2027-local-fund-actuals","hideNotes":true},"grid":[["Year","Budget Spent","Budget Unspent","Overbudget"],["2022","9854328884","2228632116","0"],["2023","11847842304","1493191696","0"],["2024","12408093833","1432706167","0"],["2025","12215011024","1909649956","0"]],"optional":false,"section":"Local Fund Budgeted vs. Actual Spend","order":10},{"sheet":"Article embedded chart / 2025 FOIA response actuals.xlsx - formatted.csv","sourceRange":"Embedded chart 432790276; 2025 totals independently verified against FOIA department aggregates","sourceChartId":432790276,"sourceTitle":"Departmental Net Overspend (Local Funds), 2022-2025","config":{"type":"bar","title":"Departmental Net Overspend (Local Funds), 2022-2025","subtitle":"","xTitle":"","yTitle":"","format":"currency","decimals":1,"height":400,"palette":"contrast","source":"","note":"Values from the article’s embedded chart; 2025 verified against the checked-in FOIA response. Actual spend includes encumbrances. Source years without a visible mark remain blank.","legend":true,"values":true,"labelAngle":"0","graphicId":"overview-2027-department-actuals","colors":["#3e6f8c","#b34d4d","#e9b84a"],"hideNotes":true},"grid":[["Year","CPD","CFD","CCHR"],["2022","20796615","",""],["2023","135824090","",""],["2024","188112250","22001648","15890"],["2025","145766930","62311590","35070"]],"optional":false,"section":"Local Fund Budgeted vs. Actual Spend","order":11},{"sheet":"PosHistory","sourceRange":"PosHistory!A1:AC100","sourceChartId":1061857961,"sourceTitle":"Total Budgeted Positions & FTEs, City of Chicago Budgets 2011 to 2027 (proposed)","config":{"type":"line","title":"Total Budgeted Positions & FTEs, City of Chicago Budgets 2011 to 2027 (proposed)","subtitle":"","xTitle":"","yTitle":"Positions and FTEs","format":"number","decimals":0,"height":400,"palette":"snapshot","source":"","note":"2027 figures are proposed; prior budget comparisons use the 2026 ordinance.","legend":false,"values":false,"labelAngle":"0","graphicId":"overview-2027-positions-history","hideNotes":true,"categoryColors":{"2027 (proposed)":"#929ca3"}},"grid":[["Year","Total Positions & FTEs"],["2011","36603"],["2012","33748"],["2013","33554"],["2014","34046"],["2015","34130"],["2016","34327"],["2017","35655"],["2018","36232"],["2019","36592"],["2020","36611"],["2021","34770"],["2022","35272"],["2023","36420"],["2024","36807"],["2025","36203"],["2026","35851"],["2027 (proposed)","36037"]],"optional":false,"section":"Overall Positions & Year-to-Year Growth","order":12},{"sheet":"dept pos","sourceRange":"'dept pos'!A1:AK100","sourceChartId":1476991483,"sourceTitle":"Total Budgeted Positions and FTEs by Department, City of Chicago Budget 2027 (proposed)","config":{"type":"bar","title":"Total Budgeted Positions and FTEs by Department, City of Chicago Budget 2027 (proposed)","subtitle":"","xTitle":"Positions and FTEs","yTitle":"","format":"number","decimals":0,"height":400,"palette":"snapshot","source":"","note":"2027 figures are proposed; prior budget comparisons use the 2026 ordinance.","legend":false,"values":true,"labelAngle":"0","graphicId":"overview-2027-department-positions","hideNotes":true,"categoryColors":{"CPD":"#929ca3","CFD":"#929ca3","DWM":"#929ca3","DOA":"#929ca3","DSS":"#929ca3","CDOT":"#929ca3","CPL":"#929ca3","FFM":"#929ca3","OEMC":"#929ca3","CDPH":"#929ca3","DOF":"#929ca3","DFSS":"#929ca3","DOL":"#929ca3","PSA":"#929ca3","DOB":"#929ca3","COUNCIL":"#929ca3","BACP":"#929ca3","DPD":"#929ca3","DOIT":"#929ca3","COPA":"#929ca3","DPS":"#929ca3","DOH":"#929ca3","BOEC":"#929ca3","DHR":"#929ca3","MAYOR":"#929ca3","OIG":"#929ca3","CLERK":"#929ca3","CACC":"#929ca3","DCASE":"#929ca3","ENVIRONMENT":"#929ca3","OBM":"#929ca3","MOPD":"#929ca3","TREASURER":"#929ca3","DAH":"#929ca3","CCPSA":"#929ca3","CHR":"#929ca3","ETHICS":"#929ca3","POLICE BOARD":"#929ca3","LAC":"#929ca3"}},"grid":[["Department","Positions and FTEs"],["CPD","13806"],["CFD","5142"],["DWM","2501"],["DOA","2476"],["DSS","2298"],["CDOT","1500"],["CPL","1105"],["FFM","1040"],["OEMC","970"],["CDPH","792"],["DOF","659"],["DFSS","439"],["DOL","422"],["PSA","372"],["DOB","279"],["COUNCIL","265"],["BACP","197"],["DPD","193"],["DOIT","144"],["COPA","144"],["DPS","126"],["DOH","122"],["BOEC","122"],["DHR","119"],["MAYOR","116"],["OIG","110"],["CLERK","92"],["CACC","91"],["DCASE","82"],["ENVIRONMENT","79"],["OBM","56"],["MOPD","41"],["TREASURER","40"],["DAH","39"],["CCPSA","29"],["CHR","20"],["ETHICS","8"],["POLICE BOARD","2"],["LAC","1"]],"optional":false,"section":"Overall Positions & Year-to-Year Growth","order":13},{"sheet":"dept pos net change","sourceRange":"'dept pos net change'!A1:AK100","sourceChartId":1621516483,"sourceTitle":"Net Change in Budgeted Positions & FTEs by Department, City of Chicago Budgets 2026-2027 (proposed)","config":{"type":"bar","title":"Net Change in Budgeted Positions & FTEs by Department, City of Chicago Budgets 2026-2027 (proposed)","subtitle":"","xTitle":"Change in positions and FTEs","yTitle":"","format":"number","decimals":0,"height":400,"palette":"snapshot","source":"","note":"2027 figures are proposed; prior budget comparisons use the 2026 ordinance.","legend":false,"values":true,"labelAngle":"0","graphicId":"overview-2027-positions-net-change","hideNotes":true},"grid":[["Department","Change in positions and FTEs"],["DSS","84"],["DOA","33"],["CDPH","26"],["CPD","14"],["CDOT","12"],["FFM","9"],["DWM","9"],["DFSS","6"],["DOF","5"],["MAYOR","4"],["DOL","4"],["CACC","4"],["DCASE","2"],["MOPD","1"],["CFD","1"],["OBM","0"],["DOIT","0"],["COUNCIL","0"],["DOH","0"],["CLERK","0"],["TREASURER","0"],["DAH","0"],["DHR","0"],["DPS","0"],["BOEC","0"],["CHR","0"],["PSA","0"],["POLICE BOARD","0"],["OEMC","0"],["CCPSA","0"],["DOB","0"],["ENVIRONMENT","0"],["LAC","0"],["ETHICS","0"],["CPL","0"],["DPD","-1"],["COPA","-6"],["OIG","-8"],["BACP","-11"]],"optional":false,"section":"Departmental Positions and Year-to-Year Growth","order":14},{"sheet":"dept pos pct change","sourceRange":"'dept pos pct change'!A1:AK100","sourceChartId":1577381700,"sourceTitle":"Percent Change in Budgeted Positions & FTEs by Department, City of Chicago Budgets 2026-2027 (proposed)","config":{"type":"bar","title":"Percent Change in Budgeted Positions & FTEs by Department, City of Chicago Budgets 2026-2027 (proposed)","subtitle":"","xTitle":"Change from 2026 ordinance","yTitle":"","format":"percent","decimals":1,"height":400,"palette":"snapshot","source":"","note":"2027 figures are proposed; prior budget comparisons use the 2026 ordinance.","legend":false,"values":true,"labelAngle":"0","graphicId":"overview-2027-positions-percent-change","hideNotes":true},"grid":[["Department","Change from 2026 ordinance"],["CACC","4.597701149425287"],["DSS","3.7940379403794036"],["MAYOR","3.571428571428571"],["CDPH","3.3942558746736298"],["DCASE","2.5"],["MOPD","2.5"],["DFSS","1.3856812933025404"],["DOA","1.3507981989357347"],["DOL","0.9569377990430622"],["FFM","0.8729388942774006"],["CDOT","0.8064516129032258"],["DOF","0.764525993883792"],["DWM","0.3611556982343499"],["CPD","0.10150812064965196"],["CFD","0.019451468585878234"],["OBM","0"],["DOIT","0"],["COUNCIL","0"],["DOH","0"],["CLERK","0"],["TREASURER","0"],["DAH","0"],["DHR","0"],["DPS","0"],["BOEC","0"],["CHR","0"],["PSA","0"],["POLICE BOARD","0"],["OEMC","0"],["CCPSA","0"],["DOB","0"],["ENVIRONMENT","0"],["LAC","0"],["ETHICS","0"],["CPL","0"],["DPD","-0.5154639175257731"],["COPA","-4"],["BACP","-5.288461538461538"],["OIG","-6.779661016949152"]],"optional":false,"section":"Departmental Positions and Year-to-Year Growth","order":15},{"sheet":"Vacancies","sourceRange":"Vacancies!A1:Z100","sourceChartId":1544963353,"sourceTitle":"2026 Citywide Vacancies, Jan-Sept (Avg. Vacancy Rate 11.2%)","config":{"type":"stacked","title":"2026 Citywide Vacancies, Jan-Sept (Avg. Vacancy Rate 11.2%)","subtitle":"","xTitle":"","yTitle":"","format":"number","decimals":0,"height":400,"palette":"contrast","source":"","note":"January–September 2026. Persistent means vacant in every month. 2,489 / 34,232 budgeted positions = 7.3% persistent vacancies; overall average vacancy rate is 11.2%.","legend":true,"values":false,"labelAngle":"-60","graphicId":"overview-2027-citywide-vacancies","hideNotes":true},"grid":[["Month","Filled Positions","Nonpersistent Vacancies","Persistent Vacancies"],["January","30289","1454","2489"],["February","30289","1454","2489"],["March","30283","1460","2489"],["April","30451","1292","2489"],["May","30502","1241","2489"],["June","30602","1141","2489"],["July","30334","1409","2489"],["August","30375","1368","2489"],["September","30461","1282","2489"]],"optional":false,"section":"Vacancies","order":16},{"sheet":"dept sept vacan","sourceRange":"'dept sept vacan'!A1:AK100","sourceChartId":257133023,"sourceTitle":"Budgeted Positions Vacant by Department as of 30 September 2026","config":{"type":"stacked","title":"Budgeted Positions Vacant by Department as of 30 September 2026","subtitle":"","xTitle":"","yTitle":"","format":"number","decimals":0,"height":400,"palette":"snapshot","source":"","note":"September 30, 2026. Persistent and nonpersistent vacancies are disjoint components; add them for each department’s total.","legend":true,"values":true,"labelAngle":"-60","orientation":"horizontal","graphicId":"overview-2027-department-vacancies","hideNotes":true},"grid":[["Department","Persistent Vacancies Jan-Sept 2026","Non-persistent Vacancies - Sept 2026"],["CPD","1069","269"],["CFD","225","153"],["DWM","189","106"],["DOA","211","73"],["DSS","28","154"],["CDPH","89","81"],["OEMC","117","35"],["CDOT","76","66"],["FFM","63","54"],["CPL","81","29"],["PSA","48","19"],["DOF","25","31"],["DOL","22","27"],["DOB","31","15"],["DFSS","16","29"],["DOIT","33","11"],["COPA","20","15"],["DPS","18","15"],["DPD","15","15"],["BACP","19","6"],["COUNCIL","19","2"],["BOEC","12","9"],["DOH","10","9"],["ENVIRONMENT","16","2"],["DCASE","9","5"],["OIG","1","10"],["DHR","6","5"],["CACC","6","5"],["CLERK","3","6"],["TREASURER","3","4"],["MAYOR","0","6"],["OBM","1","5"],["DAH","3","3"],["CCPSA","1","5"],["MOPD","4","0"],["ETHICS","0","2"],["CHR","0","1"],["POLICE BOARD","0","0"],["LAC","0","0"]],"optional":false,"section":"Vacancies","order":17},{"sheet":"dept pct vacan","sourceRange":"'dept pct vacan'!A1:AK100","sourceChartId":617356508,"sourceTitle":"Percent of Budgeted Positions Vacant by Department as of 30 September 2026","config":{"type":"stacked","title":"Percent of Budgeted Positions Vacant by Department as of 30 September 2026","subtitle":"","xTitle":"Share of budgeted annual positions","yTitle":"","format":"percent","decimals":1,"height":400,"palette":"snapshot","source":"","note":"Persistent and non-persistent rates are disjoint; add them for total September vacancies. Recalculated from “dept sept vacan” counts and budgeted positions to avoid the source percentage table’s double-counting.","legend":true,"values":true,"labelAngle":"-60","orientation":"horizontal","graphicId":"overview-2027-department-vacancy-rates","hideNotes":true},"grid":[["Department","Percent Persistent Vacant, Jan-Sept 2026","Percent Non-persistent Vacant, Sept 2026"],["DOIT","22.916666666666664","7.638888888888889"],["ENVIRONMENT","20.253164556962027","2.5316455696202533"],["DPS","14.285714285714285","11.904761904761903"],["COPA","13.333333333333334","10"],["CDPH","11.725955204216074","10.67193675889328"],["PSA","12.903225806451612","5.10752688172043"],["OEMC","13.432835820895523","4.018369690011482"],["DCASE","11.25","6.25"],["DOB","11.11111111111111","5.376344086021505"],["BOEC","9.836065573770492","7.377049180327869"],["DWM","10.396039603960396","5.83058305830583"],["TREASURER","7.5","10"],["ETHICS","0","25"],["CCPSA","3.4482758620689653","17.24137931034483"],["DOH","8.19672131147541","7.377049180327869"],["DPD","7.731958762886598","7.731958762886598"],["DAH","7.6923076923076925","7.6923076923076925"],["DOA","9.352836879432624","3.235815602836879"],["BACP","9.405940594059405","2.9702970297029703"],["CPL","8.930540242557882","3.197353914002205"],["CACC","7.4074074074074066","6.172839506172839"],["MOPD","10","0"],["DOL","5.472636815920398","6.7164179104477615"],["CPD","7.787004662004662","1.9594988344988344"],["FFM","6.110572259941804","5.237633365664403"],["CDOT","6.022187004754358","5.229793977812995"],["DFSS","4.071246819338422","7.37913486005089"],["COUNCIL","7.169811320754717","0.7547169811320755"],["DHR","5.042016806722689","4.201680672268908"],["DOF","4.0453074433656955","5.016181229773463"],["CLERK","3.260869565217391","6.521739130434782"],["OBM","1.7857142857142856","8.928571428571429"],["CFD","4.376580431822603","2.9760746936393696"],["OIG","0.847457627118644","8.47457627118644"],["DSS","1.2999071494893222","7.149489322191272"],["MAYOR","0","5.357142857142857"],["CHR","0","5"],["POLICE BOARD","0","0"],["LAC","0","0"]],"optional":false,"section":"Vacancies","order":18},{"sheet":"pers prop lease tax","sourceRange":"'pers prop lease tax'!A1:AK100","sourceChartId":889430038,"sourceTitle":"Personal Property Lease Transaction Tax Rates, City of Chicago, 2016-2027 (proposed)","config":{"type":"line","title":"Personal Property Lease Transaction Tax Rates, City of Chicago, 2016-2027 (proposed)","subtitle":"","xTitle":"","yTitle":"Tax rate","format":"percent","decimals":2,"height":400,"palette":"snapshot","source":"","note":"Blank source cells stay missing. Vehicle-specific values are supplied only for 2026–2027. 2027 rates are proposed.","legend":true,"values":false,"labelAngle":"0","graphicId":"overview-2027-personal-property-lease-tax","hideNotes":true,"colors":["#3e6f8c","#b27616","#96536f"]},"grid":[["Year","PPLT Tax - Computer","PPLT Tax - Vehicles","PPLT Tax - All Other"],["2016","5.25","","9"],["2017","5.25","","9"],["2018","5.25","","9"],["2019","5.25","","9"],["2020","7.249999999999999","","9"],["2021","9","","9"],["2022","","","9"],["2023","","","9"],["2024","","","9"],["2025","","","11"],["2026","","15","15"],["2027 (proposed)","","15","20"]],"optional":false,"section":"Revenues","order":19},{"sheet":"AppsHistory","sourceRange":"AppsHistory!A1:U25","sourceChartId":1973996892,"sourceTitle":"Inflation-adjusted Appropriations in Billions of Dollars, City of Chicago Budgets 2011-2027 (proposed)","config":{"type":"stacked","title":"Inflation-adjusted Appropriations, City of Chicago Budgets 2011–2025","subtitle":"","xTitle":"","yTitle":"Appropriations in 2025 dollars","format":"currency","decimals":1,"height":400,"palette":"snapshot","source":"","note":"The source chart title says 2011–2027; supplied inflation-adjusted values end in 2025.","legend":true,"values":false,"labelAngle":"-60","graphicId":"overview-2027-appropriations-real-history","hideNotes":true},"grid":[["Year","Departmental Appropriations in 2025 Dollars","Finance General Appropriations in 2025 Dollars"],["2011","7988279962.031179","3996223723.6639295"],["2012","7502072069.752034","4187182740.466931"],["2013","7396406515.513733","4335651887.072251"],["2014","7337563035.701683","4680061417.3915825"],["2015","7424475946.957469","5211190322.387023"],["2016","7371939776.34596","5839003122.74875"],["2017","7642089069.278163","6126092465.672756"],["2018","7495913178.086105","6129521893.586272"],["2019","8058924722.518382","6179636376.399993"],["2020","8266637044.64233","7305658989.210148"],["2021","9293479215.806854","6733559162.863139"],["2022","12440321058.093374","7522952674.283182"],["2023","10892612962.834648","8277659270.06"],["2024","10702892938.652903","8203524167.411798"],["2025","10776392261","8065669719"]],"optional":true,"section":"Additional workbook charts","order":100},{"sheet":"dept apps","sourceRange":"'dept apps'!A1:AK100","sourceChartId":87034230,"sourceTitle":"Department Budgets as Percentage of All Departmental Appropriations - All Funds","config":{"type":"donut","title":"Department Budgets as Percentage of All Departmental Appropriations - All Funds","subtitle":"","xTitle":"","yTitle":"","format":"percent","decimals":1,"height":450,"palette":"snapshot","source":"","note":"Uses the source tab’s grouped share table, including its “All Other Depts” category. 2027 proposed budget.","legend":true,"values":true,"labelAngle":"0","graphicId":"overview-2027-department-share-all-funds","hideNotes":true},"grid":[["Department","Share of departmental appropriations"],["CPD","20.26062008466774"],["CDOT","18.03653522990027"],["DOA","16.089539145012484"],["CFD","8.256915856232265"],["DWM","7.073680938067538"],["DFSS","5.832562841893448"],["FFM","5.10318252047952"],["All Other Depts","19.34696338374673"]],"optional":true,"section":"Additional workbook charts","order":100},{"sheet":"dept apps local funds","sourceRange":"'dept apps local funds'!A1:AK100","sourceChartId":378609863,"sourceTitle":"Department Budgets as Percentage of All Departmental Appropriations - Local Funds","config":{"type":"donut","title":"Department Budgets as Percentage of All Departmental Appropriations - Local Funds","subtitle":"","xTitle":"","yTitle":"","format":"percent","decimals":1,"height":450,"palette":"snapshot","source":"","note":"Uses the source tab’s grouped share table, including its “All Other Depts” category. 2027 proposed budget.","legend":true,"values":true,"labelAngle":"0","graphicId":"overview-2027-department-share-local-funds","hideNotes":true},"grid":[["Department","Share of departmental appropriations"],["CPD","30.16915550329476"],["DOA","14.251811285700624"],["CFD","12.27273516845936"],["FFM","7.846294928804269"],["DWM","6.286845926203825"],["DSS","5.261847821047497"],["All Other Depts","23.911309366489675"]],"optional":true,"section":"Additional workbook charts","order":100},{"sheet":"dept apps corp fund","sourceRange":"'dept apps corp fund'!A1:AK100","sourceChartId":966025823,"sourceTitle":"Percent of Corporate Fund Appropriations","config":{"type":"donut","title":"Percent of Corporate Fund Appropriations","subtitle":"","xTitle":"","yTitle":"","format":"percent","decimals":1,"height":450,"palette":"snapshot","source":"","note":"Uses the source tab’s grouped share table, including its “All Other Depts” category. 2027 proposed budget.","legend":true,"values":true,"labelAngle":"0","graphicId":"overview-2027-department-share-corporate-fund","hideNotes":true},"grid":[["Department","Share of departmental appropriations"],["CPD","47.331749020326484"],["CFD","19.04638412610695"],["FFM","7.220791593238414"],["DSS","5.785916238404129"],["DFSS","5.155908657113454"],["All Other Depts","15.459250364810561"]],"optional":true,"section":"Additional workbook charts","order":100}]</script>
+<script id="graphics-core">
+'use strict';
+const CustomGraphics = (() => {
+const palettes = {snapshot:['#3e6f8c','#8eafc3','#294f68','#b5cbd9','#6f808b','#d8e1e6','#8b6472','#e9b84a'],contrast:['#3e6f8c','#e9b84a','#96536f','#8b6472','#294f68','#b5cbd9','#a17629','#67877c'],muted:['#3e6f8c','#8b6472','#67877c','#b59a68','#8eafc3','#6f808b','#294f68','#b5cbd9']};
+const types=['line','area','column','stacked','percent','bar','scatter','donut','table'];
+const escape = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+function parseDelimited(text) {
+ text=String(text).replace(/^\uFEFF/,'').replace(/\r\n?/g,'\n');
+ // Detect delimiters outside quoted fields, including quoted multiline headers.
+ let quoted=false, tabs=0, commas=0;
+ for(let i=0;i<text.length;i++){const c=text[i];if(c==='"'){if(quoted&&text[i+1]==='"')i++;else quoted=!quoted;}else if(!quoted){if(c==='\n')break;if(c==='\t')tabs++;if(c===',')commas++;}}
+ const delimiter=tabs?'\t':','; const rows=[];let row=[],cell='';quoted=false;
+ for(let i=0;i<text.length;i++) {const c=text[i];if(c==='"'&&(quoted||cell==='')){if(quoted&&text[i+1]==='"'){cell+='"';i++;}else quoted=!quoted;}else if(!quoted&&(c===delimiter||c==='\n')){row.push(cell);cell='';if(c==='\n'){rows.push(row);row=[];}}else cell+=c;}
+ if(quoted)throw Error('A quoted cell is missing its closing quote.');
+ row.push(cell);rows.push(row);while(rows.length&&rows.at(-1).every(v=>v===''))rows.pop();
+ if(!rows.length)throw Error('Paste a header row and at least one data row.');
+ return rectangular(rows,1);
+}
+function rectangular(rows,minWidth=2) {
+ if(!Array.isArray(rows)||!rows.length||rows.some(r=>!Array.isArray(r)))throw Error('Data must be a table of rows.');
+ const width=Math.max(minWidth,...rows.map(r=>r.length));
+ if(rows.length>501||width>21)throw Error('Use at most 500 data rows and 20 value columns. No data was imported.');
+ return rows.map(row=>Array.from({length:width},(_,i)=>String(row[i]??'')));
+}
+function number(value) {
+ let text=String(value??'').trim();if(!text||/^(?:n\/?a|null|—|–)$/i.test(text))return null;
+ const negative=/^\(.*\)$/.test(text);if(negative)text=text.slice(1,-1).trim();
+ text=text.replace(/^\$/,'').replace(/%$/,'').trim();
+ if(!/^[+-]?(?:(?:\d{1,3}(?:,\d{3})+|\d+)(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(text))throw Error(`“${value}” is not a number.`);
+ const result=Number(text.replace(/,/g,''))*(negative?-1:1);if(!Number.isFinite(result))throw Error('Values must be finite numbers.');return result;
+}
+function model(config,grid) {
+ if(!types.includes(config.type))throw Error('Choose a supported chart type.');
+ const rows=rectangular(grid);if(rows.length<2)throw Error('Add at least one data row.');
+ let used=rows[0].length;while(used>2&&rows.every(r=>!r[used-1].trim()))used--;
+ const headers=rows[0].slice(0,used).map((v,i)=>v.trim()||(i?'Series '+i:'Category'));
+ const series=headers.slice(1);const data=[];
+ rows.slice(1).forEach((r,index)=>{r=r.slice(0,used);if(r.every(v=>!v.trim()))return;
+ if(!r[0].trim())throw Error(`Row ${index+2}: enter a category in the first column.`);
+ const values=r.slice(1).map((v,j)=>{try{return number(v);}catch(error){throw Error(`Row ${index+2}, ${headers[j+1]}: ${error.message}`);}});
+ let x=index;if(config.type==='scatter'){try{x=number(r[0]);}catch{throw Error(`Row ${index+2}: scatter X values must be numeric.`);}if(x===null)throw Error(`Row ${index+2}: enter an X value.`);}
+ data.push({label:r[0],values,x});});
+ if(!data.length||!data.some(r=>r.values.some(v=>v!==null)))throw Error('Enter at least one numeric value.');
+ if(['percent','donut'].includes(config.type)&&data.some(r=>(config.type==='donut'?r.values.slice(0,1):r.values).some(v=>v!==null&&v<0)))throw Error('Donut and 100% stacked charts require nonnegative values.');
+ if(config.type==='donut'&&!(data.reduce((s,r)=>s+(r.values[0]??0),0)>0))throw Error('A donut needs a positive total in the first value column.');
+ if(config.type==='donut'&&!Number.isFinite(data.reduce((s,r)=>s+(r.values[0]??0),0)))throw Error('The donut total is too large.');
+ if(['stacked','percent'].includes(config.type)&&data.some(r=>!Number.isFinite(r.values.reduce((s,v)=>s+Math.abs(v??0),0))))throw Error('A stacked total is too large.');
+ return {headers,series,data};
+}
+function format(value,config,compact=false) {
+ if(value===null)return '—';const decimals=Math.min(3,Math.max(0,Number(config.decimals)||0));
+ const unit=config.format==='currency'?'$':'';const suffix=config.format==='percent'?'%':'';
+ const abs=Math.abs(value);let divisor=1,short='';if(compact){if(abs>=1e9){divisor=1e9;short='B';}else if(abs>=1e6){divisor=1e6;short='M';}else if(abs>=1e3){divisor=1e3;short='K';}}
+ return (value<0?'−':'')+unit+(abs/divisor).toLocaleString('en-US',{minimumFractionDigits:compact||config.trimZeros?0:decimals,maximumFractionDigits:decimals})+short+suffix;
+}
+function wrap(value,limit) {
+ const lines=[];for(const paragraph of String(value||'').split('\n')){let line='';for(const word of paragraph.split(/\s+/).filter(Boolean)){if(line&&line.length+word.length+1>limit){lines.push(line);line='';}for(let i=0;i<word.length;i+=limit){const part=word.slice(i,i+limit);if(i){lines.push(line);line='';}line+=(line?' ':'')+part;}}lines.push(line);}return lines;
+}
+function csv(grid) {return '\uFEFF'+grid.map(row=>row.map(v=>{let s=String(v??'');if(/^[=+@\-\t\r]/.test(s)&&!/^[-+]?(?:\d+(?:\.\d*)?|\.\d+)$/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"';}).join(',')).join('\r\n');}
+function tooltipRuntime(svg) {
+ const group=svg.querySelector('[data-tooltip-box]');if(!group)return;
+ const box=group.querySelector('rect'), label=group.querySelector('text');
+ function hide(){group.setAttribute('visibility','hidden');}
+ function show(mark){
+ const fallback=(mark.getAttribute('data-tip')||'').split('\n');
+ const title=mark.getAttribute('data-tip-title')||fallback[0]||'';
+ const amount=mark.getAttribute('data-tip-value')||fallback[1]||'';
+ const detail=mark.getAttribute('data-tip-detail')||fallback.slice(2).join('\n');
+ // Lining figures avoid old-style numerals; every field uses the same typeface.
+ label.setAttribute('font-family','Synthese,Helvetica Neue,Helvetica,Arial,sans-serif');
+ label.setAttribute('style',"font-variant-numeric:lining-nums tabular-nums;font-feature-settings:'lnum' 1,'tnum' 1");
+ label.setAttribute('xml:space','preserve');label.replaceChildren();let cursor=22;
+ function span(value,className,size=12,weight='400'){
+ const t=svg.ownerDocument.createElementNS('http://www.w3.org/2000/svg','tspan');
+ t.setAttribute('class',className);t.setAttribute('font-size',String(size));t.setAttribute('font-weight',weight);t.setAttribute('fill','#ffffff');t.textContent=value;return t;
+ }
+ function line(value,className,size,weight,lineHeight){const t=span(value,className,size,weight);t.setAttribute('x','12');t.setAttribute('y',String(cursor));label.append(t);cursor+=lineHeight;return t;}
+ function wrapped(value,limit){
+ const result=[];for(const paragraph of value.split('\n')){let current='';for(const word of paragraph.split(/\s+/)){if(current&&current.length+word.length+1>limit){result.push(current);current='';}current+=(current?' ':'')+word;}result.push(current);}return result;
+ }
+ for(const value of wrapped(title,46))line(value,'yr',12,'700',17);cursor+=4;
+ // Keep the number intact rather than splitting digits across lines.
+ line(amount,'amt',18,'600',24);cursor+=3;
+ for(const row of detail.split('\n').filter(Boolean)){
+ const split=row.lastIndexOf(': ');
+ if(split<0){for(const value of wrapped(row,46))line(value,'agency',12,'700',18);continue;}
+ const name=row.slice(0,split+1),value=row.slice(split+2),nameLines=wrapped(name,34);
+ nameLines.forEach((part,index)=>{
+ const t=line('','agency',12,'400',18);t.append(span(part,'detail-label',12,'700'));
+ if(index===nameLines.length-1){
+ if(part.length+value.length+1>46){const valueLine=line('','agency',12,'400',18);valueLine.append(span(value,'detail-value'));}
+ else t.append(span(' '+value,'detail-value'));
+ }
+ });
+ }
+ let width=200;try{width=Math.max(138,label.getBBox().width+24);}catch{}
+ const height=cursor+2;box.setAttribute('width',width);box.setAttribute('height',height);
+ const b=mark.getBBox(), vb=svg.viewBox.baseVal;const x=Math.max(4,Math.min(b.x+b.width/2-width/2,vb.width-width-4));const y=Math.max(4,Math.min(b.y-height-8,vb.height-height-4));
+ group.setAttribute('transform',`translate(${x},${y})`);group.setAttribute('visibility','visible');
+ }
+ svg.querySelectorAll('[data-tip]').forEach(mark=>{mark.querySelector('title')?.remove();mark.addEventListener('pointerenter',()=>show(mark));mark.addEventListener('pointerleave',hide);mark.addEventListener('focus',()=>show(mark));mark.addEventListener('blur',hide);mark.addEventListener('click',()=>show(mark));});
+ svg.addEventListener('keydown',event=>{if(event.key==='Escape')hide();});svg.addEventListener('pointerdown',event=>{if(!event.target.closest('[data-tip]'))hide();});
+}
+function render(config,grid,interactive=true) {
+ const m=model(config,grid), {series,data}=m;const colors=config.colors||palettes[config.palette]||palettes.snapshot;const W=900,pad=28;
+ const font='Synthese,Helvetica Neue,Helvetica,Arial,sans-serif', display='Proxima Nova,Helvetica Neue,Arial,sans-serif';
+ const out=[];const text=(x,y,value,size=12,extra='')=>`<text x="${x}" y="${y}" font-size="${size}" ${extra}>${escape(value)}</text>`;
+ const lines=(x,y,arr,size=12,lineHeight=18,extra='')=>arr.map((s,i)=>text(x,y+i*lineHeight,s,size,extra)).join('');
+ let top=36;const titleLines=wrap(config.title||'Untitled graphic',53);out.push(lines(pad,top,titleLines,28,31,`font-family="${display}" font-weight="700"`));top+=titleLines.length*31;
+ if(config.subtitle){const a=wrap(config.subtitle,100);out.push(lines(pad,top,a,14,20,'fill="#6f808b"'));top+=a.length*20+4;}
+ let legendEntries=config.type==='donut'?data.map((r,i)=>[r.label,colors[i%colors.length]]):series.map((s,i)=>[s,colors[i%colors.length]]);
+ if(config.legend&&config.type!=='table'){
+ let lx=pad,ly=top+12;for(const [name,color] of legendEntries){const a=wrap(name,38);const width=Math.min(340,Math.max(...a.map(s=>s.length))*7+29);if(lx+width>W-pad){lx=pad;ly+=34;}out.push(`<rect x="${lx}" y="${ly-9}" width="12" height="10" fill="${color}"/>`+lines(lx+19,ly,a,11,13,'fill="#536b7b"'));lx+=width+12;if(a.length>2){lx=pad;ly+=a.length*13+8;}}top=ly+30;
+ }else top+=12;
+ const plotH=Math.max(240,Math.min(800,Number(config.height)||360));let bottom;
+ const tooltipConfig={...config,decimals:config.tooltipDecimals??config.decimals,trimZeros:config.tooltipTrimZeros};
+ const shareTotal=data.reduce((sum,row)=>sum+row.values.reduce((s,v)=>s+(v??0),0),0);
+ const share=value=>config.showShare&&shareTotal>0?' ('+format(value/shareTotal*100,{format:'percent',decimals:1})+')':'';
+ const markColor=(label,j)=>config.categoryColors?.[label]||colors[j%colors.length];
+ const tip=(shape,label,value,seriesName,extra='',stack=null)=>{
+ const title=stack?label+' · Total':label,amount=format(stack?stack.total:value,tooltipConfig)+share(stack?stack.total:value);
+ const detail=stack?stack.detail:seriesName+extra;
+ const description=stack?`${label}\nTotal: ${amount}\n${detail}`:`${label}\n${seriesName}: ${amount}${extra}`;
+ return shape.replace('>',` tabindex="0" role="img" aria-label="${escape(description.replace(/\n/g,', '))}" data-tip-title="${escape(title)}" data-tip-value="${escape(amount)}" data-tip-detail="${escape(detail).replace(/\n/g,'&#10;')}" data-tip="${escape(description).replace(/\n/g,'&#10;')}"><title>${escape(description)}</title>`);
+ };
+ if(config.type==='table') {
+ const cols=m.headers.length,cw=(W-pad*2)/cols;let y=top;const headerLines=m.headers.map(s=>wrap(s,Math.max(5,Math.floor(cw/7)-2)));const hh=Math.max(...headerLines.map(a=>a.length))*17+20;
+ out.push(`<rect x="${pad}" y="${y}" width="${W-2*pad}" height="${hh}" fill="#edf3f6"/>`);
+ headerLines.forEach((a,i)=>out.push(lines(pad+i*cw+8,y+20,a,12,17,'font-weight="700"')));y+=hh;
+ data.forEach((r,index)=>{const cells=[r.label,...r.values.map(v=>format(v,config))].map(v=>wrap(v,Math.max(5,Math.floor(cw/7)-2))),rh=Math.max(38,...cells.map(a=>a.length*17+16));if(index%2===0)out.push(`<rect x="${pad}" y="${y}" width="${W-2*pad}" height="${rh}" fill="#f7fafc"/>`);cells.forEach((a,j)=>out.push(lines(pad+j*cw+8,y+23,a,12,17)));y+=rh;});bottom=y+18;
+ } else if(config.type==='donut') {
+ const total=data.reduce((s,r)=>s+(r.values[0]??0),0),cx=W/2,cy=top+plotH/2,R=Math.min(plotH/2-15,185),inner=R*.59;let angle=-Math.PI/2;
+ data.forEach((r,i)=>{const v=r.values[0];if(v===null||v===0)return;const span=v/total*Math.PI*2,end=angle+span;const p=(radius,a)=>[cx+radius*Math.cos(a),cy+radius*Math.sin(a)].join(' ');let d;
+ if(span>=Math.PI*2-1e-9)d=`M ${cx} ${cy-R} A ${R} ${R} 0 1 1 ${cx} ${cy+R} A ${R} ${R} 0 1 1 ${cx} ${cy-R} M ${cx} ${cy-inner} A ${inner} ${inner} 0 1 0 ${cx} ${cy+inner} A ${inner} ${inner} 0 1 0 ${cx} ${cy-inner}`;
+ else d=`M ${p(R,angle)} A ${R} ${R} 0 ${span>Math.PI?1:0} 1 ${p(R,end)} L ${p(inner,end)} A ${inner} ${inner} 0 ${span>Math.PI?1:0} 0 ${p(inner,angle)} Z`;
+ out.push(tip(`<path d="${d}" fill="${colors[i%colors.length]}" fill-rule="evenodd" stroke="white" stroke-width="2">`,r.label,v,series[0],`\n${(v/total*100).toFixed(1)}% of total`)+'</path>');
+ if(config.values){const a=angle+span/2,rr=(R+inner)/2;if(span>.13)out.push(text(cx+rr*Math.cos(a),cy+rr*Math.sin(a)+4,(v/total*100).toFixed(1)+'%',12,'fill="white" text-anchor="middle" pointer-events="none"'));}angle=end;});
+ out.push(text(cx,cy-6,'TOTAL',11,'text-anchor="middle" fill="#6f808b"'),text(cx,cy+22,format(total,config,true),25,'text-anchor="middle" font-weight="700"'));bottom=top+plotH+12;
+ } else {
+ const stacked=['stacked','percent'].includes(config.type),horizontal=config.type==='bar'||(stacked&&config.orientation==='horizontal'),percent=config.type==='percent',scatter=config.type==='scatter';
+ let min=0,max=0;for(const r of data){if(stacked){const vs=r.values.filter(v=>v!==null);max=Math.max(max,vs.filter(v=>v>=0).reduce((s,v)=>s+v,0));min=Math.min(min,vs.filter(v=>v<0).reduce((s,v)=>s+v,0));}else for(const v of r.values){if(v!==null){min=Math.min(min,v);max=Math.max(max,v);}}}
+ if(percent){min=0;max=100;}else{if(max===min)max=min+1;const span=max-min;if(!Number.isFinite(span))throw Error('The value range is too large to plot.');if(max>0)max+=span*.1;if(min<0)min-=span*.1;}
+ const requestedAngle=Number(config.labelAngle)||0;
+ const labelAngle=!horizontal&&['column','stacked','percent'].includes(config.type)?Math.max(-90,Math.min(90,requestedAngle)):0;
+ const labelLines=data.map(r=>wrap(r.label,horizontal?26:labelAngle?32:Math.max(['line','area'].includes(config.type)?10:5,Math.min(18,Math.floor(720/data.length/7)))));
+ const radians=Math.abs(labelAngle)*Math.PI/180;
+ const labelWidth=Math.max(...labelLines.map(a=>Math.max(...a.map(s=>s.length))*6.5));
+ const labelBlockHeight=Math.max(...labelLines.map(a=>a.length))*14;
+ const labelProjection=labelWidth*Math.cos(radians)+labelBlockHeight*Math.sin(radians);
+ const left=horizontal?220:labelAngle<0?Math.max(100,Math.ceil(labelProjection)+pad):100;
+ const right=W-(horizontal&&config.showShare?150:labelAngle>0?Math.max(35,Math.ceil(labelProjection)+pad):35),pw=right-left;let ph=plotH;
+ const rowHeights=labelLines.map(a=>Math.max(34,a.length*15+12,(stacked?1:series.length)*15+10));if(horizontal){const natural=rowHeights.reduce((s,v)=>s+v,0);ph=Math.max(plotH,natural);if(natural<ph){const extra=(ph-natural)/data.length;rowHeights.forEach((v,i)=>rowHeights[i]=v+extra);}}
+ const yBottom=top+ph;
+ const valuePos=v=>horizontal?left+(v-min)/(max-min)*pw:yBottom-(v-min)/(max-min)*ph;
+ const fmt=v=>percent?v.toFixed(0)+'%':format(v,config,true);
+ for(let i=0;i<=5;i++){const v=min+(max-min)*i/5,p=valuePos(v);if(horizontal){out.push(`<line x1="${p}" x2="${p}" y1="${top}" y2="${yBottom}" stroke="#d8e1e6"/>`,text(p,yBottom+23,fmt(v),11,'text-anchor="middle" fill="#6f808b"'));}else{out.push(`<line x1="${left}" x2="${right}" y1="${p}" y2="${p}" stroke="#d8e1e6"/>`,text(left-12,p+4,fmt(v),11,'text-anchor="end" fill="#6f808b"'));}}
+ const zero=valuePos(0);out.push(horizontal?`<line x1="${zero}" x2="${zero}" y1="${top}" y2="${yBottom}" stroke="#6f808b"/>`:`<line x1="${left}" x2="${right}" y1="${zero}" y2="${zero}" stroke="#6f808b"/>`);
+ let xMin=0,xMax=1;if(scatter){xMin=Math.min(...data.map(r=>r.x));xMax=Math.max(...data.map(r=>r.x));if(xMin===xMax){const delta=Math.max(1,Math.abs(xMin)*.1);xMin-=delta;xMax+=delta;}if(!Number.isFinite(xMax-xMin))throw Error('The X range is too large to plot.');}
+ const xp=(r,i)=>scatter?left+(r.x-xMin)/(xMax-xMin)*pw:left+pw*(i+.5)/data.length;
+ if(['line','area','scatter'].includes(config.type)){
+ series.forEach((s,j)=>{let segment=[];const flush=()=>{if(!segment.length)return;const d=segment.map((p,i)=>(i?'L':'M')+p.join(' ')).join(' ');if(config.type==='area')out.push(`<path d="${d} L ${segment.at(-1)[0]} ${zero} L ${segment[0][0]} ${zero} Z" fill="${colors[j%colors.length]}" opacity=".14"/>`);if(!scatter)out.push(`<path d="${d}" fill="none" stroke="${colors[j%colors.length]}" stroke-width="3"/>`);segment=[];};
+ data.forEach((r,i)=>{if(r.values[j]===null){flush();return;}const point=[xp(r,i),valuePos(r.values[j])];if(config.categoryColors?.[r.label]&&segment.length){const previous=segment.at(-1);flush();out.push(`<path d="M${previous.join(' ')} L${point.join(' ')}" fill="none" stroke="${markColor(r.label,j)}" stroke-width="3"/>`);}segment.push(point);});flush();
+ data.forEach((r,i)=>{const v=r.values[j];if(v===null)return;const x=xp(r,i),y=valuePos(v);out.push(tip(`<circle cx="${x}" cy="${y}" r="5" fill="${markColor(r.label,j)}" stroke="white" stroke-width="1.5">`,r.label,v,s)+'</circle>');if(config.values)out.push(text(x,y-12,format(v,config,true),11,'text-anchor="middle"'));});});
+ }else{
+ let rowY=top;
+ data.forEach((r,i)=>{let positive=0,negative=0;const complete=r.values.every(v=>v!==null),total=r.values.reduce((s,v)=>s+(v??0),0);const band=pw/data.length,group=band*.72,bw=group/(stacked?1:series.length),rh=rowHeights[i];
+ if(horizontal)out.push(lines(left-12,rowY+rh/2-(labelLines[i].length-1)*7.5+4,labelLines[i],12,15,'text-anchor="end"'));
+ r.values.forEach((raw,j)=>{if(raw===null||(stacked&&!complete)||(percent&&total===0))return;const v=percent?raw/total*100:raw;let start=0,end=v;if(stacked){start=v>=0?positive:negative;end=start+v;if(v>=0)positive=end;else negative=end;}const a=valuePos(start),b=valuePos(end);let x,y,w,h;
+ if(horizontal){x=Math.min(a,b);y=stacked?rowY+rh*.2:rowY+rh/2-series.length*7+j*14;w=Math.abs(b-a);h=stacked?rh*.6:11;}else{x=left+i*band+(band-group)/2+(stacked?0:j*bw);y=Math.min(a,b);w=Math.max(1,bw-2);h=Math.abs(b-a);}
+ const shape=horizontal&&raw===0?`<line x1="${x}" x2="${x}" y1="${y}" y2="${y+h}" stroke="${stacked?'transparent':markColor(r.label,j)}" stroke-width="4">`:!horizontal&&raw===0?`<line x1="${x}" x2="${x+w}" y1="${y}" y2="${y}" stroke="${stacked?'transparent':markColor(r.label,j)}" stroke-width="4">`:`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${markColor(r.label,j)}">`;
+ const close=shape.startsWith('<line')?'</line>':'</rect>';out.push(tip(shape,r.label,raw,series[j],percent?`\nShare: ${v.toFixed(1)}%`:'',stacked?{total,detail:r.values.map((value,k)=>`${series[k]}: ${format(value,tooltipConfig)}${percent?` (${(value/total*100).toFixed(1)}%)`:''}`).join('\n')}:null)+close);
+ if(config.values){if(stacked){if(horizontal?w>48&&h>16:h>18)out.push(text(x+w/2,y+h/2+4,percent?v.toFixed(0)+'%':format(raw,config,true)+share(raw),10,'text-anchor="middle" fill="white" pointer-events="none"'));}else if(horizontal)out.push(text(raw<0?x-5:x+w+5,y+10,format(raw,config,true)+share(raw),10,`text-anchor="${raw<0?'end':'start'}"`));else out.push(text(x+w/2,raw<0?y+h+14:y-6,format(raw,config,true)+share(raw),10,'text-anchor="middle"'));}
+ });
+ if(stacked&&complete&&config.values&&(!percent||total>0)){if(horizontal){if(!percent)out.push(text(valuePos(positive)+5,rowY+rh/2+4,format(total,config,true),11,'font-weight="700" fill="#294f68"'));}else{const totalY=positive===0&&negative<0?valuePos(negative)+16:valuePos(positive)-10;out.push(text(left+(i+.5)*band,totalY,'Total: '+format(total,config,true)+share(total),11,'text-anchor="middle" font-weight="700" fill="#294f68"'));}}
+ rowY+=rh;});
+ }
+ let labelH=0;if(!horizontal){if(scatter){for(let i=0;i<=5;i++){const v=xMin+(xMax-xMin)*i/5;out.push(text(left+pw*i/5,yBottom+23,v.toLocaleString('en-US',{maximumFractionDigits:2}),11,'text-anchor="middle" fill="#6f808b"'));}labelH=32;}else{const stride=['line','area'].includes(config.type)?Math.max(1,Math.ceil(data.length/16)):1;data.forEach((r,i)=>{if(i%stride!==0)return;if(labelAngle){out.push(`<g data-column-label="" transform="translate(${xp(r,i)} ${yBottom+20}) rotate(${labelAngle})">${lines(0,0,labelLines[i],11,14,`text-anchor="${labelAngle<0?'end':'start'}" fill="#536b7b"`)}</g>`);labelH=Math.max(labelH,Math.ceil(labelWidth*Math.sin(radians)+labelLines[i].length*14*Math.cos(radians))+24);}else{out.push(lines(xp(r,i),yBottom+22,labelLines[i],11,14,'text-anchor="middle" fill="#536b7b"'));labelH=Math.max(labelH,labelLines[i].length*14+15);}});}}else labelH=34;
+ if(config.xTitle){out.push(text(left+pw/2,yBottom+labelH+25,config.xTitle,13,'text-anchor="middle" font-weight="600"'));labelH+=37;}
+ if(config.yTitle)out.push(`<text transform="translate(20 ${top+ph/2}) rotate(-90)" text-anchor="middle" font-size="13" font-weight="600">${escape(config.yTitle)}</text>`);
+ bottom=yBottom+labelH+20;
+ }
+ if(data.some(r=>r.values.some(v=>v===null))){out.push(text(pad,bottom+4,['stacked','percent'].includes(config.type)?'Missing components leave a gap for that category. Blank cells are not zero.':'Blank cells indicate missing data and are not plotted.',11,'fill="#6f808b"'));bottom+=24;}
+ if(config.type==='donut'&&series.length>1){out.push(text(pad,bottom+4,`Showing ${series[0]} (first value column).`,11,'fill="#6f808b"'));bottom+=24;}
+ for(const value of [config.source,config.note]){if(value){const a=wrap(value,118);out.push(lines(pad,bottom+12,a,11,16,'fill="#6f808b"'));bottom+=a.length*16+12;}}
+ const H=Math.ceil(bottom+20);
+ out.push('<g data-tooltip-box="" visibility="hidden" pointer-events="none" aria-hidden="true" style="filter:drop-shadow(0 8px 12px rgba(33,55,71,.18))"><rect rx="4" fill="#294f68" opacity=".96" width="200" height="54"/><text x="12" y="23" font-size="12" fill="white"/></g>');
+ const runtime=interactive?'\x3Cscript><![CDATA[('+tooltipRuntime.toString()+')(document.currentScript.ownerSVGElement);]]><'+'/script>':'';
+ const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" role="group" aria-labelledby="graphic-title graphic-description" style="max-width:100%;height:auto;background:white;color:#213747;font-family:${font};fill:#213747"><title id="graphic-title">${escape(config.title||'Untitled graphic')}</title><desc id="graphic-description">${escape([config.subtitle,config.source,config.note,'Interactive chart. Focus a mark for its value.'].filter(Boolean).join(' '))}</desc><metadata>${escape(JSON.stringify({generator:'BGA Custom Graphics',config,headers:m.headers,data:m.data}))}</metadata><style>[data-tip]{cursor:default;outline:none}[data-tip]:focus{stroke:#e9b84a;stroke-width:3}text{font-variant-numeric:tabular-nums}</style><rect width="100%" height="100%" fill="white"/>${out.join('')}${runtime}</svg>`;
+ if(/(?:="(?:NaN|Infinity|-Infinity)"|NaN NaN)/.test(svg))throw Error('The data exceeds the supported plot range.');
+ return {svg,width:W,height:H,model:m};
+}
+function htmlExport(config,grid) {
+ const {svg}=render(config,grid);
+ // SVG CDATA also protects script operators from HTML character-reference parsing.
+ const inlineSvg=svg;
+ return '\x3C!doctype html>\n\x3Chtml lang="en">\x3Chead>\x3Cmeta charset="utf-8">\x3Cmeta name="viewport" content="width=device-width,initial-scale=1">\x3Ctitle>'+escape(config.title)+'\x3C/title>\x3Cstyle>body{margin:0;color:#213747;background:white;font:13px/1.6 "Synthese","Helvetica Neue",Arial,sans-serif}main{max-width:1000px;margin:auto}svg{display:block;width:100%;height:auto}\x3C/style>\x3C/head>\x3Cbody>\x3Cmain>'+inlineSvg+'\x3C/main>\x3C/body>\x3C/html>';
+}
+function astroId(config) {
+ const id=String(config.graphicId||'').trim()||'custom-'+(String(config.title||'graphic').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,60)||'graphic');
+ if(!/^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id))throw Error('Astro graphic ID must use lowercase letters, numbers, and single hyphens.');
+ if(['summary','appropriations','workforce','vacancies'].includes(id))throw Error('Use a unique custom graphic ID to avoid replacing a snapshot graphic.');
+ return id;
+}
+function astroFiles(config,grid) {
+ const id=astroId(config),folder=id+'/',output=render(config,grid);
+ // Namespace accessibility IDs so different graphics can share one article.
+ const svg=output.svg.replace('<svg ',`<svg data-budget-graphic="${id}" `)
+  .replace('id="graphic-title"',`id="${id}-title"`).replace('id="graphic-description"',`id="${id}-description"`)
+  .replace('aria-labelledby="graphic-title graphic-description"',`aria-labelledby="${id}-title ${id}-description"`);
+ const htmlSvg=svg;
+ const fragment=`<figure class="bga-custom-graphic" data-budget-figure="${id}" style="margin:24px 0;width:100%;">${htmlSvg.replace('style="max-width:100%;','style="width:100%;max-width:100%;')}</figure>`;
+ const marker=`[budget-graphic id="${id}"]`;
+ const manifest={schemaVersion:1,generator:'BGA Custom Graphics',exportedAt:new Date().toISOString(),graphics:[{id,title:config.title,source:config.source||'',note:config.note||'',html:id+'.html',svg:id+'.svg',csv:id+'.csv',project:id+'.json',component:id+'.astro',placeholder:marker}]};
+ const component=`---\nimport graphic from './${id}.html?raw';\n---\n<Fragment set:html={graphic} />\n`;
+ const readme=`BGA custom graphic — Astro export
+
+Graphic ID: ${id}
+Article marker: ${marker}
+
+Unzip and open preview.html to review the frozen chart and interactive tooltips offline.
+
+OPTION 1: AN ASTRO PAGE OR COMPONENT
+Copy this entire ${id} folder into src/graphics/ in your Astro project.
+Import the included component in an .astro page's frontmatter:
+
+import CustomGraphic from '../graphics/${id}/${id}.astro';
+
+Adjust the relative import path to your page, then insert <CustomGraphic /> in its markup.
+The component imports the HTML as raw text; no client framework or data fetch is needed.
+
+OPTION 2: THIS PROJECT'S WORDPRESS SNAPSHOT MARKERS
+Easiest option (works for any story):
+1. Copy this entire ${id} folder anywhere under bga-budget-snapshots-astro/src/graphics/.
+   For example: src/graphics/2027/chicago-budget-analysis/${id}/manifest.json.
+   src/graphics/custom/${id}/ also still works.
+2. Put ${marker} in its own WordPress Paragraph block.
+3. Rebuild the Astro project. No snapshots.js or manifest edits are needed.
+
+To keep a graphic with a particular story instead:
+1. Copy this entire ${id} folder INSIDE the story's existing graphicsFolder.
+   For example: src/graphics/2027/ipra-copa/2026-recommendation/${id}/manifest.json.
+2. Add ${marker} as its own WordPress Paragraph block and rebuild.
+
+Keep each export's folder name matching its graphic ID. Year and project grouping names are unrestricted. Astro finds ID-named folders recursively; duplicate matches cause a clear error unless a story graphicsFolder selects the intended bundle or direct child. Retain the whole folder and its manifest; do not flatten folders or merge manifests. Keep the existing budget-graphics.css and budget-tooltips.js in the story's parent folder unchanged. Existing flat snapshot charts continue to work and take precedence when an ID is already in the parent manifest.
+
+These automatic folder lookups require the updated graphics.js importer in this repository. Other Astro projects can use OPTION 1 above.
+
+The custom fragment contains its own scoped tooltip initialization, so it works alongside the snapshot runtime. Each exported graphic ID must be unique, and each marker appears once per article. Use a different custom graphic ID when exporting another chart.
+
+The SVG and HTML retain your settings, titles, rotated labels, source notes, and current data. The JSON is an editable generator project. CSV retains raw supplied values. No View data panel or logo is added. Fonts use installed brand fonts or system fallbacks. The ZIP needs no external libraries or network requests. Site policy must allow inline scripts for custom tooltips.
+`;
+ return {id,marker,files:{
+  [folder+id+'.html']:fragment,[folder+id+'.svg']:svg,[folder+id+'.csv']:csv(grid),
+  [folder+id+'.json']:JSON.stringify({version:1,config,grid},null,2),[folder+id+'.astro']:component,
+  [folder+'manifest.json']:JSON.stringify(manifest,null,2),
+  [folder+'budget-graphics.css']:'/* Custom graphics have scoped, embedded styles. Keep existing snapshot styles when merging. */\n',
+  [folder+'budget-tooltips.js']:'/* Custom graphics initialize tooltips inside each inline SVG. Keep the snapshot runtime when merging. */\n',
+  [folder+'preview.html']:htmlExport(config,grid),[folder+'README.txt']:readme
+ }};
+}
+function zipFiles(files){
+  const encoder=new TextEncoder();
+  const parts=[],directory=[];
+  let offset=0;
+  function header(size){return {bytes:new Uint8Array(size),view:null}}
+  function crc32(bytes){
+    let crc=0xffffffff;
+    for(const byte of bytes){crc^=byte;for(let bit=0;bit<8;bit++)crc=(crc>>>1)^((crc&1)?0xedb88320:0)}
+    return (crc^0xffffffff)>>>0;
+  }
+  for(const [path,content] of Object.entries(files)){
+    const name=encoder.encode(path),data=encoder.encode(content),crc=crc32(data);
+    const local=header(30);local.view=new DataView(local.bytes.buffer);
+    const v=local.view;
+    v.setUint32(0,0x04034b50,true);v.setUint16(4,20,true);v.setUint16(6,0x800,true);
+    v.setUint16(12,0x21,true); // 1980-01-01, valid DOS date.
+    v.setUint32(14,crc,true);v.setUint32(18,data.length,true);v.setUint32(22,data.length,true);v.setUint16(26,name.length,true);
+    parts.push(local.bytes,name,data);
+    const central=header(46),c=new DataView(central.bytes.buffer);
+    c.setUint32(0,0x02014b50,true);c.setUint16(4,20,true);c.setUint16(6,20,true);c.setUint16(8,0x800,true);c.setUint16(14,0x21,true);
+    c.setUint32(16,crc,true);c.setUint32(20,data.length,true);c.setUint32(24,data.length,true);c.setUint16(28,name.length,true);c.setUint32(42,offset,true);
+    directory.push(central.bytes,name);
+    offset+=30+name.length+data.length;
+  }
+  const directorySize=directory.reduce((sum,part)=>sum+part.length,0);
+  const end=new Uint8Array(22),e=new DataView(end.buffer),count=Object.keys(files).length;
+  e.setUint32(0,0x06054b50,true);e.setUint16(8,count,true);e.setUint16(10,count,true);e.setUint32(12,directorySize,true);e.setUint32(16,offset,true);
+  return new Blob([...parts,...directory,end],{type:'application/zip'});
+}
+return {escape,parseDelimited,rectangular,number,model,format,wrap,csv,render,htmlExport,tooltipRuntime,types,palettes,astroId,astroFiles,zipFiles};
+})();
+</script>
+<script id="overview-core">/* Shared by the overview editor, standalone exports, and the batch builder. */
+'use strict';
+const OverviewGraphics = (() => {
+ const api=CustomGraphics,esc=api.escape;
+ const priceStyle=`[data-overview-basis][hidden]{display:none!important}.overview-price-switch{display:inline-flex;align-items:center;gap:10px;border:0;background:transparent;padding:12px 28px;color:#213747;font:600 13px Synthese,Arial,sans-serif;cursor:pointer}.overview-price-track{position:relative;width:42px;height:24px;border-radius:20px;background:#b6c2ca}.overview-price-track:after{content:'';position:absolute;left:3px;top:3px;width:18px;height:18px;border-radius:50%;background:white}.overview-price-switch[aria-checked=true] .overview-price-track{background:#3e6f8c}.overview-price-switch[aria-checked=true] .overview-price-track:after{transform:translateX(18px)}.overview-price-switch:focus-visible{outline:2px solid #3e6f8c;outline-offset:2px}`;
+ function priceRuntime(root){
+  const button=root.querySelector('[data-overview-price-toggle]');if(!button)return;
+  button.addEventListener('click',()=>{
+   const adjusted=button.getAttribute('aria-checked')!=='true';
+   button.setAttribute('aria-checked',String(adjusted));
+   root.querySelectorAll('[data-overview-basis]').forEach(panel=>{panel.hidden=panel.getAttribute('data-overview-basis')!==(adjusted?'adjusted':'original');});
+   // Editors can keep exports in sync with the visible basis.
+   root.dispatchEvent(new CustomEvent('overview-basis-change',{bubbles:true,detail:{basis:adjusted?'adjusted':'original'}}));
+  });
+ }
+ function basisGrid(chart,basis){
+  if(chart.kind!=='price-toggle')return chart.grid;
+  const column=basis==='adjusted'?2:1;
+  return [[chart.grid[0][0],chart.grid[0][column]],...chart.grid.slice(1).map(row=>[row[0],row[column]])];
+ }
+ function namespaced(svg,id){return svg.replace('<svg ',`<svg data-budget-graphic="${id}" `).replaceAll('graphic-title',id+'-title').replaceAll('graphic-description',id+'-description');}
+ function summary(chart){
+  const {grid,config}=chart,W=1100,pad=28,widths=[160,170,170,145,105,150,144],positions=widths.map((_,i)=>pad+widths.slice(0,i).reduce((a,b)=>a+b,0));
+  const text=(x,y,value,size=12,extra='')=>`<text x="${x}" y="${y}" font-size="${size}" ${extra}>${esc(value)}</text>`;
+  const lines=(x,y,values,size=12,extra='',lineHeight=17)=>values.map((v,i)=>text(x,y+i*lineHeight,v,size,extra)).join('');
+  const title=api.wrap(config.title,65);let y=38;
+  let content=lines(pad,y,title,28,'font-weight="700"',32);y+=title.length*32+18;
+  if(config.subtitle){const sub=api.wrap(config.subtitle,120);content+=lines(pad,y,sub,14,'fill="#6f808b"');y+=sub.length*18+14;}
+  const headers=grid[0].map((h,i)=>api.wrap(h||'Metric',Math.floor(widths[i]/8)-1));const headerHeight=Math.max(...headers.map(h=>h.length))*17+18;
+  headers.forEach((header,i)=>{content+=lines(positions[i]+8,y,header,14,'font-weight="700" fill="#294f68"');});y+=headerHeight;
+  content+=`<line x1="28" x2="1072" y1="${y-14}" y2="${y-14}" stroke="#d8e1e6"/>`;
+  grid.slice(1).forEach((row,i)=>{
+   content+=`<rect x="28" y="${y-6}" width="1044" height="62" fill="${i%2?'#f7fafc':'white'}"/>`;
+   row.forEach((value,j)=>{
+    let display=String(value);if(j>0){const n=api.number(value);display=n===null?'N/A':j>=4?n.toLocaleString('en-US',{maximumFractionDigits:1})+'%':(i===0?'$':'')+n.toLocaleString('en-US',{maximumFractionDigits:0});}
+    const change=j>=3?api.number(value):null;
+    const color=change===null?'#213747':change>0?'#3e6f8c':change<0?'#8b6472':'#6f808b';
+    content+=text(positions[j]+8,y+29,display,16,j===0?'font-weight="600" fill="#294f68"':`fill="${color}"${j>=3?' font-weight="700"':''}`);
+   });y+=62;
+  });
+  for(const value of [config.source,config.hideNotes?null:config.note].filter(Boolean)){const parts=api.wrap(value,142);content+=lines(pad,y+28,parts,11,'fill="#6f808b"');y+=parts.length*17+17;}
+  const height=y+32;
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${height}" viewBox="0 0 ${W} ${height}" role="img" aria-labelledby="graphic-title graphic-description" style="width:100%;height:auto;background:white;font-family:Synthese,Helvetica Neue,Arial,sans-serif;fill:#213747"><title id="graphic-title">${esc(config.title)}</title><desc id="graphic-description">${esc(grid.map(r=>r.join(': ')).join('; '))}</desc><metadata>${esc(JSON.stringify({generator:'BGA Custom Graphics',config,grid}))}</metadata><rect width="100%" height="100%" fill="white"/>${content}</svg>`;
+  return {svg,width:W,height};
+ }
+ function render(chart,basis=chart.basis||'original'){
+  if(chart.kind==='summary')return summary(chart);
+  return api.render({...chart.config,tooltipDecimals:chart.config.format==='percent'?1:0,tooltipTrimZeros:true,...(chart.kind==='price-toggle'?{legend:true,note:(basis==='adjusted'?'Values in 2025 dollars. ':'Values in original dollars. ')+(chart.config.note||'')}:{} ),...(chart.config.hideNotes?{note:''}:{})},basisGrid(chart,basis));
+ }
+ function fragment(chart){
+  const id=api.astroId(chart.config);
+  if(chart.kind!=='price-toggle')return `<figure class="bga-custom-graphic" data-budget-figure="${id}" style="margin:24px 0;width:100%">${namespaced(render(chart).svg,id)}</figure>`;
+  const basis=chart.basis||'original';
+  const panels=['original','adjusted'].map(view=>`<div data-overview-basis="${view}"${view!==basis?' hidden':''}>${namespaced(render(chart,view).svg,id+'-'+view).replace(`data-budget-graphic="${id}-${view}"`,`data-budget-graphic="${id}"`)}</div>`).join('');
+  return `<figure class="bga-custom-graphic" data-budget-figure="${id}" style="margin:24px 0;width:100%"><style>${priceStyle}</style><button type="button" class="overview-price-switch" data-overview-price-toggle role="switch" aria-checked="${basis==='adjusted'}" aria-label="Inflation adjusted (2025 dollars)"><span class="overview-price-track" aria-hidden="true"></span>Inflation adjusted (2025 dollars)</button>${panels}\x3Cscript>(${priceRuntime.toString()})(document.currentScript.closest('figure'));<`+`/script></figure>`;
+ }
+ function htmlExport(chart){return `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(chart.config.title)}</title><style>body{margin:0;color:#213747;background:white}main{max-width:1100px;margin:auto}svg{display:block;width:100%;height:auto}</style></head><body><main>${fragment(chart)}</main>\x3C/body>\x3C/html>`;}
+ function summaryFiles(chart){
+  const row=(id,index)=>{const values=chart.grid[index];return {id,label:values[0],previous:api.number(values[1]),current:api.number(values[2]),net:api.number(values[3]),percent:api.number(values[4]),averageRatePct:api.number(values[5]),inflationRatePct:api.number(values[6])};};
+  return {
+   'manifest.json':JSON.stringify({schemaVersion:1,generator:'BGA Overview Graphics',graphics:[]},null,2),
+   'summary.json':JSON.stringify({schemaVersion:1,previousYear:2026,currentYear:2027,rows:[row('appropriations',1),row('positions',2)]},null,2)
+  };
+ }
+ function astroFiles(chart){
+  const exported=api.astroFiles(chart.config,chart.grid),{id,files}=exported,prefix=id+'/';
+  files[prefix+id+'.html']=fragment(chart);
+  files[prefix+'preview.html']=htmlExport(chart);
+  files[prefix+id+'.svg']=namespaced(render(chart).svg,id);
+  files[prefix+id+'.json']=JSON.stringify({version:1,config:chart.config,grid:chart.grid,overview:{kind:chart.kind||'chart',basis:chart.basis||'original',sourceChartId:chart.sourceChartId}},null,2);
+  if(chart.kind==='price-toggle')for(const basis of ['original','adjusted'])files[prefix+id+'-'+basis+'.svg']=namespaced(render(chart,basis).svg,id+'-'+basis);
+  const manifest=JSON.parse(files[prefix+'manifest.json']);
+  manifest.graphics[0].kind=chart.kind||'chart';
+  if(chart.kind==='price-toggle')manifest.graphics[0].views={original:id+'-original.svg',adjusted:id+'-adjusted.svg'};
+  files[prefix+'manifest.json']=JSON.stringify(manifest,null,2);
+  files[prefix+'README.txt']+='\nEdit this chart in the 2027 Overview Graphics tool. HTML and Astro exports preserve the price switch and both data views when present. SVG exports contain the selected view; both price-view SVGs are included in this ZIP.\n';
+  if(chart.kind==='summary')Object.assign(files,summaryFiles(chart));
+  return exported;
+ }
+ function mount(root,chart){
+  root.innerHTML=fragment(chart);
+  root.querySelectorAll('svg').forEach(api.tooltipRuntime);
+  priceRuntime(root.querySelector('figure'));
+ }
+ return {basisGrid,render,fragment,htmlExport,astroFiles,mount,priceRuntime};
+})();
+</script>
+<script id="overview-editor">
+(() => {
+ 'use strict';
+ const api=CustomGraphics,overview=OverviewGraphics,$=id=>document.getElementById(id),esc=api.escape;
+ const defaults=JSON.parse($('overview-data').textContent),key='bga-overview-2027-v2';
+ let charts=structuredClone(defaults),phone=false;
+ const feedback=text=>{$('feedback').textContent=text;};
+ function validate(incoming){
+  if(!Array.isArray(incoming)||incoming.length!==defaults.length)throw Error('Choose a complete 2027 overview project.');
+  const byId=new Map(incoming.map(c=>[c.config?.graphicId,c]));
+  return defaults.map(base=>{const c=byId.get(base.config.graphicId);if(!c||!api.types.includes(c.config.type))throw Error('Project is missing a known graphic.');const grid=api.rectangular(c.grid);api.model(c.config,grid);if(base.kind==='summary'&&(grid.length!==3||grid[0].length!==7))throw Error('The summary requires two measures and seven columns.');if(base.kind==='price-toggle'&&grid[0].length!==3)throw Error('The price chart requires original and inflation-adjusted columns.');return {...base,config:{...base.config,...c.config,...(['Source: City of Chicago budget data; BGA Policy.','Source: City of Chicago Department of Finance; BGA Policy.'].includes(c.config.source)?{source:''}:{}),...(['overview-2027-department-vacancies','overview-2027-department-vacancy-rates'].includes(base.config.graphicId)&&c.config.type==='bar'?{type:'stacked',orientation:'horizontal',values:true}:{}),...(base.kind==='summary'&&c.config.title==='Snapshot: Appropriation & Staffing Changes from 2026 Budget'?{title:base.config.title}:{}),...(base.config.graphicId==='overview-2027-fringe-share-change'&&c.config.format==='number'?{format:'percent'}:{})},grid,basis:c.basis==='adjusted'?'adjusted':'original',included:c.included??!base.optional};});
+ }
+ try{const stored=localStorage.getItem(key);if(stored)charts=validate(JSON.parse(stored));}catch{feedback('Starting from the supplied data.');}
+ charts.forEach(c=>{c.included??=!c.optional;});
+ function persist(){try{localStorage.setItem(key,JSON.stringify(charts));}catch{}}
+ function download(name,content,type='application/octet-stream'){
+  const url=URL.createObjectURL(content instanceof Blob?content:new Blob([content],{type})),link=document.createElement('a');link.href=url;link.download=name;document.body.append(link);link.click();link.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);feedback('Downloaded '+name);
+ }
+ async function copy(text){
+  try{await navigator.clipboard.writeText(text);}catch{const field=document.createElement('textarea');field.value=text;field.style.position='fixed';field.style.left='-9999px';document.body.append(field);field.select();try{if(!document.execCommand('copy'))throw Error('Select and copy the marker field.');}finally{field.remove();}}
+ }
+ function selectedCount(){$('selection-count').textContent=charts.filter(c=>c.included).length+' graphics selected for export. Titles and legend labels follow the source data.';}
+ function renderCard(card,chart){
+  const output=card.querySelector('.chart-wrap'),error=card.querySelector('.status');
+  try{api.model(chart.config,chart.grid);overview.mount(output,chart);error.hidden=true;card.querySelectorAll('[data-export]').forEach(b=>b.disabled=false);card.querySelector('.edited-badge').hidden=JSON.stringify(chart.config)===JSON.stringify(defaults.find(c=>c.config.graphicId===chart.config.graphicId).config)&&JSON.stringify(chart.grid)===JSON.stringify(defaults.find(c=>c.config.graphicId===chart.config.graphicId).grid);}
+  catch(e){error.hidden=false;error.textContent=e.message;card.querySelectorAll('[data-export]').forEach(b=>b.disabled=true);}
+ }
+ function dataTable(chart){return '<table><tbody>'+chart.grid.map((row,r)=>'<tr>'+row.map((v,c)=>`<td><input aria-label="Row ${r+1}, column ${c+1}" data-row="${r}" data-col="${c}" value="${esc(v)}"></td>`).join('')+'</tr>').join('')+'</tbody></table>';}
+ function cardMarkup(chart){const id=chart.config.graphicId;return `<section class="card" id="${id}" data-chart="${id}"><header><div class="eyebrow">${esc(chart.section)}</div><h2>${esc(chart.config.title)}</h2></header><label class="selection"><input type="checkbox" data-include ${chart.included?'checked':''}>Include in Astro export <span class="edited-badge" hidden>Edited</span></label><div class="status error" role="status" hidden></div><div class="chart-wrap${phone?' phone':''}"></div><div class="toolbar"><button type="button" data-action="svg" data-export>Download SVG</button><button type="button" data-action="html" data-export>Download HTML</button><button type="button" data-action="astro" data-export>Export for Astro (.zip)</button><button type="button" data-action="csv" data-export>Download data (CSV)</button></div><div class="graphic-marker"><label class="marker-label" for="marker-${id}">Story marker</label><input id="marker-${id}" class="marker" readonly value="${esc('[budget-graphic id="'+id+'"]')}"><button type="button" data-action="copy">Copy marker</button><button type="button" data-action="project">Save graphic project</button></div><details class="graphic-editor"><summary>Edit graphic</summary><p class="editor-note">Edit the title and data, including the first row’s legend labels. Changes update this preview and its exports. ${chart.kind==='price-toggle'?'The table retains both price views; the switch changes the visible view.':''}</p><div class="editor-text-fields">${['title','subtitle','source','note'].map(name=>`<label class="${name==='title'||name==='note'?'wide':''}">${name[0].toUpperCase()+name.slice(1)}<input data-config="${name}" value="${esc(chart.config[name])}"></label>`).join('')}</div><div class="editor-data-wrap">${dataTable(chart)}</div><button type="button" data-action="reset">Reset this graphic</button></details></section>`;}
+ function build(){
+  const sections=[...new Set(charts.filter(c=>!c.optional).map(c=>c.section))];
+  $('section-filter').innerHTML='<option value="all">All article sections</option>'+sections.map((s,i)=>`<option value="${esc(s)}">${esc(s)}</option>`).join('');
+  document.querySelector('.overview-nav').innerHTML=sections.map((s,i)=>`<a href="#section-${i}">${esc(s)}</a>`).join('');
+  $('article-graphics').innerHTML=sections.map((s,i)=>`<h2 class="section-title" id="section-${i}" data-section="${esc(s)}">${esc(s)}</h2>`+charts.filter(c=>!c.optional&&c.section===s).map(cardMarkup).join('')).join('');
+  $('optional-graphics').innerHTML=charts.filter(c=>c.optional).map(cardMarkup).join('');
+  document.querySelectorAll('[data-chart]').forEach(card=>{
+   const chart=charts.find(c=>c.config.graphicId===card.dataset.chart);renderCard(card,chart);
+   card.addEventListener('overview-basis-change',event=>{chart.basis=event.detail.basis;persist();});
+   card.addEventListener('change',event=>{const el=event.target;
+    if(el.matches('[data-include]')){chart.included=el.checked;selectedCount();persist();return;}
+    if(el.matches('[data-config]')){chart.config[el.dataset.config]=el.value;card.querySelector('h2').textContent=chart.config.title;}
+    else if(el.matches('[data-row]'))chart.grid[Number(el.dataset.row)][Number(el.dataset.col)]=el.value;
+    else return;renderCard(card,chart);persist();
+   });
+   card.addEventListener('paste',event=>{const el=event.target;if(!el.matches('[data-row]'))return;const text=event.clipboardData.getData('text/plain');if(!/[\t\r\n]/.test(text))return;event.preventDefault();try{const data=api.parseDelimited(text),r=Number(el.dataset.row),c=Number(el.dataset.col);if(r+data.length>chart.grid.length||c+data[0].length>chart.grid[0].length)throw Error('Paste a range that fits this graphic’s table.');data.forEach((row,i)=>row.forEach((value,j)=>chart.grid[r+i][c+j]=value));card.querySelector('.editor-data-wrap').innerHTML=dataTable(chart);renderCard(card,chart);persist();}catch(e){feedback(e.message);}});
+   card.addEventListener('click',async event=>{const button=event.target.closest('[data-action]');if(!button)return;const id=chart.config.graphicId;try{
+    switch(button.dataset.action){
+     case 'svg':download(id+(chart.kind==='price-toggle'?'-'+(chart.basis||'original'):'')+'.svg',overview.render(chart).svg,'image/svg+xml');break;
+     case 'html':download(id+'.html',overview.htmlExport(chart),'text/html');break;
+     case 'astro':download(id+'-astro.zip',api.zipFiles(overview.astroFiles(chart).files));break;
+     case 'csv':download(id+'.csv',api.csv(chart.grid),'text/csv');break;
+     case 'copy':await copy('[budget-graphic id="'+id+'"]');feedback('Story marker copied as plain text.');break;
+     case 'project':download(id+'.json',overview.astroFiles(chart).files[id+'/'+id+'.json'],'application/json');break;
+     case 'reset':{const i=charts.indexOf(chart);charts[i]={...structuredClone(defaults[i]),included:chart.included};persist();build();feedback('Graphic reset to source data.');break;}
+    }
+   }catch(e){feedback('Export failed: '+e.message);}});
+  });selectedCount();
+ }
+ $('section-filter').addEventListener('change',event=>{const value=event.target.value;document.querySelectorAll('#article-graphics [data-chart]').forEach(card=>{card.hidden=value!=='all'&&charts.find(c=>c.config.graphicId===card.dataset.chart).section!==value;});document.querySelectorAll('[data-section]').forEach(h=>h.hidden=value!=='all'&&h.dataset.section!==value);});
+ $('phone-all').onclick=()=>{phone=!phone;document.querySelectorAll('.chart-wrap').forEach(el=>el.classList.toggle('phone',phone));$('phone-all').setAttribute('aria-pressed',String(phone));$('phone-all').textContent=phone?'Preview at full width':'Preview at phone width';};
+ $('export-all').onclick=()=>{try{const files={},selected=charts.filter(c=>c.included);if(!selected.length)throw Error('Select at least one graphic.');for(const chart of selected){api.model(chart.config,chart.grid);Object.assign(files,overview.astroFiles(chart).files);}files['markers.txt']=selected.map(c=>'[budget-graphic id="'+c.config.graphicId+'"] '+c.config.title).join('\n');download('2027-overview-astro.zip',api.zipFiles(files));}catch(e){feedback('Export failed: '+e.message);}};
+ $('save-all').onclick=()=>download('2027-overview-project.json',JSON.stringify({version:1,generator:'BGA Overview Graphics',charts},null,2),'application/json');
+ $('open-project').onclick=()=>$('project-file').click();
+ $('project-file').onchange=async()=>{try{const file=$('project-file').files[0];if(!file)return;const project=JSON.parse(await file.text());if(project.version!==1)throw Error('Unknown project version.');if(project.generator==='BGA Overview Graphics')charts=validate(project.charts);else{const index=charts.findIndex(c=>c.config.graphicId===project.config?.graphicId);if(index<0)throw Error('Choose an overview chart project.');const next=structuredClone(charts);next[index]={...next[index],config:project.config,grid:project.grid,basis:project.overview?.basis};charts=validate(next);}persist();build();feedback('Project opened.');}catch(e){feedback('Could not open project: '+e.message);}finally{$('project-file').value='';}};
+ build();
+})();
+</script></body></html>

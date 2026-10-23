@@ -51,81 +51,26 @@ Every year in the period is required. Both appropriation and workforce averages 
 
 For example, budgets of 100 → 120 → 100 produce annual changes of +20% and −16.67%, averaging **+1.67%**. CAGR would be 0% because the endpoints are equal; the old endpoint-based calculation has been replaced.
 
-The inflation-adjusted appropriations rate uses a **cycle-specific end year and dollar base**. Convert the starting and ending budgets to that dollar base, then apply the analyst's corrected formula:
+The inflation-adjusted appropriations rate uses the **same arithmetic average and period** as the nominal rate, after applying the supplied dollar factors to each annual budget:
 
 ```text
-Adjusted start = starting budget × starting year's inflation factor
-Adjusted end = ending budget × ending year's inflation factor
-Inflation-adjusted rate = (Adjusted end − Adjusted start) / Adjusted start / (end year − start year)
-Displayed percentage = inflation-adjusted rate × 100
+Adjusted budget[year] = nominal budget[year] × factor[year]
+Annual adjusted change = (adjusted budget[year] − adjusted budget[year − 1]) / adjusted budget[year − 1]
+Inflation-adjusted rate = average of annual adjusted changes × 100
 ```
 
-The denominator is the **starting adjusted budget**. Intermediate annual budgets do not enter this calculation. Workforce has no inflation-adjusted rate. The nominal average annual rates follow the ordinance periods above; inflation-adjusted periods retain their separately configured factor year.
+| Proposal cycle | Both rate periods | COPA period | Dollar base | Factor table |
+| --- | --- | --- | --- | --- |
+| 2026 recommendation | 2011–2025 | 2018–2025 | 2024 dollars | `DOLLAR_2024_FACTORS` |
+| 2027 prep / proposal | 2011–2026 | 2018–2026 | 2025 dollars | `DOLLAR_2025_FACTORS` |
 
-| Proposal cycle | Inflation-adjusted period | Dollar base | Factor table |
-| --- | --- | --- | --- |
-| 2026 recommendation | 2011–2024; COPA 2018–2024 | 2024 dollars | `DOLLAR_2024_FACTORS`, supplied October 19, 2026 |
-| 2027 prep / proposal | 2011–2025; COPA 2018–2025 | 2025 dollars | Existing `DOLLAR_2025_FACTORS` |
+Each `BUDGET_CYCLES` entry pins an `inflationYear`; `INFLATION_FACTORS_BY_YEAR` selects its table. This sets the dollar base independently of the rate period, which ends at `activeCycle.previousYear`. For the summary rate, years after the supplied factor table ends retain their nominal values (factor 1), matching the analyst's spreadsheet. Thus 2026 retains its nominal amount for the 2027 cycle, and 2025 retains its nominal amount for the 2026 cycle. The generator does not retrieve CPI. Missing factors within the supplied historical period remain unavailable rather than receiving this fallback.
 
-Each `BUDGET_CYCLES` entry pins an `inflationYear`; `INFLATION_FACTORS_BY_YEAR` selects its table. The selected year controls both the calculation's end year and the dollar base, as well as the heading, source note, and exported numeric metadata. For each future proposal cycle, add its annual conversion-factor table and explicitly set its `inflationYear`. The generator does not retrieve CPI or automatically advance the factor year.
+The equivalent spreadsheet formula for the 2027 cycle, with 2011 in column B and 2026 in column Q, is `=ArrayFormula(AVERAGE((C2:Q2-B2:P2)/B2:P2))` for nominal appropriations and `=ArrayFormula(AVERAGE((C3:Q3-B3:P3)/B3:P3))` for adjusted appropriations. Proposed 2027 is excluded from both.
 
-The supplied table is labeled “Adjustment to 2024 Dollars (half-year for 2025),” but its supplied columns end in 2024 with a factor of 1. Only those 2011–2024 factors are used for the 2026 proposal; no 2025 half-year value is inferred.
+**Office of the Mayor example:** the supplied 2011–2026 nominal amounts give **10.8964386671%**, displayed as **10.9%**. The supplied rounded adjusted amounts give **8.5425675411%**, displayed as **8.5%**. The generator multiplies nominal amounts by the full supplied factors without rounding intermediate budgets, so its unrounded result can differ slightly from the rounded spreadsheet inputs.
 
-**COPA example:** the saved export compares $15,089,632 in 2025 with $15,781,027 in proposed 2026 appropriations: **+$691,395, or +4.6%**. Workforce goes from 154 to 150: **−4, or −2.6%**. Recalculating historical rates from the saved chart values with the new method gives:
-
-| Annual rate | Previous exported summary | New generator calculation |
-| --- | --- | --- |
-| Appropriations | 1.83% | **2.08%** |
-| Positions/FTEs | 0.86% | **0.96%** |
-| Inflation-adjusted appropriations | 0.42% | **+0.43%** |
-
-The inflation-adjusted comparison retains 2018–2024 and uses the adjusted endpoint difference divided by the starting adjusted budget and six annual intervals. The saved production export still contains the old CAGR rates until replaced with a fresh export. Open the [updated COPA summary preview](previews/copa-summary-average-annual-change.html) to see the new calculation using the saved chart data.
-
-### COPA inflation-adjusted calculation, year by year
-
-For the **2026 proposal**, use **2018–2024**, expressed in **2024 dollars**. The nominal budgets below come from the tooltips in the [saved COPA appropriations export](../bga-budget-snapshots-astro/src/graphics/2027/ipra-copa/2026-recommendation/appropriations.svg). The conversion factors are the supplied `DOLLAR_2024_FACTORS` in the generator.
-
-| Year | Nominal appropriations | Factor to 2024 dollars | Adjusted appropriations (nearest dollar) | Change from prior adjusted year |
-| --- | ---: | ---: | ---: | ---: |
-| 2018 | $13,289,393 | 1.229354749 | $16,337,378 | — |
-| 2019 | $13,851,285 | 1.211641879 | $16,782,797 | +2.726377% |
-| 2020 | $13,753,178 | 1.198267131 | $16,479,981 | −1.804323% |
-| 2021 | $13,314,826 | 1.149772387 | $15,309,019 | −7.105359% |
-| 2022 | $14,728,193 | 1.069027203 | $15,744,839 | +2.846817% |
-| 2023 | $15,036,021 | 1.034607895 | $15,556,386 | −1.196919% |
-| 2024 | $16,756,984 | 1.000000000 | $16,756,984 | +7.717718% |
-
-For example, 2018's adjusted budget is `$13,289,393 × 1.229354749 = $16,337,378.395877358`. The first annual change is `(16782796.983964518 / 16337378.395877358 − 1) × 100 = +2.7263773740%`.
-
-The annual changes above are shown for reference. The current inflation-adjusted summary uses only the endpoints:
-
-```text
-COPA, 2026 proposal:
-(($16,756,984 − $16,337,378.395877358) / $16,337,378.395877358) / (2024 − 2018)
-= 0.004280629710542864
-= +0.4280629711%, displayed as 0.4%
-```
-
-For the **2027 proposal**, use the existing 2025-dollar factors and end in 2025:
-
-```text
-(($15,089,632 − $16,840,931.370880943) / $16,840,931.370880943) / (2025 − 2018)
-= −0.01485580689700751
-= −1.4855806897%, displayed as −1.5%
-```
-
-For **City Treasurer’s Office**, the 2026 proposal calculation is:
-
-```text
-2011 in 2024 dollars = $2,181,879 × 1.336288892 = $2,915,620.6713880682
-(($6,272,699 − $2,915,620.6713880682) / $2,915,620.6713880682) / (2024 − 2011)
-= 0.08857009316841918
-= +8.8570093168%, displayed as 8.9%
-```
-
-See the [Treasurer calculation audit](previews/treasurer-inflation-calculation.md) for annual inputs and the comparison with the earlier formulas.
-
-Calculations use unrounded adjusted values. The inflation-adjusted rate needs only the two endpoint budgets and their factors; missing intermediate years do not prevent it. Missing endpoints, missing or invalid endpoint factors, a zero starting adjusted budget, or a period with no annual intervals produce an unavailable rate. A zero ending budget is valid. Nominal annual averages still require every year and nonzero annual baselines. Manual summary rate overrides remain supported.
+Both rates require every annual budget and nonzero prior-year values. A zero final budget is valid; a zero intermediate budget prevents the next annual percentage change. Missing or invalid historical factors, missing budgets, or a period with no annual intervals produce an unavailable rate. Workforce has no inflation-adjusted rate. Manual summary rate overrides remain supported. Existing saved graphic exports and calculation previews retain their saved values until regenerated.
 
 ## 2. Department Appropriation Over Time
 
@@ -133,7 +78,7 @@ Calculations use unrounded adjusted values. The inflation-adjusted rate needs on
 
 **Source:** each year's City appropriations dataset. In recommendation mode, 2011–2025 use ordinance datasets and 2026 uses recommendations. Prep mode substitutes the 2026 ordinance.
 
-**Manipulation:** match the department, identify the annual appropriation amount field, and sum that field across every matched row. This includes all matching funds and accounts; the chart is not restricted to local funds. The **Inflation adjusted (year dollars)** switch changes the plotted history, axis, tooltips, and details table. The switch is off by default (nominal dollars). Adjusted values multiply each annual budget by its supplied factor in **2024 dollars for the 2026 proposal** or **2025 dollars for the 2027 proposal**, matching the summary. Raw budgets, editor inputs, and summary calculations remain nominal. The proposed-year point, connecting line segment, and shaded area are muted gray; ordinance years retain the blue treatment.
+**Manipulation:** match the department, identify the annual appropriation amount field, and sum that field across every matched row. This includes all matching funds and accounts; the chart is not restricted to local funds. The **Inflation adjusted (year dollars)** switch changes the plotted history, axis, tooltips, and details table. The switch is off by default (nominal dollars). Adjusted values multiply each annual budget by its supplied factor in **2024 dollars for the 2026 proposal** or **2025 dollars for the 2027 proposal**, using the same supplied factors as the summary. The summary retains nominal amounts for years after the factor table ends; this chart leaves those years as gaps. Raw budgets and editor inputs remain nominal. The proposed-year point, connecting line segment, and shaded area are muted gray; ordinance years retain the blue treatment.
 
 **Illustration:** three matched rows of $8 million, $2 million, and $500,000 become one annual point of **$10.5 million**.
 
@@ -159,7 +104,7 @@ The same matching correction restores workforce for 2012–2016. Supporting the 
 
 ## 3. Departmental Budgets with Estimated Fringe
 
-**What you see:** stacked annual bars for 2018–2026: departmental appropriations, calculated full-time fringe, and estimated part-time fringe. Export ID: `estimated-fringe`.
+**What you see:** stacked annual bars for 2018–2027: departmental appropriations, calculated full-time fringe, and estimated part-time fringe. Export ID: `estimated-fringe`.
 
 **Source:** `DEPARTMENT_FRINGE_CSV`, embedded from [departmental fringe by year - master.csv](departmental%20fringe%20by%20year%20-%20master.csv). Rows match by department number and year. This chart takes even its appropriation component from the CSV rather than the live appropriation chart.
 
@@ -171,9 +116,9 @@ Total = departmental appropriations + full-time fringe + part-time fringe
 
 The generator does not estimate benefit rates or calculate fringe from salaries. Those calculations happened upstream of the supplied CSV.
 
-**COPA example:** the CSV's 2026 row contains $15,781,027 in appropriations, $10,240,954.30 in full-time fringe, and $0 in part-time fringe. The stack totals **$26,021,981.30**. Display labels may round dollars. The fixed CSV’s proposed 2026 stack uses gray shades, including in prep mode because switching cycles does not replace this CSV snapshot.
+**COPA example:** the CSV's 2027 row contains $16,978,005 in appropriations, $11,129,911 in full-time fringe, and $0 in part-time fringe. The stack totals **$28,107,916**. Display labels may round dollars. Rows marked Proposed in the CSV use gray shades; the supplied 2027 rows are proposed and 2026 rows are ordinance. Switching cycles does not replace this CSV snapshot.
 
-All three components must be present and valid to use a year; a missing component leaves a gap. These values stay the same across cycles, so the CSV's 2026 appropriation can differ from the live 2026 ordinance used in prep mode.
+All three components must be present and valid to use a year; a missing component leaves a gap. These values stay the same across cycles and use the ordinance/proposed status supplied in the CSV.
 
 ## 4. Department Local Fund Actuals
 
@@ -406,3 +351,13 @@ Each available graphic has **Download data (CSV)**. The dashboard also has **Dow
 Downloads use the current edited values, retain full numeric precision, identify percentages in percent units, and leave missing values blank. Real zeros remain zero. Persistent-vacancy graphics and downloads include every title. Appropriation downloads always include the year, nominal appropriation, inflation factor, and inflation-adjusted appropriation, with the dollar year in the headings. The inflation toggle does not change these download columns. Downloads contain only chart labels and values; sources, snapshot metadata, editing flags, and About sheets are omitted.
 
 Astro ZIPs contain a CSV beside each graphic and name it in the manifest. Exported HTML includes a **Download data (CSV)** link that embeds the same frozen data, so public pages and offline previews need no API or extra script for downloads. Re-export and replace existing graphics packages to add these links to already published graphics; older exports remain compatible. Public pages offer per-graphic downloads; the combined workbook is a dashboard control.
+
+## Departmental Fund Comparison
+
+**What you see:** a fund table for the selected department and budget cycle, with budgeted and proposed amounts, dollar and percent changes, and each fund’s share of proposed departmental funds. Export ID: `fund-comparison`. Fund codes are used internally to match rows, but are omitted from the display and CSV.
+
+**Source:** the prior-year ordinance and current-year recommendation appropriations APIs, using the same department matching and amount selection as the other appropriation graphics. For the 2027 cycle these are [2026 ordinance](https://data.cityofchicago.org/d/6694-f78c) and [2027 recommendations](https://data.cityofchicago.org/d/pptx-hhw3). All appropriation accounts and fund types are included.
+
+**Calculation:** sum each year’s department appropriation rows by fund code. Net = proposed − budgeted; percent change = net ÷ budgeted; recommended share = fund proposal ÷ total departmental proposal. Rows sort by proposed amount. A missing fund counts as zero only when department rows load in both years; missing departments or invalid fund amounts produce an error instead of a zero comparison. New positive allocations show “New Fund” when their baseline is zero. Amounts retain full precision in downloads; displayed percentages round to one decimal.
+
+**Mayor example:** verified against the City APIs on October 23, 2026. The 2026 budget totals $16,419,712 and the 2027 proposal totals $18,265,651, an increase of $1,845,939 (11.2%). Corporate Fund amounts are $11,410,168 and $12,562,589. Sewer Fund funding rises from $0 to $81,437, while Coronavirus Local Fiscal Recovery funding falls from $169,000 to $0. The seven-fund comparison is covered by the retained API fixture in `tests/fixtures/mayor-funds-2026-2027.json`.

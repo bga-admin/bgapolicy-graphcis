@@ -1,0 +1,120 @@
+{
+  "documentId": "1KQJNAFdP5T6ss7lpLsHyYHZibGrzLt0MUhHLpuau1kg",
+  "title": "Copy of 2027 Budget Overview",
+  "charts": [
+    {
+      "heading": "Overall Appropriations & Year-to-Year Budget Growth",
+      "inlineObjectId": "kix.bdz6pviqh17p",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 299413306
+    },
+    {
+      "heading": "Overall Appropriations & Year-to-Year Budget Growth",
+      "inlineObjectId": "kix.nay747logv0p",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 1199092773
+    },
+    {
+      "heading": "Appropriation Sources",
+      "inlineObjectId": "kix.e25b9jbugzsy",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 830272987
+    },
+    {
+      "heading": "Appropriation Sources",
+      "inlineObjectId": "kix.tp8bdqpiwtsm",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 294455619
+    },
+    {
+      "heading": "Departmental Appropriations",
+      "inlineObjectId": "kix.b7zkvnva2vsm",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 1554593907
+    },
+    {
+      "heading": "Departmental Appropriations",
+      "inlineObjectId": "kix.vswa0vzluwt",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 1213978471
+    },
+    {
+      "heading": "Departmental Appropriations",
+      "inlineObjectId": "kix.f7yopqcyuaip",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 686639191
+    },
+    {
+      "heading": "Year-over-Year Appropriations Changes",
+      "inlineObjectId": "kix.a7la5b6lazki",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 31784040
+    },
+    {
+      "heading": "Year-over-Year Appropriations Changes",
+      "inlineObjectId": "kix.fujn0qcnqz4w",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 33908906
+    },
+    {
+      "heading": "Local Fund Budgeted vs. Actual Spend",
+      "inlineObjectId": "kix.axq248hphea",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 47119509
+    },
+    {
+      "heading": "Local Fund Budgeted vs. Actual Spend",
+      "inlineObjectId": "kix.4dyzo77q1zj7",
+      "spreadsheetId": "1Ucdmi6p8bUIu6a2RYVA4oaxfeDpi6BCrtr5g4lprWYU",
+      "chartId": 432790276
+    },
+    {
+      "heading": "Overall Positions & Year-to-Year Growth",
+      "inlineObjectId": "kix.9iim3jidrdyu",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 1061857961
+    },
+    {
+      "heading": "Overall Positions & Year-to-Year Growth",
+      "inlineObjectId": "kix.edf97npvan7w",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 1476991483
+    },
+    {
+      "heading": "Departmental Positions and Year-to-Year Growth",
+      "inlineObjectId": "kix.de0fq9sb89q9",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 1621516483
+    },
+    {
+      "heading": "Departmental Positions and Year-to-Year Growth",
+      "inlineObjectId": "kix.bwpvf7oupbhn",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 1577381700
+    },
+    {
+      "heading": "Vacancies",
+      "inlineObjectId": "kix.n41ike34fo0q",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 1544963353
+    },
+    {
+      "heading": "Vacancies",
+      "inlineObjectId": "kix.893zitoq1vw8",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 257133023
+    },
+    {
+      "heading": "Vacancies",
+      "inlineObjectId": "kix.8qgtixr5lo9o",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 617356508
+    },
+    {
+      "heading": "Revenues",
+      "inlineObjectId": "kix.dwa9eu908rs5",
+      "spreadsheetId": "1YbH3urqP6txs9fScTCBODrZ4Exx1z_hilgix9GBxh2A",
+      "chartId": 889430038
+    }
+  ]
+}

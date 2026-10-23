@@ -54,9 +54,25 @@ import CustomGraphic from '../graphics/custom-my-chart/custom-my-chart.astro';
 
 Adjust the relative import path to your page's location. No framework integration or client data requests are needed.
 
-For a snapshot article with no graphics folder yet, copy the chart folder into `bga-budget-snapshots-astro/src/graphics/`, set the article's `graphicsFolder` in `src/config/snapshots.js`, paste the manifest's `[budget-graphic id="..."]` marker into its own WordPress Paragraph block, and rebuild.
+For snapshot stories in this repository, copy each entire exported graphic folder anywhere under `bga-budget-snapshots-astro/src/graphics/`. Group them by year, project, or topic, such as `2027/chicago-budget-analysis/`. Keep its folder name matching its graphic ID. Paste the matching marker into its own WordPress Paragraph block, then rebuild. Astro finds the graphic's own manifest automatically. No manifest merging or `snapshots.js` changes are needed.
 
-For an article that already has graphics, copy the new chart's `.html`, `.svg`, `.csv`, `.json`, and `.astro` files into the configured folder. Append the new manifest's single `graphics` entry to the existing manifest's `graphics` array. Keep the existing manifest metadata, other entries, `budget-graphics.css`, and `budget-tooltips.js`. Add the new marker paragraph and rebuild. Each graphic needs its own ID and appears once per article.
+For example:
+
+```text
+src/graphics/2027/chicago-budget-analysis/
+  custom-budget-share/
+    manifest.json
+    custom-budget-share.html
+    ...other export files
+  custom-vacancies/
+    manifest.json
+    custom-vacancies.html
+    ...other export files
+```
+
+You can instead put each graphic folder directly inside a story's existing configured `graphicsFolder`. Astro checks that story's parent manifest first, then its child folder matching the marker ID, then searches for an ID-named export folder anywhere under `src/graphics/`. Multiple matching folders produce an error with their paths; use globally unique graphic IDs, or set the story's `graphicsFolder` to the intended project parent to resolve intentional reuse. Existing flat snapshot exports still work. Keep unique IDs for distinct graphics; a parent-manifest entry takes precedence over a child/global graphic with the same ID.
+
+Keep each custom export's manifest and duplicate-named support files within its own folder. They do not overwrite another graphic. The small manifests add negligible overhead. Discovery indexes directory names; only manifests matching referenced IDs and the chosen graphics are loaded. The `custom/` location continues to work, and grouping folders do not need their own manifests. Existing shared snapshot scripts/styles remain unchanged; custom graphics include their own scoped styles and tooltip initialization.
 
 The [supplied department chart's Astro ZIP](previews/department-budget-share-change-astro.zip) is ready to use. Each ZIP includes instructions with the exact filenames, marker, and destination for that export.
 
@@ -75,6 +91,8 @@ node budgetsnapshot-graphics-generator/tests/custom-graphics.test.mjs
 The tests exercise CSV/TSV parsing, numeric validation, all nine SVG renderers, missing-data gaps, negative/zero values, scatter positioning, donut geometry, XML and HTML exports, formula protection, and long charts.
 
 ## Department budget-share chart
+
+The [2027 overview tool](previews/2027-overview/index.html) follows the article’s 19 charts plus its summary table, with editable data, matching source legends, a price-basis switch, and the same chart renderer. Four sheet-only charts remain optional. See [source, corrections, and embedding notes](2027-OVERVIEW.md) or [download the article Astro ZIP](previews/2027-overview/2027-overview-astro.zip).
 
 The [department budget-share example](previews/department-budget-share-change.html) contains the 39 supplied department values as horizontal percentage bars, including negative changes and rounded zeros. Open [its project JSON](previews/department-budget-share-change.json) with **Open project** in the generator to edit it. An [interactive SVG](previews/department-budget-share-change.svg) and [source CSV](tests/fixtures/department-budget-share-change.csv) are also included. The chart preserves the supplied percentage units and department order; no period or additional calculations are inferred.
 

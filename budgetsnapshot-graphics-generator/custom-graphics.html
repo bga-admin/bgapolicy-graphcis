@@ -40,7 +40,7 @@
 <details><summary>Start from an example</summary><p class="note">Replaces the data and labels. Save your project first if you want to keep it.</p><div class="toolbar"><button data-example="budget">Budget comparison</button><button data-example="vacancies">Filled & vacant positions</button><button data-example="change">Positive & negative changes</button><button data-example="scatter">Scatter comparison</button><button data-example="donut">Spending breakdown</button></div></details>
 </section>
 <section class="card"><h2>Export your graphic</h2><div class="toolbar"><button id="exportHtml" class="primary" data-export>Download HTML</button><button id="exportAstro" data-export>Export for Astro (.zip)</button><button id="exportSvg" data-export>Download interactive SVG</button><button id="exportCsv" data-export>Download data CSV</button></div><p class="note">HTML includes the chart and interactive tooltips. Upload the HTML file to your site and use its URL in the iframe below. Exports contain frozen data and work without a network connection; system fonts are used when the brand fonts are unavailable.</p>
-<label style="margin-bottom:12px">Astro graphic ID (optional)<input id="graphicId" placeholder="custom-my-chart" pattern="[a-z0-9]+(-[a-z0-9]+)*"></label><div class="toolbar" style="margin-bottom:12px"><button id="copyGraphicId" type="button">Copy graphic ID</button><button id="copyAstroMarker" type="button">Copy marker</button></div><label>Story marker<input id="astroMarker" readonly aria-label="Astro story marker"></label><p class="note">The Astro ZIP includes an article marker, manifest, reusable .astro component, interactive chart, data, and setup instructions. Use a unique graphic ID with lowercase letters, numbers, and hyphens when adding it alongside existing charts.</p><label>Hosted HTML URL<input id="embedUrl" type="url" placeholder="https://your-site.org/graphics/my-chart.html"></label><label style="margin-top:12px">Iframe embed code<textarea id="embedCode" class="export-code" rows="3" readonly aria-label="Iframe embed code"></textarea></label><div class="toolbar" style="margin-top:10px"><button id="copyEmbed">Copy embed code</button></div><p class="note">The iframe uses a fixed height; review it at your article’s desktop and phone widths. SVG interactivity works when opened directly, inlined, or embedded with &lt;object&gt;. An &lt;img&gt; shows the graphic with no scripted interactions. Site security settings must allow inline scripts for custom tooltips.</p><p id="notice" role="status" aria-live="polite"></p></section>
+<label style="margin-bottom:12px">Astro graphic ID (optional)<input id="graphicId" placeholder="custom-my-chart" pattern="[a-z0-9]+(-[a-z0-9]+)*"></label><div class="toolbar" style="margin-bottom:12px"><button id="copyGraphicId" type="button">Copy graphic ID</button><button id="copyAstroMarker" type="button">Copy marker</button></div><label>Story marker<input id="astroMarker" readonly aria-label="Astro story marker"></label><p class="note">The Astro ZIP includes an article marker, manifest, reusable .astro component, interactive chart, data, and setup instructions. Keep each export in its own folder anywhere under src/graphics/, grouped by year, project, or topic. Paste its marker into the story and rebuild. No manifest merging is needed. Use a unique graphic ID with lowercase letters, numbers, and hyphens.</p><label>Hosted HTML URL<input id="embedUrl" type="url" placeholder="https://your-site.org/graphics/my-chart.html"></label><label style="margin-top:12px">Iframe embed code<textarea id="embedCode" class="export-code" rows="3" readonly aria-label="Iframe embed code"></textarea></label><div class="toolbar" style="margin-top:10px"><button id="copyEmbed">Copy embed code</button></div><p class="note">The iframe uses a fixed height; review it at your article’s desktop and phone widths. SVG interactivity works when opened directly, inlined, or embedded with &lt;object&gt;. An &lt;img&gt; shows the graphic with no scripted interactions. Site security settings must allow inline scripts for custom tooltips.</p><p id="notice" role="status" aria-live="polite"></p></section>
 </div></main><footer class="shell">BGA Policy · Custom graphics generator · <a href="CUSTOM-GRAPHICS.md">Usage & export guide</a></footer>
 <script id="graphics-core">
 'use strict';
@@ -95,7 +95,7 @@ function format(value,config,compact=false) {
  if(value===null)return '—';const decimals=Math.min(3,Math.max(0,Number(config.decimals)||0));
  const unit=config.format==='currency'?'$':'';const suffix=config.format==='percent'?'%':'';
  const abs=Math.abs(value);let divisor=1,short='';if(compact){if(abs>=1e9){divisor=1e9;short='B';}else if(abs>=1e6){divisor=1e6;short='M';}else if(abs>=1e3){divisor=1e3;short='K';}}
- return (value<0?'−':'')+unit+(abs/divisor).toLocaleString('en-US',{minimumFractionDigits:compact?0:decimals,maximumFractionDigits:decimals})+short+suffix;
+ return (value<0?'−':'')+unit+(abs/divisor).toLocaleString('en-US',{minimumFractionDigits:compact||config.trimZeros?0:decimals,maximumFractionDigits:decimals})+short+suffix;
 }
 function wrap(value,limit) {
  const lines=[];for(const paragraph of String(value||'').split('\n')){let line='';for(const word of paragraph.split(/\s+/).filter(Boolean)){if(line&&line.length+word.length+1>limit){lines.push(line);line='';}for(let i=0;i<word.length;i+=limit){const part=word.slice(i,i+limit);if(i){lines.push(line);line='';}line+=(line?' ':'')+part;}}lines.push(line);}return lines;
@@ -146,7 +146,7 @@ function tooltipRuntime(svg) {
  svg.addEventListener('keydown',event=>{if(event.key==='Escape')hide();});svg.addEventListener('pointerdown',event=>{if(!event.target.closest('[data-tip]'))hide();});
 }
 function render(config,grid,interactive=true) {
- const m=model(config,grid), {series,data}=m;const colors=palettes[config.palette]||palettes.snapshot;const W=900,pad=28;
+ const m=model(config,grid), {series,data}=m;const colors=config.colors||palettes[config.palette]||palettes.snapshot;const W=900,pad=28;
  const font='Synthese,Helvetica Neue,Helvetica,Arial,sans-serif', display='Proxima Nova,Helvetica Neue,Arial,sans-serif';
  const out=[];const text=(x,y,value,size=12,extra='')=>`<text x="${x}" y="${y}" font-size="${size}" ${extra}>${escape(value)}</text>`;
  const lines=(x,y,arr,size=12,lineHeight=18,extra='')=>arr.map((s,i)=>text(x,y+i*lineHeight,s,size,extra)).join('');
@@ -157,8 +157,12 @@ function render(config,grid,interactive=true) {
  let lx=pad,ly=top+12;for(const [name,color] of legendEntries){const a=wrap(name,38);const width=Math.min(340,Math.max(...a.map(s=>s.length))*7+29);if(lx+width>W-pad){lx=pad;ly+=34;}out.push(`<rect x="${lx}" y="${ly-9}" width="12" height="10" fill="${color}"/>`+lines(lx+19,ly,a,11,13,'fill="#536b7b"'));lx+=width+12;if(a.length>2){lx=pad;ly+=a.length*13+8;}}top=ly+30;
  }else top+=12;
  const plotH=Math.max(240,Math.min(800,Number(config.height)||360));let bottom;
+ const tooltipConfig={...config,decimals:config.tooltipDecimals??config.decimals,trimZeros:config.tooltipTrimZeros};
+ const shareTotal=data.reduce((sum,row)=>sum+row.values.reduce((s,v)=>s+(v??0),0),0);
+ const share=value=>config.showShare&&shareTotal>0?' ('+format(value/shareTotal*100,{format:'percent',decimals:1})+')':'';
+ const markColor=(label,j)=>config.categoryColors?.[label]||colors[j%colors.length];
  const tip=(shape,label,value,seriesName,extra='',stack=null)=>{
- const title=stack?label+' · Total':label,amount=format(stack?stack.total:value,config);
+ const title=stack?label+' · Total':label,amount=format(stack?stack.total:value,tooltipConfig)+share(stack?stack.total:value);
  const detail=stack?stack.detail:seriesName+extra;
  const description=stack?`${label}\nTotal: ${amount}\n${detail}`:`${label}\n${seriesName}: ${amount}${extra}`;
  return shape.replace('>',` tabindex="0" role="img" aria-label="${escape(description.replace(/\n/g,', '))}" data-tip-title="${escape(title)}" data-tip-value="${escape(amount)}" data-tip-detail="${escape(detail).replace(/\n/g,'&#10;')}" data-tip="${escape(description).replace(/\n/g,'&#10;')}"><title>${escape(description)}</title>`);
@@ -177,19 +181,19 @@ function render(config,grid,interactive=true) {
  if(config.values){const a=angle+span/2,rr=(R+inner)/2;if(span>.13)out.push(text(cx+rr*Math.cos(a),cy+rr*Math.sin(a)+4,(v/total*100).toFixed(1)+'%',12,'fill="white" text-anchor="middle" pointer-events="none"'));}angle=end;});
  out.push(text(cx,cy-6,'TOTAL',11,'text-anchor="middle" fill="#6f808b"'),text(cx,cy+22,format(total,config,true),25,'text-anchor="middle" font-weight="700"'));bottom=top+plotH+12;
  } else {
- const horizontal=config.type==='bar',stacked=['stacked','percent'].includes(config.type),percent=config.type==='percent',scatter=config.type==='scatter';
+ const stacked=['stacked','percent'].includes(config.type),horizontal=config.type==='bar'||(stacked&&config.orientation==='horizontal'),percent=config.type==='percent',scatter=config.type==='scatter';
  let min=0,max=0;for(const r of data){if(stacked){const vs=r.values.filter(v=>v!==null);max=Math.max(max,vs.filter(v=>v>=0).reduce((s,v)=>s+v,0));min=Math.min(min,vs.filter(v=>v<0).reduce((s,v)=>s+v,0));}else for(const v of r.values){if(v!==null){min=Math.min(min,v);max=Math.max(max,v);}}}
  if(percent){min=0;max=100;}else{if(max===min)max=min+1;const span=max-min;if(!Number.isFinite(span))throw Error('The value range is too large to plot.');if(max>0)max+=span*.1;if(min<0)min-=span*.1;}
  const requestedAngle=Number(config.labelAngle)||0;
- const labelAngle=['column','stacked','percent'].includes(config.type)?Math.max(-90,Math.min(90,requestedAngle)):0;
- const labelLines=data.map(r=>wrap(r.label,horizontal?26:labelAngle?32:Math.max(5,Math.min(18,Math.floor(720/data.length/7)))));
+ const labelAngle=!horizontal&&['column','stacked','percent'].includes(config.type)?Math.max(-90,Math.min(90,requestedAngle)):0;
+ const labelLines=data.map(r=>wrap(r.label,horizontal?26:labelAngle?32:Math.max(['line','area'].includes(config.type)?10:5,Math.min(18,Math.floor(720/data.length/7)))));
  const radians=Math.abs(labelAngle)*Math.PI/180;
  const labelWidth=Math.max(...labelLines.map(a=>Math.max(...a.map(s=>s.length))*6.5));
  const labelBlockHeight=Math.max(...labelLines.map(a=>a.length))*14;
  const labelProjection=labelWidth*Math.cos(radians)+labelBlockHeight*Math.sin(radians);
  const left=horizontal?220:labelAngle<0?Math.max(100,Math.ceil(labelProjection)+pad):100;
- const right=W-(labelAngle>0?Math.max(35,Math.ceil(labelProjection)+pad):35),pw=right-left;let ph=plotH;
- const rowHeights=labelLines.map(a=>Math.max(34,a.length*15+12,series.length*15+10));if(horizontal)ph=Math.max(plotH,rowHeights.reduce((s,v)=>s+v,0));
+ const right=W-(horizontal&&config.showShare?150:labelAngle>0?Math.max(35,Math.ceil(labelProjection)+pad):35),pw=right-left;let ph=plotH;
+ const rowHeights=labelLines.map(a=>Math.max(34,a.length*15+12,(stacked?1:series.length)*15+10));if(horizontal){const natural=rowHeights.reduce((s,v)=>s+v,0);ph=Math.max(plotH,natural);if(natural<ph){const extra=(ph-natural)/data.length;rowHeights.forEach((v,i)=>rowHeights[i]=v+extra);}}
  const yBottom=top+ph;
  const valuePos=v=>horizontal?left+(v-min)/(max-min)*pw:yBottom-(v-min)/(max-min)*ph;
  const fmt=v=>percent?v.toFixed(0)+'%':format(v,config,true);
@@ -199,19 +203,19 @@ function render(config,grid,interactive=true) {
  const xp=(r,i)=>scatter?left+(r.x-xMin)/(xMax-xMin)*pw:left+pw*(i+.5)/data.length;
  if(['line','area','scatter'].includes(config.type)){
  series.forEach((s,j)=>{let segment=[];const flush=()=>{if(!segment.length)return;const d=segment.map((p,i)=>(i?'L':'M')+p.join(' ')).join(' ');if(config.type==='area')out.push(`<path d="${d} L ${segment.at(-1)[0]} ${zero} L ${segment[0][0]} ${zero} Z" fill="${colors[j%colors.length]}" opacity=".14"/>`);if(!scatter)out.push(`<path d="${d}" fill="none" stroke="${colors[j%colors.length]}" stroke-width="3"/>`);segment=[];};
- data.forEach((r,i)=>{if(r.values[j]===null){flush();return;}segment.push([xp(r,i),valuePos(r.values[j])]);});flush();
- data.forEach((r,i)=>{const v=r.values[j];if(v===null)return;const x=xp(r,i),y=valuePos(v);out.push(tip(`<circle cx="${x}" cy="${y}" r="5" fill="${colors[j%colors.length]}" stroke="white" stroke-width="1.5">`,r.label,v,s)+'</circle>');if(config.values)out.push(text(x,y-12,format(v,config,true),11,'text-anchor="middle"'));});});
+ data.forEach((r,i)=>{if(r.values[j]===null){flush();return;}const point=[xp(r,i),valuePos(r.values[j])];if(config.categoryColors?.[r.label]&&segment.length){const previous=segment.at(-1);flush();out.push(`<path d="M${previous.join(' ')} L${point.join(' ')}" fill="none" stroke="${markColor(r.label,j)}" stroke-width="3"/>`);}segment.push(point);});flush();
+ data.forEach((r,i)=>{const v=r.values[j];if(v===null)return;const x=xp(r,i),y=valuePos(v);out.push(tip(`<circle cx="${x}" cy="${y}" r="5" fill="${markColor(r.label,j)}" stroke="white" stroke-width="1.5">`,r.label,v,s)+'</circle>');if(config.values)out.push(text(x,y-12,format(v,config,true),11,'text-anchor="middle"'));});});
  }else{
  let rowY=top;
  data.forEach((r,i)=>{let positive=0,negative=0;const complete=r.values.every(v=>v!==null),total=r.values.reduce((s,v)=>s+(v??0),0);const band=pw/data.length,group=band*.72,bw=group/(stacked?1:series.length),rh=rowHeights[i];
  if(horizontal)out.push(lines(left-12,rowY+rh/2-(labelLines[i].length-1)*7.5+4,labelLines[i],12,15,'text-anchor="end"'));
  r.values.forEach((raw,j)=>{if(raw===null||(stacked&&!complete)||(percent&&total===0))return;const v=percent?raw/total*100:raw;let start=0,end=v;if(stacked){start=v>=0?positive:negative;end=start+v;if(v>=0)positive=end;else negative=end;}const a=valuePos(start),b=valuePos(end);let x,y,w,h;
- if(horizontal){x=Math.min(a,b);y=rowY+rh/2-series.length*7+j*14;w=Math.abs(b-a);h=11;}else{x=left+i*band+(band-group)/2+(stacked?0:j*bw);y=Math.min(a,b);w=Math.max(1,bw-2);h=Math.abs(b-a);}
- const shape=horizontal&&raw===0?`<line x1="${x}" x2="${x}" y1="${y}" y2="${y+h}" stroke="${colors[j%colors.length]}" stroke-width="4">`:!horizontal&&raw===0?`<line x1="${x}" x2="${x+w}" y1="${y}" y2="${y}" stroke="${colors[j%colors.length]}" stroke-width="4">`:`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${colors[j%colors.length]}">`;
- const close=shape.startsWith('<line')?'</line>':'</rect>';out.push(tip(shape,r.label,raw,series[j],percent?`\nShare: ${v.toFixed(1)}%`:'',stacked?{total,detail:r.values.map((value,k)=>`${series[k]}: ${format(value,config)}${percent?` (${(value/total*100).toFixed(1)}%)`:''}`).join('\n')}:null)+close);
- if(config.values){if(stacked){if(h>18)out.push(text(x+w/2,y+h/2+4,percent?v.toFixed(0)+'%':format(raw,config,true),10,'text-anchor="middle" fill="white" pointer-events="none"'));}else if(horizontal)out.push(text(raw<0?x-5:x+w+5,y+10,format(raw,config,true),10,`text-anchor="${raw<0?'end':'start'}"`));else out.push(text(x+w/2,raw<0?y+h+14:y-6,format(raw,config,true),10,'text-anchor="middle"'));}
+ if(horizontal){x=Math.min(a,b);y=stacked?rowY+rh*.2:rowY+rh/2-series.length*7+j*14;w=Math.abs(b-a);h=stacked?rh*.6:11;}else{x=left+i*band+(band-group)/2+(stacked?0:j*bw);y=Math.min(a,b);w=Math.max(1,bw-2);h=Math.abs(b-a);}
+ const shape=horizontal&&raw===0?`<line x1="${x}" x2="${x}" y1="${y}" y2="${y+h}" stroke="${stacked?'transparent':markColor(r.label,j)}" stroke-width="4">`:!horizontal&&raw===0?`<line x1="${x}" x2="${x+w}" y1="${y}" y2="${y}" stroke="${stacked?'transparent':markColor(r.label,j)}" stroke-width="4">`:`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${markColor(r.label,j)}">`;
+ const close=shape.startsWith('<line')?'</line>':'</rect>';out.push(tip(shape,r.label,raw,series[j],percent?`\nShare: ${v.toFixed(1)}%`:'',stacked?{total,detail:r.values.map((value,k)=>`${series[k]}: ${format(value,tooltipConfig)}${percent?` (${(value/total*100).toFixed(1)}%)`:''}`).join('\n')}:null)+close);
+ if(config.values){if(stacked){if(horizontal?w>48&&h>16:h>18)out.push(text(x+w/2,y+h/2+4,percent?v.toFixed(0)+'%':format(raw,config,true)+share(raw),10,'text-anchor="middle" fill="white" pointer-events="none"'));}else if(horizontal)out.push(text(raw<0?x-5:x+w+5,y+10,format(raw,config,true)+share(raw),10,`text-anchor="${raw<0?'end':'start'}"`));else out.push(text(x+w/2,raw<0?y+h+14:y-6,format(raw,config,true)+share(raw),10,'text-anchor="middle"'));}
  });
- if(stacked&&complete&&config.values&&(!percent||total>0)){const totalY=positive===0&&negative<0?valuePos(negative)+16:valuePos(positive)-10;out.push(text(left+(i+.5)*band,totalY,'Total: '+format(total,config,true),11,'text-anchor="middle" font-weight="700" fill="#294f68"'));}
+ if(stacked&&complete&&config.values&&(!percent||total>0)){if(horizontal){if(!percent)out.push(text(valuePos(positive)+5,rowY+rh/2+4,format(total,config,true),11,'font-weight="700" fill="#294f68"'));}else{const totalY=positive===0&&negative<0?valuePos(negative)+16:valuePos(positive)-10;out.push(text(left+(i+.5)*band,totalY,'Total: '+format(total,config,true)+share(total),11,'text-anchor="middle" font-weight="700" fill="#294f68"'));}}
  rowY+=rh;});
  }
  let labelH=0;if(!horizontal){if(scatter){for(let i=0;i<=5;i++){const v=xMin+(xMax-xMin)*i/5;out.push(text(left+pw*i/5,yBottom+23,v.toLocaleString('en-US',{maximumFractionDigits:2}),11,'text-anchor="middle" fill="#6f808b"'));}labelH=32;}else{const stride=['line','area'].includes(config.type)?Math.max(1,Math.ceil(data.length/16)):1;data.forEach((r,i)=>{if(i%stride!==0)return;if(labelAngle){out.push(`<g data-column-label="" transform="translate(${xp(r,i)} ${yBottom+20}) rotate(${labelAngle})">${lines(0,0,labelLines[i],11,14,`text-anchor="${labelAngle<0?'end':'start'}" fill="#536b7b"`)}</g>`);labelH=Math.max(labelH,Math.ceil(labelWidth*Math.sin(radians)+labelLines[i].length*14*Math.cos(radians))+24);}else{out.push(lines(xp(r,i),yBottom+22,labelLines[i],11,14,'text-anchor="middle" fill="#536b7b"'));labelH=Math.max(labelH,labelLines[i].length*14+15);}});}}else labelH=34;
@@ -269,17 +273,21 @@ Adjust the relative import path to your page, then insert <CustomGraphic /> in i
 The component imports the HTML as raw text; no client framework or data fetch is needed.
 
 OPTION 2: THIS PROJECT'S WORDPRESS SNAPSHOT MARKERS
-If the article has no graphics folder yet:
-1. Copy this entire folder to bga-budget-snapshots-astro/src/graphics/${id}/.
-2. Set graphicsFolder: '${id}' on that article in src/config/snapshots.js.
-3. Put ${marker} in its own WordPress Paragraph block.
-4. Rebuild the Astro project.
+Easiest option (works for any story):
+1. Copy this entire ${id} folder anywhere under bga-budget-snapshots-astro/src/graphics/.
+   For example: src/graphics/2027/chicago-budget-analysis/${id}/manifest.json.
+   src/graphics/custom/${id}/ also still works.
+2. Put ${marker} in its own WordPress Paragraph block.
+3. Rebuild the Astro project. No snapshots.js or manifest edits are needed.
 
-If the article already uses a graphicsFolder:
-1. Copy ${id}.html, ${id}.svg, ${id}.csv, ${id}.json and ${id}.astro into that existing folder.
-2. Append the single entry in this manifest's graphics array to the existing manifest's graphics array. Keep all existing entries and top-level metadata.
-3. Keep the existing budget-graphics.css and budget-tooltips.js files. Do not overwrite the existing manifest.
-4. Add ${marker} as its own WordPress Paragraph block and rebuild.
+To keep a graphic with a particular story instead:
+1. Copy this entire ${id} folder INSIDE the story's existing graphicsFolder.
+   For example: src/graphics/2027/ipra-copa/2026-recommendation/${id}/manifest.json.
+2. Add ${marker} as its own WordPress Paragraph block and rebuild.
+
+Keep each export's folder name matching its graphic ID. Year and project grouping names are unrestricted. Astro finds ID-named folders recursively; duplicate matches cause a clear error unless a story graphicsFolder selects the intended bundle or direct child. Retain the whole folder and its manifest; do not flatten folders or merge manifests. Keep the existing budget-graphics.css and budget-tooltips.js in the story's parent folder unchanged. Existing flat snapshot charts continue to work and take precedence when an ID is already in the parent manifest.
+
+These automatic folder lookups require the updated graphics.js importer in this repository. Other Astro projects can use OPTION 1 above.
 
 The custom fragment contains its own scoped tooltip initialization, so it works alongside the snapshot runtime. Each exported graphic ID must be unique, and each marker appears once per article. Use a different custom graphic ID when exporting another chart.
 

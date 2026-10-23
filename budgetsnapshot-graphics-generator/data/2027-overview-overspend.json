@@ -1,0 +1,15 @@
+{
+  "documentId": "1KQJNAFdP5T6ss7lpLsHyYHZibGrzLt0MUhHLpuau1kg",
+  "inlineObjectId": "kix.4dyzo77q1zj7",
+  "sourceSpreadsheetId": "1Ucdmi6p8bUIu6a2RYVA4oaxfeDpi6BCrtr5g4lprWYU",
+  "sourceChartId": 432790276,
+  "title": "Departmental Net Overspend (Local Funds), 2022-2025",
+  "provenance": "Values transcribed from the chart image embedded in the supplied Google Doc. The linked source workbook returned PERMISSION_DENIED. The three 2025 values are independently verified against the checked-in 2025 FOIA response. Years with no visible CFD or CCHR mark remain blank rather than being inferred as zero.",
+  "grid": [
+    ["Year", "CPD", "CFD", "CCHR"],
+    ["2022", "20796615", "", ""],
+    ["2023", "135824090", "", ""],
+    ["2024", "188112250", "22001648", "15890"],
+    ["2025", "145766930", "62311590", "35070"]
+  ]
+}

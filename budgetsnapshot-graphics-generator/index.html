@@ -240,7 +240,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   <section class="card" aria-labelledby="summaryTableTitle">
     <header>
       <div class="eyebrow">Summary</div>
-      <h2 id="summaryTableTitle">Department Budget Summary</h2>
+      <h2 id="summaryTableTitle">Department Snapshot: Appropriation &amp; Staffing Changes from 2026 Budget</h2>
     </header>
 
     <div id="summaryTableStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -254,7 +254,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   <section class="card" aria-labelledby="chartTitle">
     <header>
       <div class="eyebrow">Appropriations</div>
-      <h2 id="chartTitle">Department Appropriation, Chicago City Budgets 2011–2027 (Proposed)</h2>
+      <h2 id="chartTitle">Department Appropriations and Inflation-adjusted Appropriations (2025 dollars)</h2>
 
     </header>
 
@@ -284,10 +284,19 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
     </details>
   </section>
 
+  <section class="card" aria-labelledby="fundComparisonTitle">
+    <header><div class="eyebrow">Funds</div><h2 id="fundComparisonTitle">Departmental Fund Comparison</h2></header>
+    <div id="fundComparisonStatus" class="status" role="status" aria-live="polite">Waiting for department selection…</div>
+    <div id="fundComparisonChart" class="chart-wrap"></div>
+    <div class="toolbar"><button id="downloadFundComparisonSvg" type="button" hidden>Download SVG</button></div>
+    <footer id="fundComparisonFoot" class="foot">Source: City of Chicago Budget Ordinance and Budget Recommendations — Appropriations. Amounts are grouped by fund; fund codes are used for matching and omitted from the table.</footer>
+    <details><summary>Data &amp; calculation details</summary><div id="fundComparisonDetails"></div></details>
+  </section>
+
   <section class="card" aria-labelledby="fringeTitle">
     <header>
       <div class="eyebrow">Estimated fringe</div>
-      <h2 id="fringeTitle">Departmental Budget with Estimated Fringe Cost, 2018–2026</h2>
+      <h2 id="fringeTitle">Department Appropriations with Estimated Fringe Cost of Pensions and Benefits for Budgeted Non-grant Positions, 2018–2027 (proposed)</h2>
     </header>
     <div id="fringeStatus" class="status" role="status" aria-live="polite">Waiting for department selection…</div>
     <div id="fringeChart" class="chart-wrap">
@@ -299,7 +308,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
       <span><i style="background:var(--accent)"></i>Estimated part-time fringe</span>
     </div>
     <div class="toolbar"><button id="downloadFringeSvg" type="button" hidden>Download SVG</button></div>
-    <footer class="foot">Source: departmental fringe by year - master.csv. Total equals departmental appropriations plus calculated fringe for full-time positions and estimated fringe for part-time positions. Uses the supplied 2018–2026 CSV values for either budget cycle; absent department-years remain gaps. Historical names are matched by department number.</footer>
+    <footer class="foot">Source: departmental fringe by year - master.csv. Total equals departmental appropriations plus calculated fringe for full-time positions and estimated fringe for part-time positions. Uses the supplied 2018–2027 CSV values for either budget cycle; absent department-years remain gaps. Historical names are matched by department number.</footer>
     <details><summary>Data &amp; calculation details</summary><div id="fringeDetails"></div></details>
   </section>
 
@@ -333,7 +342,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   <section class="card" aria-labelledby="workforceTitle">
     <header>
       <div class="eyebrow">Workforce</div>
-      <h2 id="workforceTitle">Department Budgeted Workforce, 2011–2027 (Proposed)</h2>
+      <h2 id="workforceTitle">Department Budgeted Workforce, 2011–2027 (proposed)</h2>
     </header>
 
     <div id="workforceStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -364,7 +373,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   <section class="card" aria-labelledby="vacanciesTitle">
     <header>
       <div class="eyebrow">Vacancies</div>
-      <h2 id="vacanciesTitle">Department Vacancies, February–September 2025</h2>
+      <h2 id="vacanciesTitle">Department Full-time Vacancies, Jan-Sept 2026</h2>
     </header>
 
     <div id="vacanciesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -392,7 +401,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   <section class="card" aria-labelledby="persistentVacanciesTitle">
     <header>
       <div class="eyebrow">Persistent vacancies</div>
-      <h2 id="persistentVacanciesTitle">Persistent Vacancies by Title, February–September 2025</h2>
+      <h2 id="persistentVacanciesTitle">Department Persistent Full-time Vacancies, Jan-Sept 2026</h2>
     </header>
 
     <div id="persistentVacanciesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -412,44 +421,10 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
     </details>
   </section>
 
-  <section class="card" aria-labelledby="largestAppropriationsTitle">
-    <header>
-      <div class="eyebrow">Largest appropriations</div>
-      <h2 id="largestAppropriationsTitle">Top 10 Largest Department Appropriations, 2027 Proposed Chicago Budget</h2>
-    </header>
-
-    <div id="largestAppropriationsStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
-    <div id="largestAppropriationsChart" class="chart-wrap">
-      <div id="largestAppropriationsTooltip" class="tooltip" role="tooltip"></div>
-    </div>
-
-    <div class="toolbar">
-      <button id="downloadLargestAppropriationsSvg" type="button" hidden>Download SVG</button>
-    </div>
-
-    <footer id="largestAppropriationsFoot" class="foot">Source: City of Chicago 2026 Budget Recommendations — Appropriations. Rows are grouped by appropriation account and ranked by proposed amount.</footer>
-
-    <details>
-      <summary>Data &amp; API details</summary>
-      <div id="largestAppropriationsDetails"></div>
-    </details>
-  </section>
-
-  <section class="card" aria-labelledby="budgetFloorTitle">
-    <header>
-      <div class="eyebrow">Budget floor</div>
-      <h2 id="budgetFloorTitle">Budget Floor Graphic Placeholder</h2>
-    </header>
-
-    <div class="status warning">Budget-floor inputs and formula are not wired yet. This placeholder keeps the analysis order stable while we continue building the other graphics.</div>
-
-    <footer class="foot">Source: To be determined. This likely needs analyst-provided floor inputs or a verified manual dataset.</footer>
-  </section>
-
   <section class="card" aria-labelledby="positionChangesTitle">
     <header>
       <div class="eyebrow">Workforce changes</div>
-      <h2 id="positionChangesTitle">Net and Percent Position/FTE Changes, 2025 to 2026 (Proposed) Budgets</h2>
+      <h2 id="positionChangesTitle">Department Net and Percent Position/FTE Changes, 2026 to 2027 (Proposed) Budgets</h2>
     </header>
 
     <div id="positionChangesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -469,10 +444,44 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
     </details>
   </section>
 
+  <section class="card" aria-labelledby="budgetFloorTitle">
+    <header>
+      <div class="eyebrow">Budget floor</div>
+      <h2 id="budgetFloorTitle">Budget Floor Graphic Placeholder</h2>
+    </header>
+
+    <div class="status warning">Budget-floor inputs and formula are not wired yet. This placeholder keeps the analysis order stable while we continue building the other graphics.</div>
+
+    <footer class="foot">Source: To be determined. This likely needs analyst-provided floor inputs or a verified manual dataset.</footer>
+  </section>
+
+  <section class="card" aria-labelledby="largestAppropriationsTitle">
+    <header>
+      <div class="eyebrow">Largest appropriations</div>
+      <h2 id="largestAppropriationsTitle">Department Top 10 Largest Appropriations, 2027 proposed</h2>
+    </header>
+
+    <div id="largestAppropriationsStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
+    <div id="largestAppropriationsChart" class="chart-wrap">
+      <div id="largestAppropriationsTooltip" class="tooltip" role="tooltip"></div>
+    </div>
+
+    <div class="toolbar">
+      <button id="downloadLargestAppropriationsSvg" type="button" hidden>Download SVG</button>
+    </div>
+
+    <footer id="largestAppropriationsFoot" class="foot">Source: City of Chicago 2026 Budget Recommendations — Appropriations. Rows are grouped by appropriation account and ranked by proposed amount.</footer>
+
+    <details>
+      <summary>Data &amp; API details</summary>
+      <div id="largestAppropriationsDetails"></div>
+    </details>
+  </section>
+
   <section class="card" aria-labelledby="actualSpendCategoriesTitle">
     <header>
       <div class="eyebrow">Actual spend</div>
-      <h2 id="actualSpendCategoriesTitle">2025 Actual Spend, Local Funds</h2>
+      <h2 id="actualSpendCategoriesTitle">Department 2025 Actual Spend (Local Funds)</h2>
     </header>
 
     <div id="actualSpendCategoriesStatus" class="status warning" role="status" aria-live="polite">The 2025 actual spend graphic is available for the 2027 budget cycle.</div>
@@ -485,7 +494,7 @@ button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var
   <section class="card" aria-labelledby="appropriationChangesTitle">
     <header>
       <div class="eyebrow">Appropriation changes</div>
-      <h2 id="appropriationChangesTitle">Net and Percent Appropriation Changes, 2025 to 2026 (Proposed) Budgets</h2>
+      <h2 id="appropriationChangesTitle">Department Net and Percent Appropriation Changes, 2026 to 2027 (proposed) Budgets</h2>
     </header>
 
     <div id="appropriationChangesStatus" class="status" role="status" aria-live="polite">Waiting for department data…</div>
@@ -672,7 +681,7 @@ function renderActualSpendCategories(result){
   const max=Math.max(1,...rows.map(row=>Math.max(row.actuals,Math.max(0,row.actuals)+(actualSpendUnspent(row)??0),row.budget??0)));
   const x=value=>left+(value-min)/(max-min)*iw;
   const svg=svgEl('svg',{id:'actualSpendCategoriesSvg',viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'actualSpendCategoriesSvgTitle actualSpendCategoriesSvgDesc'});
-  svg.append(svgEl('title',{id:'actualSpendCategoriesSvgTitle'},'2025 Actual Spend, Local Funds'));
+  svg.append(svgEl('title',{id:'actualSpendCategoriesSvgTitle'},document.getElementById('actualSpendCategoriesTitle').textContent));
   svg.append(svgEl('desc',{id:'actualSpendCategoriesSvgDesc'},`${displayDepartmentName(selectedDepartment)} stacked actual spending and unspent budget by appropriation category across the supplied local funds.`));
   svg.append(svgEl('text',{x:12,y:20,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':10,'font-weight':700},'SPENDING CATEGORY'));
   svg.append(svgEl('text',{x:W-8,y:20,fill:COLORS.dark,'text-anchor':'end','font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':10,'font-weight':700},'BUDGETED'));
@@ -713,6 +722,7 @@ function renderActualSpendCategoriesDetails(result){
   details.innerHTML=`<div class="table-wrap"><table><thead><tr><th>Category</th><th>Budgeted</th><th>Actual spend</th><th>Unspent</th></tr></thead><tbody>${result.rows.map(row=>`<tr><td>${escapeHtml(row.label)}</td><td>${known(row.budget)}</td><td>${known(row.actuals)}</td><td>${known(actualSpendUnspent(row))}</td></tr>`).join('')}</tbody></table></div>`;
 }
 function buildActualSpendCategories(){
+  document.getElementById('actualSpendCategoriesTitle').textContent=`${displayDepartmentName(selectedDepartment)} 2025 Actual Spend (Local Funds)`;
   const status=document.getElementById('actualSpendCategoriesStatus');
   lastActualSpendCategoriesData=null;renderActualSpendCategories(null);renderActualSpendCategoriesDetails(null);
   if(activeCycle.actualSpendYear!==2025){status.className='status warning';status.textContent='The 2025 actual spend graphic is available for the 2027 budget cycle.';return}
@@ -788,6 +798,7 @@ let derivedSummaryData=null;
 let summaryOverrides={};
 let lastData=null;
 let appropriationPriceBasis='nominal';
+let lastFundComparisonData=null;
 let lastFringeData=null;
 let lastLocalFundsData=null;
 let lastWorkforceData=null;
@@ -1192,7 +1203,7 @@ function vacancyAggregateRows(){
 const LOCAL_ACTUALS_ROWS=localActualsRows();
 const VACANCY_AGGREGATE_ROWS=vacancyAggregateRows();
 // Embedded snapshot of departmental fringe by year - master.csv; no fetch is required.
-const DEPARTMENT_FRINGE_CSV="Year,Department,Department Number,Departmental Appropriations,Calculated Fringe (Full-time Positions),Estimated Fringe (Part-time positions)\n2018,MAYOR,1,\"$7,704,181\",\"$2,394,375\",$0\n2018,OIG,3,\"$8,889,857\",\"$3,004,443\",$0\n2018,OBM,5,\"$9,561,828\",\"$1,100,869\",$0\n2018,DOIT,6,\"$30,815,532\",\"$3,389,602\",$0\n2018,COUNCIL,15,\"$27,427,115\",\"$7,016,993\",$0\n2018,DCASE,23,\"$33,147,199\",\"$2,399,991\",\"$1,923\"\n2018,CLERK,25,\"$10,696,620\",\"$2,995,232\",$0\n2018,DOF,27,\"$85,682,124\",\"$16,589,694\",\"$504,372\"\n2018,TREASURER,28,\"$4,161,578\",\"$938,108\",$0\n2018,DOAH,30,\"$8,532,654\",\"$1,296,043\",$0\n2018,DOL,31,\"$38,716,977\",\"$12,204,352\",\"$112,418\"\n2018,DHR,33,\"$7,403,234\",\"$2,654,828\",$0\n2018,DPS,35,\"$8,908,659\",\"$3,188,435\",$0\n2018,FFM,38,\"$351,521,694\",\"$31,681,303\",$0\n2018,BOEC,39,\"$15,606,377\",\"$3,545,409\",$0\n2018,CDPH,41,\"$158,907,978\",\"$6,251,624\",\"$35,674\"\n2018,CCHR,45,\"$2,438,623\",\"$377,986\",$0\n2018,MOPD,48,\"$5,407,274\",\"$407,371\",$0\n2018,DFSS,50,\"$398,318,084\",\"$1,596,524\",$0\n2018,DPD,54,\"$189,268,495\",\"$5,389,981\",\"$7,347\"\n2018,POLICE BOARD,55,\"$473,519\",\"$62,343\",$0\n2018,CPD,57,\"$1,575,588,780\",\"$849,756,255\",\"$130,516\"\n2018,OEMC,58,\"$296,821,019\",\"$54,623,102\",\"$1,157,787\"\n2018,CFD,59,\"$642,620,615\",\"$368,911,712\",$0\n2018,COPA,60,\"$13,289,393\",\"$4,458,150\",$0\n2018,DOB,67,\"$37,417,249\",\"$7,420,626\",$0\n2018,BACP,70,\"$20,306,192\",\"$5,653,404\",\"$15,653\"\n2018,CACC,73,\"$6,479,324\",\"$2,038,199\",\"$59,590\"\n2018,LAC,77,\"$186,667\",\"$31,110\",$0\n2018,ETHICS,78,\"$833,803\",\"$251,934\",$0\n2018,DSS,81,\"$263,418,415\",\"$62,856,784\",\"$425,403\"\n2018,CDOT,84,\"$459,129,158\",\"$35,536,581\",\"$1,666,894\"\n2018,DOA,85,\"$823,090,246\",\"$43,028,012\",\"$2,514,040\"\n2018,DWM,88,\"$294,895,925\",\"$56,193,367\",\"$3,683,925\"\n2018,CPL,91,\"$77,453,977\",\"$22,811,897\",\"$575,602\"\n2019,MAYOR,1,\"9,024,863.00\",\"$2,792,723\",$0\n2019,OIG,3,9563464,\"$3,574,145\",$0\n2019,OBM,5,\"8,827,382.00\",1220822.994,$0\n2019,DOIT,6,\"32,169,541.00\",\"$3,865,892\",$0\n2019,COUNCIL,15,\"28,019,677.00\",\"$7,817,004\",$0\n2019,DOH,21,\"148,425,952.00\",\"$1,276,388\",$0\n2019,DCASE,23,\"36,327,399.00\",\"$2,659,921\",\"$2,018\"\n2019,CLERK,25,\"10,756,887.00\",\"$3,395,575\",$0\n2019,DOF,27,\"85,318,711.00\",\"$18,231,093\",\"$501,075\"\n2019,TREASURER,28,\"4,134,722.00\",\"$1,038,848\",$0\n2019,DOAH,30,\"8,412,662.00\",\"$1,436,275\",$0\n2019,DOL,31,\"40,306,777.00\",\"$13,699,854\",\"$116,459\"\n2019,DHR,33,\"7,546,282.00\",\"$2,920,795\",$0\n2019,DPS,35,\"9,422,624.00\",\"$3,679,676\",$0\n2019,FFM,38,\"396,771,258.00\",35499395.34,$0\n2019,BOEC,39,\"34,186,369.00\",\"$3,929,352\",$0\n2019,CDPH,41,\"177,264,833.00\",\"$7,037,180\",\"$40,460\"\n2019,CCHR,45,\"2,470,198.00\",\"$416,734\",$0\n2019,MOPD,48,\"5,840,085.00\",486487.2488,$0\n2019,DFSS,50,\"633,571,744.00\",\"$2,772,947\",$0\n2019,DPD,54,\"35,082,318.00\",\"$5,141,625\",$0\n2019,POLICE BOARD,55,465978,\"$69,138\",$0\n2019,CPD,57,\"1,656,002,057.00\",\"$879,632,785\",\"$137,892\"\n2019,OEMC,58,\"233,860,841.00\",60940376.4,\"$1,164,102\"\n2019,CFD,59,\"652,282,316.00\",\"$372,021,350\",$0\n2019,COPA,60,\"13,851,285.00\",\"$5,160,793\",$0\n2019,DOB,67,\"38,119,079.00\",\"$8,263,394\",$0\n2019,BACP,70,\"22,199,674.00\",\"$6,443,122\",\"$16,181\"\n2019,CACC,73,\"6,843,307.00\",\"$2,302,773\",\"$64,069\"\n2019,LAC,77,\"185,067.00\",\"$34,545\",$0\n2019,ETHICS,78,\"866,882.00\",\"$279,648\",$0\n2019,DSS,81,\"268,026,340.00\",\"$69,466,033\",\"$455,022\"\n2019,CDOT,84,\"543,060,487.00\",\"$40,586,178\",\"$1,520,134\"\n2019,DOA,85,\"911,289,787.00\",54944970.88,\"$1,276,699\"\n2019,DWM,88,\"310,450,401.00\",\"$63,629,188\",\"$3,882,658\"\n2019,CPL,91,\"71,420,108.00\",\"$26,385,428\",\"$655,366\"\n2020,MAYOR,1,\"11,803,914.00\",\"$3,956,871\",$0\n2020,OIG,3,\"9,807,374.00\",\"$4,034,905\",$0\n2020,OBM,5,\"7,408,590.00\",\"$1,301,590\",$0\n2020,COUNCIL,15,\"28,533,636.00\",\"$7,679,975\",$0\n2020,DOH,21,\"198,896,756.00\",\"$1,361,900\",$0\n2020,DCASE,23,\"43,697,506.00\",\"$2,871,414\",\"$2,016\"\n2020,CLERK,25,\"11,262,733.00\",\"$3,582,640\",$0\n2020,DOF,27,\"97,534,031.00\",\"$20,033,881\",\"$502,540\"\n2020,TREASURER,28,\"4,124,036.00\",\"$1,139,318\",$0\n2020,DOAH,30,\"8,259,831.00\",\"$1,538,629\",$0\n2020,DOL,31,\"41,365,309.00\",\"$14,627,438\",\"$99,834\"\n2020,DHR,33,\"7,365,140.00\",\"$3,092,843\",$0\n2020,DPS,35,\"9,132,947.00\",\"$3,861,109\",$0\n2020,AIS,38,\"435,799,345.00\",\"$43,106,741\",$0\n2020,BOEC,39,\"18,377,300.00\",\"$4,323,230\",$0\n2020,CDPH,41,\"221,654,005.00\",\"$8,439,685\",\"$40,424\"\n2020,CCHR,45,\"2,955,975.00\",\"$419,173\",$0\n2020,MOPD,48,\"7,632,109.00\",\"$532,896\",$0\n2020,DFSS,50,\"686,392,402.00\",\"$3,874,458\",$0\n2020,PSA,51,\"33,445,047.00\",\"$14,370,620\",$0\n2020,DPD,54,\"65,034,959.00\",\"$5,821,714\",$0\n2020,POLICE BOARD,55,\"1,101,910.00\",\"$75,849\",$0\n2020,CPD,57,\"1,762,078,349.00\",\"$1,033,186,450\",\"$138,390\"\n2020,OEMC,58,\"204,747,050.00\",\"$61,793,737\",\"$1,030,331\"\n2020,CFD,59,\"674,228,297.00\",\"$492,626,085\",$0\n2020,COPA,60,\"13,753,178.00\",\"$5,677,812\",$0\n2020,DOB,67,\"37,127,233.00\",\"$8,809,283\",$0\n2020,BACP,70,\"28,541,142.00\",\"$7,075,206\",\"$16,520\"\n2020,CACC,73,\"7,006,449.00\",\"$2,568,723\",\"$64,074\"\n2020,LAC,77,\"188,346.00\",\"$38,074\",$0\n2020,ETHICS,78,\"873,629.00\",\"$306,246\",$0\n2020,DSS,81,\"273,635,333.00\",\"$76,487,981\",\"$344,092\"\n2020,CDOT,84,\"467,971,706.00\",\"$45,054,015\",\"$1,335,795\"\n2020,DOA,85,\"871,219,092.00\",\"$66,897,955\",\"$1,504,538\"\n2020,DWM,88,\"315,071,281.00\",\"$67,879,561\",\"$3,710,501\"\n2020,CPL,91,\"84,521,915.00\",\"$31,360,938\",\"$912,982\"\n2021,MAYOR,1,\"$11,331,422\",\"$4,123,557\",$0\n2021,OIG,3,\"$10,962,647\",\"$4,315,135\",$0\n2021,OBM,5,\"$127,008,429\",\"$1,316,090\",$0\n2021,COUNCIL,15,\"$28,519,751\",\"$8,474,762\",$0\n2021,DOH,21,\"$190,769,087\",\"$1,302,167\",$0\n2021,DCASE,23,\"$25,510,269\",\"$2,729,528\",\"$2,139\"\n2021,CLERK,25,\"$10,519,042\",\"$3,732,163\",$0\n2021,DOF,27,\"$84,617,522\",\"$21,056,091\",\"$536,851\"\n2021,TREASURER,28,\"$4,040,902\",\"$1,261,938\",$0\n2021,DOAH,30,\"$7,766,362\",\"$1,622,138\",$0\n2021,DOL,31,\"$40,560,261\",\"$15,276,284\",\"$98,569\"\n2021,DHR,33,\"$6,810,130\",\"$3,146,843\",$0\n2021,DPS,35,\"$8,470,855\",\"$3,911,837\",$0\n2021,AIS,38,\"$441,494,205\",\"$44,452,167\",$0\n2021,BOEC,39,\"$19,175,482\",\"$4,804,508\",$0\n2021,CDPH,41,\"$518,606,427\",\"$9,285,853\",\"$40,813\"\n2021,CCHR,45,\"$2,796,074\",\"$464,590\",$0\n2021,MOPD,48,\"$7,760,748\",\"$630,042\",$0\n2021,DFSS,50,\"$780,489,814\",\"$3,965,000\",$0\n2021,PSA,51,\"$135,591,779\",\"$13,490,346\",$0\n2021,DPD,54,\"$97,532,008\",\"$6,253,955\",$0\n2021,POLICE BOARD,55,\"$564,945\",\"$83,606\",$0\n2021,CPD,57,\"$1,698,735,503\",\"$1,067,493,526\",\"$136,637\"\n2021,OEMC,58,\"$133,947,766\",\"$33,878,921\",\"$1,106,775\"\n2021,CFD,59,\"$738,357,735\",\"$489,266,471\",$0\n2021,COPA,60,\"$13,314,826\",\"$5,852,544\",$0\n2021,DOB,67,\"$33,404,387\",\"$8,942,748\",$0\n2021,BACP,70,\"$27,352,831\",\"$7,114,205\",\"$16,310\"\n2021,CACC,73,\"$7,022,025\",\"$2,778,601\",\"$59,701\"\n2021,LAC,77,\"$191,115\",\"$42,235\",$0\n2021,ETHICS,78,\"$869,535\",\"$339,167\",$0\n2021,DSS,81,\"$283,104,001\",\"$83,751,546\",\"$343,974\"\n2021,CDOT,84,\"$770,356,074\",\"$48,946,578\",\"$1,341,769\"\n2021,DOA,85,\"$1,141,154,450\",\"$72,466,397\",\"$1,527,037\"\n2021,DWM,88,\"$321,523,152\",\"$72,560,040\",\"$3,729,990\"\n2021,CPL,91,\"$110,971,841\",\"$34,841,113\",\"$923,674\"\n2022,MAYOR,1,\"$12,009,266\",\"$6,275,498\",$0\n2022,OIG,3,\"$14,999,561\",\"$6,814,801\",$0\n2022,OBM,5,\"$1,645,234,288\",\"$2,216,451\",$0\n2022,COUNCIL,15,\"$34,607,399\",\"$11,903,266\",$0\n2022,DOH,21,\"$380,117,919\",\"$1,603,934\",$0\n2022,DCASE,23,\"$71,233,120\",\"$4,565,495\",\"$2,564\"\n2022,CLERK,25,\"$11,872,734\",\"$5,333,882\",$0\n2022,DOF,27,\"$96,175,527\",\"$33,722,942\",\"$217,565\"\n2022,TREASURER,28,\"$4,806,567\",\"$2,088,330\",$0\n2022,DOAH,30,\"$8,233,681\",\"$2,350,347\",$0\n2022,DOL,31,\"$43,224,244\",\"$22,253,739\",\"$118,570\"\n2022,DHR,33,\"$7,811,507\",\"$4,925,241\",$0\n2022,DPS,35,\"$10,284,041\",\"$6,240,526\",$0\n2022,AIS,38,\"$514,125,731\",\"$63,959,672\",$0\n2022,BOEC,39,\"$25,828,604\",\"$6,935,730\",$0\n2022,CDPH,41,\"$1,001,647,288\",\"$15,144,165\",\"$50,760\"\n2022,CCHR,45,\"$2,949,142\",\"$656,963\",$0\n2022,MOPD,48,\"$7,877,273\",\"$1,297,944\",$0\n2022,DFSS,50,\"$910,616,641\",\"$6,257,173\",$0\n2022,PSA,51,\"$172,894,734\",\"$19,233,103\",$0\n2022,DPD,54,\"$162,618,863\",\"$9,576,275\",$0\n2022,POLICE BOARD,55,\"$579,608\",\"$118,588\",$0\n2022,CPD,57,\"$1,899,239,537\",\"$1,121,091,115\",\"$170,672\"\n2022,OEMC,58,\"$121,287,347\",\"$48,679,471\",\"$672,854\"\n2022,CFD,59,\"$779,018,476\",\"$528,838,598\",$0\n2022,COPA,60,\"$14,728,193\",\"$8,876,392\",$0\n2022,CCPSA,62,\"$3,433,907\",\"$820,868\",$0\n2022,DOB,67,\"$34,875,735\",\"$13,238,533\",$0\n2022,BACP,70,\"$76,259,143\",\"$10,651,916\",\"$23,544\"\n2022,CACC,73,\"$7,173,854\",\"$4,091,711\",\"$72,936\"\n2022,LAC,77,\"$197,804\",\"$60,039\",$0\n2022,ETHICS,78,\"$919,914\",\"$482,221\",$0\n2022,DSS,81,\"$308,021,905\",\"$118,956,441\",\"$491,375\"\n2022,CDOT,84,\"$1,276,497,782\",\"$75,058,277\",\"$2,000,710\"\n2022,DOA,85,\"$1,151,260,371\",\"$107,927,625\",\"$1,851,133\"\n2022,DWM,88,\"$346,810,100\",\"$100,961,753\",\"$4,588,141\"\n2022,CPL,91,\"$129,622,327\",\"$49,216,733\",\"$1,151,293\"\n2023,MAYOR,1,\"$15,285,353\",\"$6,491,358\",$0\n2023,OIG,3,\"$13,036,466\",\"$7,280,691\",$0\n2023,OBM,5,\"$246,578,693\",\"$2,296,294\",$0\n2023,COUNCIL,15,\"$35,556,215\",\"$11,580,446\",$0\n2023,DOH,21,\"$332,094,168\",\"$2,267,047\",$0\n2023,DCASE,23,\"$71,399,885\",\"$4,659,899\",\"$2,786\"\n2023,CLERK,25,\"$12,319,291\",\"$5,227,063\",$0\n2023,DOF,27,\"$99,227,998\",\"$33,549,984\",\"$237,522\"\n2023,TREASURER,28,\"$5,712,960\",\"$2,293,555\",$0\n2023,DOAH,30,\"$8,447,480\",\"$2,303,062\",$0\n2023,DOL,31,\"$45,641,696\",\"$22,044,727\",\"$132,249\"\n2023,DHR,33,\"$12,051,198\",\"$6,848,634\",$0\n2023,DPS,35,\"$12,560,485\",\"$7,754,695\",$0\n2023,FFM,38,\"$559,915,375\",\"$70,027,864\",$0\n2023,BOEC,39,\"$56,602,820\",\"$6,791,581\",$0\n2023,CDPH,41,\"$972,398,008\",\"$15,365,250\",\"$56,387\"\n2023,CCHR,45,\"$3,169,003\",\"$703,328\",$0\n2023,MOPD,48,\"$9,844,715\",\"$1,447,937\",$0\n2023,DFSS,50,\"$926,780,352\",\"$6,554,241\",$0\n2023,PSA,51,\"$180,016,152\",\"$19,716,332\",$0\n2023,DPD,54,\"$208,372,201\",\"$9,953,039\",$0\n2023,POLICE BOARD,55,\"$588,184\",\"$116,939\",$0\n2023,CPD,57,\"$1,943,242,055\",\"$1,210,840,488\",\"$188,729\"\n2023,OEMC,58,\"$109,129,306\",\"$48,395,767\",\"$730,982\"\n2023,CFD,59,\"$771,041,777\",\"$572,221,047\",$0\n2023,COPA,60,\"$15,036,021\",\"$8,943,253\",$0\n2023,CCPSA,62,\"$3,184,119\",\"$1,410,001\",$0\n2023,DOB,67,\"$38,606,461\",\"$13,847,822\",$0\n2023,BACP,70,\"$86,469,596\",\"$10,961,556\",\"$28,988\"\n2023,ENVIRONMENT,72,\"$676,942\",\"$586,566\",$0\n2023,CACC,73,\"$7,025,418\",\"$4,327,669\",\"$45,480\"\n2023,LAC,77,\"$198,042\",\"$59,060\",$0\n2023,ETHICS,78,\"$916,559\",\"$474,732\",$0\n2023,DSS,81,\"$311,515,608\",\"$115,926,635\",\"$729,396\"\n2023,CDOT,84,\"$1,399,244,996\",\"$73,584,994\",\"$2,669,577\"\n2023,DOA,85,\"$1,201,844,333\",\"$108,796,901\",\"$2,042,873\"\n2023,DWM,88,\"$384,350,460\",\"$98,846,098\",\"$8,328,155\"\n2023,CPL,91,\"$113,371,472\",\"$48,845,479\",\"$1,264,309\"\n2024,MAYOR,1,\"$21,057,012\",\"$6,657,038\",$0\n2024,OIG,3,\"$14,216,049\",\"$7,016,709\",$0\n2024,OBM,5,\"$31,183,034\",\"$2,465,983\",$0\n2024,DOIT,6,\"$80,019,736\",\"$11,171,683\",$0\n2024,COUNCIL,15,\"$36,785,846\",\"$13,535,726\",$0\n2024,DOH,21,\"$279,843,675\",\"$2,188,292\",$0\n2024,DCASE,23,\"$87,364,393\",\"$4,537,221\",\"$3,311\"\n2024,CLERK,25,\"$15,341,039\",\"$5,125,649\",$0\n2024,DOF,27,\"$104,908,871\",\"$33,674,992\",\"$263,559\"\n2024,TREASURER,28,\"$6,272,699\",\"$2,281,183\",$0\n2024,DOAH,30,\"$8,769,092\",\"$2,233,707\",$0\n2024,DOL,31,\"$46,229,759\",\"$22,874,468\",\"$144,404\"\n2024,DHR,33,\"$13,792,309\",\"$7,162,291\",$0\n2024,DPS,35,\"$14,605,398\",\"$7,718,588\",$0\n2024,FFM,38,\"$530,639,879\",\"$53,983,544\",$0\n2024,BOEC,39,\"$34,482,421\",\"$6,585,891\",$0\n2024,CDPH,41,\"$902,026,766\",\"$18,858,961\",\"$60,157\"\n2024,CCHR,45,\"$3,330,423\",\"$687,749\",$0\n2024,MOPD,48,\"$16,284,323\",\"$1,510,259\",$0\n2024,DFSS,50,\"$915,856,073\",\"$7,378,896\",$0\n2024,PSA,51,\"$182,990,109\",\"$20,309,234\",$0\n2024,DPD,54,\"$202,163,654\",\"$10,399,166\",$0\n2024,POLICE BOARD,55,\"$601,188\",\"$113,018\",$0\n2024,CPD,57,\"$2,011,524,627\",\"$1,281,466,589\",\"$443,891\"\n2024,OEMC,58,\"$110,154,371\",\"$47,280,376\",\"$851,481\"\n2024,CFD,59,\"$784,765,013\",\"$585,454,245\",$0\n2024,COPA,60,\"$16,756,984\",\"$8,869,958\",$0\n2024,CCPSA,62,\"$4,003,410\",\"$1,654,109\",$0\n2024,DOB,67,\"$40,142,876\",\"$15,867,677\",$0\n2024,BACP,70,\"$82,620,445\",\"$11,085,025\",\"$30,926\"\n2024,ENVIRONMENT,72,\"$1,801,802\",\"$796,856\",$0\n2024,CACC,73,\"$7,698,109\",\"$4,181,299\",\"$53,094\"\n2024,LAC,77,\"$206,653\",\"$57,750\",$0\n2024,ETHICS,78,\"$1,019,825\",\"$465,905\",$0\n2024,DSS,81,\"$350,228,010\",\"$111,858,053\",\"$670,520\"\n2024,CDOT,84,\"$1,484,552,843\",\"$72,249,325\",\"$3,761,667\"\n2024,DOA,85,\"$1,423,824,759\",\"$112,317,319\",\"$2,457,177\"\n2024,DWM,88,\"$397,830,838\",\"$96,590,844\",\"$9,376,919\"\n2024,CPL,91,\"$116,976,333\",\"$47,278,389\",\"$1,422,603\"\n2025,MAYOR,1,\"$19,646,654\",\"$6,281,872\",$0\n2025,OIG,3,\"$14,216,198\",\"$7,012,734\",$0\n2025,OBM,5,\"$18,568,096\",\"$2,465,702\",$0\n2025,DOIT,6,\"$82,083,894\",\"$8,244,478\",$0\n2025,COUNCIL,15,\"$36,805,986\",\"$14,004,773\",$0\n2025,DOH,21,\"$248,512,603\",\"$2,528,221\",$0\n2025,DCASE,23,\"$72,961,225\",\"$4,640,330\",\"$3,245\"\n2025,CLERK,25,\"$15,093,753\",\"$5,250,622\",$0\n2025,DOF,27,\"$112,325,541\",\"$33,366,027\",\"$261,033\"\n2025,TREASURER,28,\"$6,539,097\",\"$2,447,192\",\"$16,291\"\n2025,DOAH,30,\"$8,560,776\",\"$2,227,014\",$0\n2025,DOL,31,\"$45,918,684\",\"$22,847,881\",\"$79,867\"\n2025,DHR,33,\"$13,367,100\",\"$6,679,768\",$0\n2025,DPS,35,\"$13,905,122\",\"$7,573,621\",$0\n2025,FFM,38,\"$557,363,694\",\"$54,215,607\",$0\n2025,BOEC,39,\"$28,507,734\",\"$6,744,329\",$0\n2025,CDPH,41,\"$689,641,355\",\"$19,901,900\",\"$58,966\"\n2025,CCHR,45,\"$2,781,810\",\"$762,178\",$0\n2025,MOPD,48,\"$14,833,880\",\"$1,551,328\",$0\n2025,DFSS,50,\"$937,819,585\",\"$7,221,314\",$0\n2025,PSA,51,\"$152,138,585\",\"$20,639,326\",$0\n2025,DPD,54,\"$132,499,758\",\"$10,464,036\",$0\n2025,POLICE BOARD,55,\"$509,970\",\"$116,005\",$0\n2025,CPD,57,\"$2,097,040,517\",\"$1,436,586,827\",\"$435,107\"\n2025,OEMC,58,\"$95,101,008\",\"$48,835,665\",\"$765,054\"\n2025,CFD,59,\"$760,668,006\",\"$583,934,274\",$0\n2025,COPA,60,\"$15,089,632\",\"$8,926,639\",$0\n2025,CCPSA,62,\"$3,986,182\",\"$1,637,265\",$0\n2025,DOB,67,\"$39,704,856\",\"$15,696,770\",$0\n2025,BACP,70,\"$50,132,350\",\"$10,278,773\",\"$30,314\"\n2025,ENVIRONMENT,72,\"$2,399,239\",\"$814,551\",$0\n2025,CACC,73,\"$7,519,976\",\"$4,098,078\",\"$47,124\"\n2025,LAC,77,\"$206,624\",\"$59,061\",$0\n2025,ETHICS,78,\"$985,480\",\"$474,862\",$0\n2025,DSS,81,\"$352,858,177\",\"$113,076,018\",\"$608,875\"\n2025,CDOT,84,\"$2,039,303,751\",\"$74,873,512\",\"$3,446,173\"\n2025,DOA,85,\"$1,547,505,037\",\"$121,170,862\",\"$2,466,749\"\n2025,DWM,88,\"$417,185,283\",\"$100,169,882\",\"$9,394,701\"\n2025,CPL,91,\"$122,105,043\",\"$47,254,430\",\"$1,206,178\"\n2026,MAYOR,1,\"$16,419,712\",\"$7,567,056.41\",$0.00\n2026,OIG,3,\"$14,297,022\",\"$8,054,982.53\",$0.00\n2026,OBM,5,\"$38,552,702\",\"$2,909,638.28\",$0.00\n2026,DOIT,6,\"$76,383,040\",\"$9,684,264.08\",$0.00\n2026,COUNCIL,15,\"$37,764,468\",\"$16,550,358.73\",$0.00\n2026,DOH,21,\"$173,252,026\",\"$3,846,621.78\",$0.00\n2026,DCASE,23,\"$62,003,597\",\"$5,457,404.21\",$0.00\n2026,CLERK,25,\"$15,214,652\",\"$6,183,761.37\",$0.00\n2026,DOF,27,\"$127,818,882\",\"$38,391,598.85\",\"$271,810.20\"\n2026,TREASURER,28,\"$6,504,251\",\"$2,748,392.20\",$0.00\n2026,DOAH,30,\"$8,389,224\",\"$2,619,966.70\",$0.00\n2026,DOL,31,\"$47,954,637\",\"$27,646,348.12\",\"$82,339.48\"\n2026,DHR,33,\"$12,957,553\",\"$7,724,946.59\",$0.00\n2026,DPS,35,\"$13,923,365\",\"$8,620,395.80\",$0.00\n2026,FFM,38,\"$503,454,074\",\"$63,601,304.47\",$0.00\n2026,BOEC,39,\"$27,867,404\",\"$7,939,161.22\",$0.00\n2026,CDPH,41,\"$335,049,660\",\"$23,996,259.11\",\"$56,869.07\"\n2026,CCHR,45,\"$2,773,200\",\"$966,724.71\",$0.00\n2026,MOPD,48,\"$9,679,159\",\"$1,828,908.71\",$0.00\n2026,DFSS,50,\"$653,365,973\",\"$6,506,301.69\",$0.00\n2026,PSA,51,\"$135,631,676\",\"$23,334,933.24\",$0.00\n2026,DPD,54,\"$146,482,815\",\"$12,311,522.05\",$0.00\n2026,POLICE BOARD,55,\"$498,200\",\"$136,502.83\",$0.00\n2026,CPD,57,\"$2,109,811,600\",\"$1,594,968,952.33\",\"$448,575.73\"\n2026,OEMC,58,\"$99,931,120\",\"$57,872,147.15\",\"$802,248.50\"\n2026,CFD,59,\"$901,681,972\",\"$649,269,169.00\",$0.00\n2026,COPA,60,\"$15,781,027\",\"$10,240,954.30\",$0.00\n2026,CCPSA,62,\"$4,026,765\",\"$1,999,627.53\",$0.00\n2026,DOB,67,\"$39,368,146\",\"$18,428,701.79\",$0.00\n2026,BACP,70,\"$36,783,162\",\"$13,446,655.93\",\"$29,919.35\"\n2026,ENVIRONMENT,72,\"$52,458,895\",\"$4,236,107.17\",$0.00\n2026,CACC,73,\"$8,177,388\",\"$5,364,214.15\",\"$48,582.32\"\n2026,LAC,77,\"$209,988\",\"$69,298.54\",$0.00\n2026,ETHICS,78,\"$925,597\",\"$551,717.62\",$0.00\n2026,DSS,81,\"$349,888,561\",\"$131,713,550.20\",\"$570,540.09\"\n2026,CDOT,84,\"$1,837,522,563\",\"$81,613,384.25\",\"$3,738,169.47\"\n2026,DOA,85,\"$1,666,093,529\",\"$146,312,803.83\",\"$2,640,504.49\"\n2026,DWM,88,\"$772,719,058\",\"$117,310,190.09\",\"$10,200,681.06\"\n2026,CPL,91,\"$116,016,346\",\"$55,796,957.24\",\"$1,281,549.25\"";
+const DEPARTMENT_FRINGE_CSV="Year,Department,Department Number,Departmental Appropriations,Calculated Fringe (Full-time Positions),Estimated Fringe (Part-time positions),Ordinance/Proposed\n2018,MAYOR,1,\"$7,704,181\",\"$2,394,375\",$0,Oridinace\n2018,OIG,3,\"$8,889,857\",\"$3,004,443\",$0,Oridinace\n2018,OBM,5,\"$9,561,828\",\"$1,100,869\",$0,Oridinace\n2018,DOIT,6,\"$30,815,532\",\"$3,389,602\",$0,Oridinace\n2018,COUNCIL,15,\"$27,427,115\",\"$7,016,993\",$0,Oridinace\n2018,DCASE,23,\"$33,147,199\",\"$2,399,991\",\"$1,923\",Oridinace\n2018,CLERK,25,\"$10,696,620\",\"$2,995,232\",$0,Oridinace\n2018,DOF,27,\"$85,682,124\",\"$16,589,694\",\"$504,372\",Oridinace\n2018,TREASURER,28,\"$4,161,578\",\"$938,108\",$0,Oridinace\n2018,DOAH,30,\"$8,532,654\",\"$1,296,043\",$0,Oridinace\n2018,DOL,31,\"$38,716,977\",\"$12,204,352\",\"$112,418\",Oridinace\n2018,DHR,33,\"$7,403,234\",\"$2,654,828\",$0,Oridinace\n2018,DPS,35,\"$8,908,659\",\"$3,188,435\",$0,Oridinace\n2018,FFM,38,\"$351,521,694\",\"$31,681,303\",$0,Oridinace\n2018,BOEC,39,\"$15,606,377\",\"$3,545,409\",$0,Oridinace\n2018,CDPH,41,\"$158,907,978\",\"$6,251,624\",\"$35,674\",Oridinace\n2018,CCHR,45,\"$2,438,623\",\"$377,986\",$0,Oridinace\n2018,MOPD,48,\"$5,407,274\",\"$407,371\",$0,Oridinace\n2018,DFSS,50,\"$398,318,084\",\"$1,596,524\",$0,Oridinace\n2018,DPD,54,\"$189,268,495\",\"$5,389,981\",\"$7,347\",Oridinace\n2018,POLICE BOARD,55,\"$473,519\",\"$62,343\",$0,Oridinace\n2018,CPD,57,\"$1,575,588,780\",\"$849,756,255\",\"$130,516\",Oridinace\n2018,OEMC,58,\"$296,821,019\",\"$54,623,102\",\"$1,157,787\",Oridinace\n2018,CFD,59,\"$642,620,615\",\"$368,911,712\",$0,Oridinace\n2018,COPA,60,\"$13,289,393\",\"$4,458,150\",$0,Oridinace\n2018,DOB,67,\"$37,417,249\",\"$7,420,626\",$0,Oridinace\n2018,BACP,70,\"$20,306,192\",\"$5,653,404\",\"$15,653\",Oridinace\n2018,CACC,73,\"$6,479,324\",\"$2,038,199\",\"$59,590\",Oridinace\n2018,LAC,77,\"$186,667\",\"$31,110\",$0,Oridinace\n2018,ETHICS,78,\"$833,803\",\"$251,934\",$0,Oridinace\n2018,DSS,81,\"$263,418,415\",\"$62,856,784\",\"$425,403\",Oridinace\n2018,CDOT,84,\"$459,129,158\",\"$35,536,581\",\"$1,666,894\",Oridinace\n2018,DOA,85,\"$823,090,246\",\"$43,028,012\",\"$2,514,040\",Oridinace\n2018,DWM,88,\"$294,895,925\",\"$56,193,367\",\"$3,683,925\",Oridinace\n2018,CPL,91,\"$77,453,977\",\"$22,811,897\",\"$575,602\",Oridinace\n2019,MAYOR,1,\"$9,024,863\",\"$2,792,723\",$0,Oridinace\n2019,OIG,3,\"$9,563,464\",\"$3,574,145\",$0,Oridinace\n2019,OBM,5,\"$8,827,382\",\"$1,220,823\",$0,Oridinace\n2019,DOIT,6,\"$32,169,541\",\"$3,865,892\",$0,Oridinace\n2019,COUNCIL,15,\"$28,019,677\",\"$7,817,004\",$0,Oridinace\n2019,DOH,21,\"$148,425,952\",\"$1,276,388\",$0,Oridinace\n2019,DCASE,23,\"$36,327,399\",\"$2,659,921\",\"$2,018\",Oridinace\n2019,CLERK,25,\"$10,756,887\",\"$3,395,575\",$0,Oridinace\n2019,DOF,27,\"$85,318,711\",\"$18,231,093\",\"$501,075\",Oridinace\n2019,TREASURER,28,\"$4,134,722\",\"$1,038,848\",$0,Oridinace\n2019,DOAH,30,\"$8,412,662\",\"$1,436,275\",$0,Oridinace\n2019,DOL,31,\"$40,306,777\",\"$13,699,854\",\"$116,459\",Oridinace\n2019,DHR,33,\"$7,546,282\",\"$2,920,795\",$0,Oridinace\n2019,DPS,35,\"$9,422,624\",\"$3,679,676\",$0,Oridinace\n2019,FFM,38,\"$396,771,258\",\"$35,499,395\",$0,Oridinace\n2019,BOEC,39,\"$34,186,369\",\"$3,929,352\",$0,Oridinace\n2019,CDPH,41,\"$177,264,833\",\"$7,037,180\",\"$40,460\",Oridinace\n2019,CCHR,45,\"$2,470,198\",\"$416,734\",$0,Oridinace\n2019,MOPD,48,\"$5,840,085\",\"$486,487\",$0,Oridinace\n2019,DFSS,50,\"$633,571,744\",\"$2,772,947\",$0,Oridinace\n2019,DPD,54,\"$35,082,318\",\"$5,141,625\",$0,Oridinace\n2019,POLICE BOARD,55,\"$465,978\",\"$69,138\",$0,Oridinace\n2019,CPD,57,\"$1,656,002,057\",\"$879,632,785\",\"$137,892\",Oridinace\n2019,OEMC,58,\"$233,860,841\",\"$60,940,376\",\"$1,164,102\",Oridinace\n2019,CFD,59,\"$652,282,316\",\"$372,021,350\",$0,Oridinace\n2019,COPA,60,\"$13,851,285\",\"$5,160,793\",$0,Oridinace\n2019,DOB,67,\"$38,119,079\",\"$8,263,394\",$0,Oridinace\n2019,BACP,70,\"$22,199,674\",\"$6,443,122\",\"$16,181\",Oridinace\n2019,CACC,73,\"$6,843,307\",\"$2,302,773\",\"$64,069\",Oridinace\n2019,LAC,77,\"$185,067\",\"$34,545\",$0,Oridinace\n2019,ETHICS,78,\"$866,882\",\"$279,648\",$0,Oridinace\n2019,DSS,81,\"$268,026,340\",\"$69,466,033\",\"$455,022\",Oridinace\n2019,CDOT,84,\"$543,060,487\",\"$40,586,178\",\"$1,520,134\",Oridinace\n2019,DOA,85,\"$911,289,787\",\"$54,944,971\",\"$1,276,699\",Oridinace\n2019,DWM,88,\"$310,450,401\",\"$63,629,188\",\"$3,882,658\",Oridinace\n2019,CPL,91,\"$71,420,108\",\"$26,385,428\",\"$655,366\",Oridinace\n2020,MAYOR,1,\"$11,803,914\",\"$3,956,871\",$0,Oridinace\n2020,OIG,3,\"$9,807,374\",\"$4,034,905\",$0,Oridinace\n2020,OBM,5,\"$7,408,590\",\"$1,301,590\",$0,Oridinace\n2020,COUNCIL,15,\"$28,533,636\",\"$7,679,975\",$0,Oridinace\n2020,DOH,21,\"$198,896,756\",\"$1,361,900\",$0,Oridinace\n2020,DCASE,23,\"$43,697,506\",\"$2,871,414\",\"$2,016\",Oridinace\n2020,CLERK,25,\"$11,262,733\",\"$3,582,640\",$0,Oridinace\n2020,DOF,27,\"$97,534,031\",\"$20,033,881\",\"$502,540\",Oridinace\n2020,TREASURER,28,\"$4,124,036\",\"$1,139,318\",$0,Oridinace\n2020,DOAH,30,\"$8,259,831\",\"$1,538,629\",$0,Oridinace\n2020,DOL,31,\"$41,365,309\",\"$14,627,438\",\"$99,834\",Oridinace\n2020,DHR,33,\"$7,365,140\",\"$3,092,843\",$0,Oridinace\n2020,DPS,35,\"$9,132,947\",\"$3,861,109\",$0,Oridinace\n2020,AIS,38,\"$435,799,345\",\"$43,106,741\",$0,Oridinace\n2020,BOEC,39,\"$18,377,300\",\"$4,323,230\",$0,Oridinace\n2020,CDPH,41,\"$221,654,005\",\"$8,439,685\",\"$40,424\",Oridinace\n2020,CCHR,45,\"$2,955,975\",\"$419,173\",$0,Oridinace\n2020,MOPD,48,\"$7,632,109\",\"$532,896\",$0,Oridinace\n2020,DFSS,50,\"$686,392,402\",\"$3,874,458\",$0,Oridinace\n2020,PSA,51,\"$33,445,047\",\"$14,370,620\",$0,Oridinace\n2020,DPD,54,\"$65,034,959\",\"$5,821,714\",$0,Oridinace\n2020,POLICE BOARD,55,\"$1,101,910\",\"$75,849\",$0,Oridinace\n2020,CPD,57,\"$1,762,078,349\",\"$1,033,186,450\",\"$138,390\",Oridinace\n2020,OEMC,58,\"$204,747,050\",\"$61,793,737\",\"$1,030,331\",Oridinace\n2020,CFD,59,\"$674,228,297\",\"$492,626,085\",$0,Oridinace\n2020,COPA,60,\"$13,753,178\",\"$5,677,812\",$0,Oridinace\n2020,DOB,67,\"$37,127,233\",\"$8,809,283\",$0,Oridinace\n2020,BACP,70,\"$28,541,142\",\"$7,075,206\",\"$16,520\",Oridinace\n2020,CACC,73,\"$7,006,449\",\"$2,568,723\",\"$64,074\",Oridinace\n2020,LAC,77,\"$188,346\",\"$38,074\",$0,Oridinace\n2020,ETHICS,78,\"$873,629\",\"$306,246\",$0,Oridinace\n2020,DSS,81,\"$273,635,333\",\"$76,487,981\",\"$344,092\",Oridinace\n2020,CDOT,84,\"$467,971,706\",\"$45,054,015\",\"$1,335,795\",Oridinace\n2020,DOA,85,\"$871,219,092\",\"$66,897,955\",\"$1,504,538\",Oridinace\n2020,DWM,88,\"$315,071,281\",\"$67,879,561\",\"$3,710,501\",Oridinace\n2020,CPL,91,\"$84,521,915\",\"$31,360,938\",\"$912,982\",Oridinace\n2021,MAYOR,1,\"$11,331,422\",\"$4,123,557\",$0,Oridinace\n2021,OIG,3,\"$10,962,647\",\"$4,315,135\",$0,Oridinace\n2021,OBM,5,\"$127,008,429\",\"$1,316,090\",$0,Oridinace\n2021,COUNCIL,15,\"$28,519,751\",\"$8,474,762\",$0,Oridinace\n2021,DOH,21,\"$190,769,087\",\"$1,302,167\",$0,Oridinace\n2021,DCASE,23,\"$25,510,269\",\"$2,729,528\",\"$2,139\",Oridinace\n2021,CLERK,25,\"$10,519,042\",\"$3,732,163\",$0,Oridinace\n2021,DOF,27,\"$84,617,522\",\"$21,056,091\",\"$536,851\",Oridinace\n2021,TREASURER,28,\"$4,040,902\",\"$1,261,938\",$0,Oridinace\n2021,DOAH,30,\"$7,766,362\",\"$1,622,138\",$0,Oridinace\n2021,DOL,31,\"$40,560,261\",\"$15,276,284\",\"$98,569\",Oridinace\n2021,DHR,33,\"$6,810,130\",\"$3,146,843\",$0,Oridinace\n2021,DPS,35,\"$8,470,855\",\"$3,911,837\",$0,Oridinace\n2021,AIS,38,\"$441,494,205\",\"$44,452,167\",$0,Oridinace\n2021,BOEC,39,\"$19,175,482\",\"$4,804,508\",$0,Oridinace\n2021,CDPH,41,\"$518,606,427\",\"$9,285,853\",\"$40,813\",Oridinace\n2021,CCHR,45,\"$2,796,074\",\"$464,590\",$0,Oridinace\n2021,MOPD,48,\"$7,760,748\",\"$630,042\",$0,Oridinace\n2021,DFSS,50,\"$780,489,814\",\"$3,965,000\",$0,Oridinace\n2021,PSA,51,\"$135,591,779\",\"$13,490,346\",$0,Oridinace\n2021,DPD,54,\"$97,532,008\",\"$6,253,955\",$0,Oridinace\n2021,POLICE BOARD,55,\"$564,945\",\"$83,606\",$0,Oridinace\n2021,CPD,57,\"$1,698,735,503\",\"$1,067,493,526\",\"$136,637\",Oridinace\n2021,OEMC,58,\"$133,947,766\",\"$33,878,921\",\"$1,106,775\",Oridinace\n2021,CFD,59,\"$738,357,735\",\"$489,266,471\",$0,Oridinace\n2021,COPA,60,\"$13,314,826\",\"$5,852,544\",$0,Oridinace\n2021,DOB,67,\"$33,404,387\",\"$8,942,748\",$0,Oridinace\n2021,BACP,70,\"$27,352,831\",\"$7,114,205\",\"$16,310\",Oridinace\n2021,CACC,73,\"$7,022,025\",\"$2,778,601\",\"$59,701\",Oridinace\n2021,LAC,77,\"$191,115\",\"$42,235\",$0,Oridinace\n2021,ETHICS,78,\"$869,535\",\"$339,167\",$0,Oridinace\n2021,DSS,81,\"$283,104,001\",\"$83,751,546\",\"$343,974\",Oridinace\n2021,CDOT,84,\"$770,356,074\",\"$48,946,578\",\"$1,341,769\",Oridinace\n2021,DOA,85,\"$1,141,154,450\",\"$72,466,397\",\"$1,527,037\",Oridinace\n2021,DWM,88,\"$321,523,152\",\"$72,560,040\",\"$3,729,990\",Oridinace\n2021,CPL,91,\"$110,971,841\",\"$34,841,113\",\"$923,674\",Oridinace\n2022,MAYOR,1,\"$12,009,266\",\"$6,275,498\",$0,Oridinace\n2022,OIG,3,\"$14,999,561\",\"$6,814,801\",$0,Oridinace\n2022,OBM,5,\"$1,645,234,288\",\"$2,216,451\",$0,Oridinace\n2022,COUNCIL,15,\"$34,607,399\",\"$11,903,266\",$0,Oridinace\n2022,DOH,21,\"$380,117,919\",\"$1,603,934\",$0,Oridinace\n2022,DCASE,23,\"$71,233,120\",\"$4,565,495\",\"$2,564\",Oridinace\n2022,CLERK,25,\"$11,872,734\",\"$5,333,882\",$0,Oridinace\n2022,DOF,27,\"$96,175,527\",\"$33,722,942\",\"$217,565\",Oridinace\n2022,TREASURER,28,\"$4,806,567\",\"$2,088,330\",$0,Oridinace\n2022,DOAH,30,\"$8,233,681\",\"$2,350,347\",$0,Oridinace\n2022,DOL,31,\"$43,224,244\",\"$22,253,739\",\"$118,570\",Oridinace\n2022,DHR,33,\"$7,811,507\",\"$4,925,241\",$0,Oridinace\n2022,DPS,35,\"$10,284,041\",\"$6,240,526\",$0,Oridinace\n2022,AIS,38,\"$514,125,731\",\"$63,959,672\",$0,Oridinace\n2022,BOEC,39,\"$25,828,604\",\"$6,935,730\",$0,Oridinace\n2022,CDPH,41,\"$1,001,647,288\",\"$15,144,165\",\"$50,760\",Oridinace\n2022,CCHR,45,\"$2,949,142\",\"$656,963\",$0,Oridinace\n2022,MOPD,48,\"$7,877,273\",\"$1,297,944\",$0,Oridinace\n2022,DFSS,50,\"$910,616,641\",\"$6,257,173\",$0,Oridinace\n2022,PSA,51,\"$172,894,734\",\"$19,233,103\",$0,Oridinace\n2022,DPD,54,\"$162,618,863\",\"$9,576,275\",$0,Oridinace\n2022,POLICE BOARD,55,\"$579,608\",\"$118,588\",$0,Oridinace\n2022,CPD,57,\"$1,899,239,537\",\"$1,121,091,115\",\"$170,672\",Oridinace\n2022,OEMC,58,\"$121,287,347\",\"$48,679,471\",\"$672,854\",Oridinace\n2022,CFD,59,\"$779,018,476\",\"$528,838,598\",$0,Oridinace\n2022,COPA,60,\"$14,728,193\",\"$8,876,392\",$0,Oridinace\n2022,CCPSA,62,\"$3,433,907\",\"$820,868\",$0,Oridinace\n2022,DOB,67,\"$34,875,735\",\"$13,238,533\",$0,Oridinace\n2022,BACP,70,\"$76,259,143\",\"$10,651,916\",\"$23,544\",Oridinace\n2022,CACC,73,\"$7,173,854\",\"$4,091,711\",\"$72,936\",Oridinace\n2022,LAC,77,\"$197,804\",\"$60,039\",$0,Oridinace\n2022,ETHICS,78,\"$919,914\",\"$482,221\",$0,Oridinace\n2022,DSS,81,\"$308,021,905\",\"$118,956,441\",\"$491,375\",Oridinace\n2022,CDOT,84,\"$1,276,497,782\",\"$75,058,277\",\"$2,000,710\",Oridinace\n2022,DOA,85,\"$1,151,260,371\",\"$107,927,625\",\"$1,851,133\",Oridinace\n2022,DWM,88,\"$346,810,100\",\"$100,961,753\",\"$4,588,141\",Oridinace\n2022,CPL,91,\"$129,622,327\",\"$49,216,733\",\"$1,151,293\",Oridinace\n2023,MAYOR,1,\"$15,285,353\",\"$6,491,358\",$0,Oridinace\n2023,OIG,3,\"$13,036,466\",\"$7,280,691\",$0,Oridinace\n2023,OBM,5,\"$246,578,693\",\"$2,296,294\",$0,Oridinace\n2023,COUNCIL,15,\"$35,556,215\",\"$11,580,446\",$0,Oridinace\n2023,DOH,21,\"$332,094,168\",\"$2,267,047\",$0,Oridinace\n2023,DCASE,23,\"$71,399,885\",\"$4,659,899\",\"$2,786\",Oridinace\n2023,CLERK,25,\"$12,319,291\",\"$5,227,063\",$0,Oridinace\n2023,DOF,27,\"$99,227,998\",\"$33,549,984\",\"$237,522\",Oridinace\n2023,TREASURER,28,\"$5,712,960\",\"$2,293,555\",$0,Oridinace\n2023,DOAH,30,\"$8,447,480\",\"$2,303,062\",$0,Oridinace\n2023,DOL,31,\"$45,641,696\",\"$22,044,727\",\"$132,249\",Oridinace\n2023,DHR,33,\"$12,051,198\",\"$6,848,634\",$0,Oridinace\n2023,DPS,35,\"$12,560,485\",\"$7,754,695\",$0,Oridinace\n2023,FFM,38,\"$559,915,375\",\"$70,027,864\",$0,Oridinace\n2023,BOEC,39,\"$56,602,820\",\"$6,791,581\",$0,Oridinace\n2023,CDPH,41,\"$972,398,008\",\"$15,365,250\",\"$56,387\",Oridinace\n2023,CCHR,45,\"$3,169,003\",\"$703,328\",$0,Oridinace\n2023,MOPD,48,\"$9,844,715\",\"$1,447,937\",$0,Oridinace\n2023,DFSS,50,\"$926,780,352\",\"$6,554,241\",$0,Oridinace\n2023,PSA,51,\"$180,016,152\",\"$19,716,332\",$0,Oridinace\n2023,DPD,54,\"$208,372,201\",\"$9,953,039\",$0,Oridinace\n2023,POLICE BOARD,55,\"$588,184\",\"$116,939\",$0,Oridinace\n2023,CPD,57,\"$1,943,242,055\",\"$1,210,840,488\",\"$188,729\",Oridinace\n2023,OEMC,58,\"$109,129,306\",\"$48,395,767\",\"$730,982\",Oridinace\n2023,CFD,59,\"$771,041,777\",\"$572,221,047\",$0,Oridinace\n2023,COPA,60,\"$15,036,021\",\"$8,943,253\",$0,Oridinace\n2023,CCPSA,62,\"$3,184,119\",\"$1,410,001\",$0,Oridinace\n2023,DOB,67,\"$38,606,461\",\"$13,847,822\",$0,Oridinace\n2023,BACP,70,\"$86,469,596\",\"$10,961,556\",\"$28,988\",Oridinace\n2023,ENVIRONMENT,72,\"$676,942\",\"$586,566\",$0,Oridinace\n2023,CACC,73,\"$7,025,418\",\"$4,327,669\",\"$45,480\",Oridinace\n2023,LAC,77,\"$198,042\",\"$59,060\",$0,Oridinace\n2023,ETHICS,78,\"$916,559\",\"$474,732\",$0,Oridinace\n2023,DSS,81,\"$311,515,608\",\"$115,926,635\",\"$729,396\",Oridinace\n2023,CDOT,84,\"$1,399,244,996\",\"$73,584,994\",\"$2,669,577\",Oridinace\n2023,DOA,85,\"$1,201,844,333\",\"$108,796,901\",\"$2,042,873\",Oridinace\n2023,DWM,88,\"$384,350,460\",\"$98,846,098\",\"$8,328,155\",Oridinace\n2023,CPL,91,\"$113,371,472\",\"$48,845,479\",\"$1,264,309\",Oridinace\n2024,MAYOR,1,\"$21,057,012\",\"$6,657,038\",$0,Oridinace\n2024,OIG,3,\"$14,216,049\",\"$7,016,709\",$0,Oridinace\n2024,OBM,5,\"$31,183,034\",\"$2,465,983\",$0,Oridinace\n2024,DOIT,6,\"$80,019,736\",\"$11,171,683\",$0,Oridinace\n2024,COUNCIL,15,\"$36,785,846\",\"$13,535,726\",$0,Oridinace\n2024,DOH,21,\"$279,843,675\",\"$2,188,292\",$0,Oridinace\n2024,DCASE,23,\"$87,364,393\",\"$4,537,221\",\"$3,311\",Oridinace\n2024,CLERK,25,\"$15,341,039\",\"$5,125,649\",$0,Oridinace\n2024,DOF,27,\"$104,908,871\",\"$33,674,992\",\"$263,559\",Oridinace\n2024,TREASURER,28,\"$6,272,699\",\"$2,281,183\",$0,Oridinace\n2024,DOAH,30,\"$8,769,092\",\"$2,233,707\",$0,Oridinace\n2024,DOL,31,\"$46,229,759\",\"$22,874,468\",\"$144,404\",Oridinace\n2024,DHR,33,\"$13,792,309\",\"$7,162,291\",$0,Oridinace\n2024,DPS,35,\"$14,605,398\",\"$7,718,588\",$0,Oridinace\n2024,FFM,38,\"$530,639,879\",\"$53,983,544\",$0,Oridinace\n2024,BOEC,39,\"$34,482,421\",\"$6,585,891\",$0,Oridinace\n2024,CDPH,41,\"$902,026,766\",\"$18,858,961\",\"$60,157\",Oridinace\n2024,CCHR,45,\"$3,330,423\",\"$687,749\",$0,Oridinace\n2024,MOPD,48,\"$16,284,323\",\"$1,510,259\",$0,Oridinace\n2024,DFSS,50,\"$915,856,073\",\"$7,378,896\",$0,Oridinace\n2024,PSA,51,\"$182,990,109\",\"$20,309,234\",$0,Oridinace\n2024,DPD,54,\"$202,163,654\",\"$10,399,166\",$0,Oridinace\n2024,POLICE BOARD,55,\"$601,188\",\"$113,018\",$0,Oridinace\n2024,CPD,57,\"$2,011,524,627\",\"$1,281,466,589\",\"$443,891\",Oridinace\n2024,OEMC,58,\"$110,154,371\",\"$47,280,376\",\"$851,481\",Oridinace\n2024,CFD,59,\"$784,765,013\",\"$585,454,245\",$0,Oridinace\n2024,COPA,60,\"$16,756,984\",\"$8,869,958\",$0,Oridinace\n2024,CCPSA,62,\"$4,003,410\",\"$1,654,109\",$0,Oridinace\n2024,DOB,67,\"$40,142,876\",\"$15,867,677\",$0,Oridinace\n2024,BACP,70,\"$82,620,445\",\"$11,085,025\",\"$30,926\",Oridinace\n2024,ENVIRONMENT,72,\"$1,801,802\",\"$796,856\",$0,Oridinace\n2024,CACC,73,\"$7,698,109\",\"$4,181,299\",\"$53,094\",Oridinace\n2024,LAC,77,\"$206,653\",\"$57,750\",$0,Oridinace\n2024,ETHICS,78,\"$1,019,825\",\"$465,905\",$0,Oridinace\n2024,DSS,81,\"$350,228,010\",\"$111,858,053\",\"$670,520\",Oridinace\n2024,CDOT,84,\"$1,484,552,843\",\"$72,249,325\",\"$3,761,667\",Oridinace\n2024,DOA,85,\"$1,423,824,759\",\"$112,317,319\",\"$2,457,177\",Oridinace\n2024,DWM,88,\"$397,830,838\",\"$96,590,844\",\"$9,376,919\",Oridinace\n2024,CPL,91,\"$116,976,333\",\"$47,278,389\",\"$1,422,603\",Oridinace\n2025,MAYOR,1,\"$19,646,654\",\"$6,281,872\",$0,Oridinace\n2025,OIG,3,\"$14,216,198\",\"$7,012,734\",$0,Oridinace\n2025,OBM,5,\"$18,568,096\",\"$2,465,702\",$0,Oridinace\n2025,DOIT,6,\"$82,083,894\",\"$8,244,478\",$0,Oridinace\n2025,COUNCIL,15,\"$36,805,986\",\"$14,004,773\",$0,Oridinace\n2025,DOH,21,\"$248,512,603\",\"$2,528,221\",$0,Oridinace\n2025,DCASE,23,\"$72,961,225\",\"$4,640,330\",\"$3,245\",Oridinace\n2025,CLERK,25,\"$15,093,753\",\"$5,250,622\",$0,Oridinace\n2025,DOF,27,\"$112,325,541\",\"$33,366,027\",\"$261,033\",Oridinace\n2025,TREASURER,28,\"$6,539,097\",\"$2,447,192\",\"$16,291\",Oridinace\n2025,DOAH,30,\"$8,560,776\",\"$2,227,014\",$0,Oridinace\n2025,DOL,31,\"$45,918,684\",\"$22,847,881\",\"$79,867\",Oridinace\n2025,DHR,33,\"$13,367,100\",\"$6,679,768\",$0,Oridinace\n2025,DPS,35,\"$13,905,122\",\"$7,573,621\",$0,Oridinace\n2025,FFM,38,\"$557,363,694\",\"$54,215,607\",$0,Oridinace\n2025,BOEC,39,\"$28,507,734\",\"$6,744,329\",$0,Oridinace\n2025,CDPH,41,\"$689,641,355\",\"$19,901,900\",\"$58,966\",Oridinace\n2025,CCHR,45,\"$2,781,810\",\"$762,178\",$0,Oridinace\n2025,MOPD,48,\"$14,833,880\",\"$1,551,328\",$0,Oridinace\n2025,DFSS,50,\"$937,819,585\",\"$7,221,314\",$0,Oridinace\n2025,PSA,51,\"$152,138,585\",\"$20,639,326\",$0,Oridinace\n2025,DPD,54,\"$132,499,758\",\"$10,464,036\",$0,Oridinace\n2025,POLICE BOARD,55,\"$509,970\",\"$116,005\",$0,Oridinace\n2025,CPD,57,\"$2,097,040,517\",\"$1,436,586,827\",\"$435,107\",Oridinace\n2025,OEMC,58,\"$95,101,008\",\"$48,835,665\",\"$765,054\",Oridinace\n2025,CFD,59,\"$760,668,006\",\"$583,934,274\",$0,Oridinace\n2025,COPA,60,\"$15,089,632\",\"$8,926,639\",$0,Oridinace\n2025,CCPSA,62,\"$3,986,182\",\"$1,637,265\",$0,Oridinace\n2025,DOB,67,\"$39,704,856\",\"$15,696,770\",$0,Oridinace\n2025,BACP,70,\"$50,132,350\",\"$10,278,773\",\"$30,314\",Oridinace\n2025,ENVIRONMENT,72,\"$2,399,239\",\"$814,551\",$0,Oridinace\n2025,CACC,73,\"$7,519,976\",\"$4,098,078\",\"$47,124\",Oridinace\n2025,LAC,77,\"$206,624\",\"$59,061\",$0,Oridinace\n2025,ETHICS,78,\"$985,480\",\"$474,862\",$0,Oridinace\n2025,DSS,81,\"$352,858,177\",\"$113,076,018\",\"$608,875\",Oridinace\n2025,CDOT,84,\"$2,039,303,751\",\"$74,873,512\",\"$3,446,173\",Oridinace\n2025,DOA,85,\"$1,547,505,037\",\"$121,170,862\",\"$2,466,749\",Oridinace\n2025,DWM,88,\"$417,185,283\",\"$100,169,882\",\"$9,394,701\",Oridinace\n2025,CPL,91,\"$122,105,043\",\"$47,254,430\",\"$1,206,178\",Oridinace\n2026,MAYOR,1,\"$16,419,712\",\"$7,567,056\",$0,Oridinace\n2026,OIG,3,\"$14,297,022\",\"$8,054,983\",$0,Oridinace\n2026,OBM,5,\"$38,552,702\",\"$2,909,638\",$0,Oridinace\n2026,DOIT,6,\"$76,383,040\",\"$9,684,264\",$0,Oridinace\n2026,COUNCIL,15,\"$37,764,468\",\"$16,550,359\",$0,Oridinace\n2026,DOH,21,\"$173,252,026\",\"$3,846,622\",$0,Oridinace\n2026,DCASE,23,\"$62,003,597\",\"$5,457,404\",$0,Oridinace\n2026,CLERK,25,\"$15,214,652\",\"$6,183,761\",$0,Oridinace\n2026,DOF,27,\"$127,818,882\",\"$38,391,599\",\"$271,810\",Oridinace\n2026,TREASURER,28,\"$6,504,251\",\"$2,748,392\",$0,Oridinace\n2026,DOAH,30,\"$8,389,224\",\"$2,619,967\",$0,Oridinace\n2026,DOL,31,\"$47,954,637\",\"$27,646,348\",\"$82,339\",Oridinace\n2026,DHR,33,\"$12,957,553\",\"$7,724,947\",$0,Oridinace\n2026,DPS,35,\"$13,923,365\",\"$8,620,396\",$0,Oridinace\n2026,FFM,38,\"$503,454,074\",\"$63,601,304\",$0,Oridinace\n2026,BOEC,39,\"$27,867,404\",\"$7,939,161\",$0,Oridinace\n2026,CDPH,41,\"$335,049,660\",\"$23,996,259\",\"$56,869\",Oridinace\n2026,CCHR,45,\"$2,773,200\",\"$966,725\",$0,Oridinace\n2026,MOPD,48,\"$9,679,159\",\"$1,828,909\",$0,Oridinace\n2026,DFSS,50,\"$653,365,973\",\"$6,506,302\",$0,Oridinace\n2026,PSA,51,\"$135,631,676\",\"$23,334,933\",$0,Oridinace\n2026,DPD,54,\"$146,482,815\",\"$12,311,522\",$0,Oridinace\n2026,POLICE BOARD,55,\"$498,200\",\"$136,503\",$0,Oridinace\n2026,CPD,57,\"$2,109,811,600\",\"$1,594,968,952\",\"$448,576\",Oridinace\n2026,OEMC,58,\"$99,931,120\",\"$57,872,147\",\"$802,249\",Oridinace\n2026,CFD,59,\"$901,681,972\",\"$649,269,169\",$0,Oridinace\n2026,COPA,60,\"$15,781,027\",\"$10,240,954\",$0,Oridinace\n2026,CCPSA,62,\"$4,026,765\",\"$1,999,628\",$0,Oridinace\n2026,DOB,67,\"$39,368,146\",\"$18,428,702\",$0,Oridinace\n2026,BACP,70,\"$36,783,162\",\"$13,446,656\",\"$29,919\",Oridinace\n2026,ENVIRONMENT,72,\"$52,458,895\",\"$4,236,107\",$0,Oridinace\n2026,CACC,73,\"$8,177,388\",\"$5,364,214\",\"$48,582\",Oridinace\n2026,LAC,77,\"$209,988\",\"$69,299\",$0,Oridinace\n2026,ETHICS,78,\"$925,597\",\"$551,718\",$0,Oridinace\n2026,DSS,81,\"$349,888,561\",\"$131,713,550\",\"$570,540\",Oridinace\n2026,CDOT,84,\"$1,837,522,563\",\"$81,613,384\",\"$3,738,169\",Oridinace\n2026,DOA,85,\"$1,666,093,529\",\"$146,312,804\",\"$2,640,504\",Oridinace\n2026,DWM,88,\"$772,719,058\",\"$117,310,190\",\"$10,200,681\",Oridinace\n2026,CPL,91,\"$116,016,346\",\"$55,796,957\",\"$1,281,549\",Oridinace\n2027,MAYOR,1,\"$18,265,651\",\"$8,853,237\",$0,Proposed\n2027,OIG,3,\"$14,474,221\",\"$8,494,535\",$0,Proposed\n2027,OBM,5,\"$47,412,849\",\"$3,370,134\",$0,Proposed\n2027,DOIT,6,\"$34,412,987\",\"$10,977,123\",$0,Proposed\n2027,COUNCIL,15,\"$39,432,626\",\"$18,567,252\",$0,Proposed\n2027,DOH,21,\"$171,058,072\",\"$4,592,322\",$0,Proposed\n2027,DCASE,23,\"$62,483,814\",\"$6,318,234\",$0,Proposed\n2027,CLERK,25,\"$15,701,196\",\"$6,979,981\",$0,Proposed\n2027,DOF,27,\"$175,294,651\",\"$43,914,384\",\"$286,312\",Proposed\n2027,TREASURER,28,\"$8,636,728\",\"$3,109,770\",$0,Proposed\n2027,DOAH,30,\"$8,497,724\",\"$2,954,485\",$0,Proposed\n2027,DOL,31,\"$50,681,365\",\"$31,518,728\",\"$91,595\",Proposed\n2027,DHR,33,\"$13,791,589\",\"$8,797,511\",$0,Proposed\n2027,DPS,35,\"$14,560,833\",\"$9,740,599\",$0,Proposed\n2027,FFM,38,\"$565,134,179\",\"$71,839,891\",$0,Proposed\n2027,BOEC,39,\"$48,453,841\",\"$8,895,674\",$0,Proposed\n2027,CDPH,41,\"$333,468,767\",\"$30,594,008\",\"$59,319\",Proposed\n2027,CCHR,45,\"$2,851,033\",\"$1,091,418\",$0,Proposed\n2027,MOPD,48,\"$9,122,922\",\"$2,293,919\",$0,Proposed\n2027,DFSS,50,\"$645,906,863\",\"$7,259,878\",$0,Proposed\n2027,PSA,51,\"$134,809,636\",\"$26,334,229\",$0,Proposed\n2027,DPD,54,\"$158,077,633\",\"$14,050,820\",$0,Proposed\n2027,POLICE BOARD,55,\"$496,322\",\"$153,267\",$0,Proposed\n2027,CPD,57,\"$2,243,691,824\",\"$1,744,302,830\",\"$479,711\",Proposed\n2027,OEMC,58,\"$105,385,714\",\"$65,219,364\",\"$863,538\",Proposed\n2027,CFD,59,\"$914,383,396\",\"$716,325,498\",$0,Proposed\n2027,COPA,60,\"$16,978,005\",\"$11,129,911\",$0,Proposed\n2027,CCPSA,62,\"$4,104,984\",\"$2,255,945\",$0,Proposed\n2027,DOB,67,\"$40,466,594\",\"$20,721,034\",$0,Proposed\n2027,BACP,70,\"$37,132,768\",\"$14,746,116\",\"$27,185\",Proposed\n2027,ENVIRONMENT,72,\"$53,060,850\",\"$4,864,362\",$0,Proposed\n2027,CACC,73,\"$9,530,803\",\"$6,339,829\",\"$55,520\",Proposed\n2027,LAC,77,\"$217,612\",\"$78,574\",$0,Proposed\n2027,ETHICS,78,\"$952,978\",\"$624,692\",$0,Proposed\n2027,DSS,81,\"$381,913,905\",\"$152,555,898\",\"$626,906\",Proposed\n2027,CDOT,84,\"$1,997,393,291\",\"$92,550,549\",\"$4,016,867\",Proposed\n2027,DOA,85,\"$1,781,779,989\",\"$167,087,331\",\"$2,854,725\",Proposed\n2027,DWM,88,\"$783,350,165\",\"$131,690,911\",\"$11,051,391\",Proposed\n2027,CPL,91,\"$130,783,421\",\"$62,965,222\",\"$1,423,577\",Proposed";
 function fringeRowsFromCsv(text){
   const [headers,...records]=parseCsv(text);
   const columns=['Year','Department','Department Number','Departmental Appropriations','Calculated Fringe (Full-time Positions)','Estimated Fringe (Part-time positions)'].map(name=>headers.indexOf(name));
@@ -1201,13 +1212,16 @@ function fringeRowsFromCsv(text){
     const [year,name,code,appropriations,fullTimeFringe,partTimeFringe]=columns.map(index=>row[index]);
     const moneyValue=value=>String(value??'').trim()===''?null:numberValue(value);
     const parsed={year:Number(year),department:name,code:parseDepartmentCode(code),appropriations:moneyValue(appropriations),fullTimeFringe:moneyValue(fullTimeFringe),partTimeFringe:moneyValue(partTimeFringe)};
+    parsed.proposed=String(row[headers.indexOf('Ordinance/Proposed')]??'').trim().toLowerCase()==='proposed';
     parsed.available=[parsed.appropriations,parsed.fullTimeFringe,parsed.partTimeFringe].every(value=>Number.isFinite(value)&&value>=0);
     parsed.total=parsed.available?parsed.appropriations+parsed.fullTimeFringe+parsed.partTimeFringe:null;
     return parsed;
   });
 }
 const FRINGE_ROWS=fringeRowsFromCsv(DEPARTMENT_FRINGE_CSV);
-const FRINGE_YEARS=Array.from({length:9},(_,index)=>2018+index);
+const fringeFirstYear=Math.min(...FRINGE_ROWS.map(row=>row.year));
+const fringeLastYear=Math.max(...FRINGE_ROWS.map(row=>row.year));
+const FRINGE_YEARS=Array.from({length:fringeLastYear-fringeFirstYear+1},(_,index)=>fringeFirstYear+index);
 const FRINGE_COMPONENTS=[
   {key:'appropriations',label:'Departmental appropriations',color:COLORS.primary},
   {key:'fullTimeFringe',label:'Calculated full-time fringe',color:'#4f8795'},
@@ -1249,7 +1263,7 @@ function renderFringeChart(data){
   const y=value=>baseline-value/max*height;
   const step=(W-M.left-M.right)/data.length,barWidth=Math.min(48,step*.6);
   const svg=svgEl('svg',{id:'fringeSvg',viewBox:`0 0 ${W} ${H}`,role:'img','aria-labelledby':'fringeSvgTitle fringeSvgDesc'});
-  svg.append(svgEl('title',{id:'fringeSvgTitle'},`${displayDepartmentName(selectedDepartment)} departmental budget with estimated fringe cost, 2018–2026`));
+  svg.append(svgEl('title',{id:'fringeSvgTitle'},`${displayDepartmentName(selectedDepartment)} Appropriations with Estimated Fringe Cost of Pensions and Benefits for Budgeted Non-grant Positions, ${FRINGE_YEARS[0]}–${FRINGE_YEARS.at(-1)} (proposed)`));
   svg.append(svgEl('desc',{id:'fringeSvgDesc'},'Departmental appropriations plus calculated full-time fringe and estimated part-time fringe from the supplied CSV. Missing years remain gaps.'));
   for(let index=0;index<5;index++){
     const value=max*index/4,yy=y(value);
@@ -1262,7 +1276,7 @@ function renderFringeChart(data){
     if(row.available){
       for(const [componentIndex,component] of FRINGE_COMPONENTS.entries()){
         const next=cumulative+row[component.key];
-        svg.append(svgEl('rect',{x:cx-barWidth/2,y:y(next),width:barWidth,height:Math.max(0,y(cumulative)-y(next)),fill:row.year===2026?[COLORS.proposed,'#c3c7ca','#dfe1e3'][componentIndex]:component.color}));
+        svg.append(svgEl('rect',{x:cx-barWidth/2,y:y(next),width:barWidth,height:Math.max(0,y(cumulative)-y(next)),fill:row.proposed?[COLORS.proposed,'#c3c7ca','#dfe1e3'][componentIndex]:component.color}));
         cumulative=next;
       }
       if(W>=520||index===data.length-1)svg.append(svgEl('text',{x:cx,y:y(row.total)-10,'text-anchor':'middle',fill:COLORS.primary,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':'10','font-weight':'700'},row.total>=1e9?'$'+(row.total/1e9).toFixed(2)+'B':moneyM(row.total)));
@@ -1291,7 +1305,7 @@ function renderFringeDetails(data){
 }
 function buildFringe(){
   const status=document.getElementById('fringeStatus');
-  document.getElementById('fringeTitle').textContent=`${displayDepartmentName(selectedDepartment)} Departmental Budget with Estimated Fringe Cost, 2018–2026`;
+  document.getElementById('fringeTitle').textContent=`${displayDepartmentName(selectedDepartment)} Appropriations with Estimated Fringe Cost of Pensions and Benefits for Budgeted Non-grant Positions, ${FRINGE_YEARS[0]}–${FRINGE_YEARS.at(-1)} (proposed)`;
   try{
     lastFringeData=fringeForDepartment(selectedDepartment);
     renderFringeChart(lastFringeData);renderFringeDetails(lastFringeData);
@@ -1402,8 +1416,8 @@ function populateDepartmentSelect(){
     const code=d.code?String(d.code).padStart(2,'0'):'—';
     return `<option value="${i}">${escapeHtml(code)} — ${escapeHtml(titleCaseDepartment(d.name))}</option>`;
   }).join('');
-  const copaIndex=departments.findIndex(d=>d.code==='60'||/CIVILIAN OFFICE OF POLICE ACCOUNTABILITY/i.test(d.name));
-  departmentSelect.value=String(selectedIndex>=0?selectedIndex:copaIndex>=0?copaIndex:0);
+  const mayorIndex=departments.findIndex(d=>parseDepartmentCode(d.code)==='1');
+  departmentSelect.value=String(selectedIndex>=0?selectedIndex:mayorIndex>=0?mayorIndex:0);
   selectedDepartment=departments[Number(departmentSelect.value)]||departments[0]||null;
   departmentSelect.disabled=!selectedDepartment;
 }
@@ -1617,6 +1631,120 @@ function appropriationAccountLabel(row){
     .sort((a,b)=>b.length-a.length);
   return candidates[0]||'Unlabeled appropriation';
 }
+// Compare all funds by stable fund code, including funds added or removed between years.
+function compareDepartmentFunds(previousRows,currentRows,department,previousYear,currentYear){
+  const groups=new Map();
+  for(const [rows,year,key] of [[previousRows,previousYear,'previous'],[currentRows,currentYear,'current']]){
+    const matched=rows.filter(row=>departmentMatch(row,{...department,code:parseDepartmentCode(department.code)}).matched);
+    if(!matched.length)throw new Error(`No appropriation rows matched ${displayDepartmentName(department)} in ${year}.`);
+    const amountField=findAmountField(matched[0],year);
+    if(!amountField)throw new Error(`No appropriation amount field found for ${year}.`);
+    for(const row of matched){
+      const rawCode=String(fieldValue(row,['fund_code','fund_number'])??'').trim().toUpperCase();
+      const code=rawCode.replace(/^0+(?=.)/,'');
+      const label=String(fieldValue(row,['fund_description','fund_desc','fund_name'])??'').trim();
+      const amount=numberValue(row[amountField]);
+      if(!code||!label||!Number.isFinite(amount))throw new Error(`A ${year} fund row is missing its fund code, name, or amount.`);
+      if(!groups.has(code))groups.set(code,{code,label,previous:0,current:0});
+      const group=groups.get(code);
+      group[key]+=amount;
+      if(key==='current')group.label=label;
+    }
+  }
+  const data=calculateFundComparison({previousYear,currentYear,rows:[...groups.values()]});
+  data.rows.sort((a,b)=>b.current-a.current||b.previous-a.previous||a.label.localeCompare(b.label));
+  return data;
+}
+function calculateFundComparison(data){
+  data.previousTotal=data.rows.reduce((sum,row)=>sum+row.previous,0);
+  data.currentTotal=data.rows.reduce((sum,row)=>sum+row.current,0);
+  for(const row of data.rows){
+    row.net=row.current-row.previous;
+    row.percent=row.previous?row.net/row.previous:null;
+    row.share=data.currentTotal?row.current/data.currentTotal:null;
+  }
+  if(!Number.isFinite(data.previousTotal)||!Number.isFinite(data.currentTotal))throw new Error('Fund totals are too large.');
+  return data;
+}
+async function loadFundComparison(department){
+  const currentYear=activeCycle.latestYear,previousYear=currentYear-1;
+  const [previousSource,currentSource]=await Promise.all([resolveDataset(previousYear),resolveDataset(currentYear)]);
+  const [previousRows,currentRows]=await Promise.all([fetchAllRows(previousSource.id),fetchAllRows(currentSource.id)]);
+  return {...compareDepartmentFunds(previousRows,currentRows,department,previousYear,currentYear),previousSource,currentSource};
+}
+function fundComparisonHeaders(data){
+  return ['Fund',`${data.previousYear} Budgeted`,`${data.currentYear} Proposed`,`Net Change from ${data.previousYear}`,`Percent Change from ${data.previousYear}`,`Percent of ${data.currentYear} Recommended Funds`];
+}
+function fundComparisonCells(row){
+  return [row.label,money(row.previous),money(row.current),row.net<0?'-'+money(-row.net):money(row.net),row.previous===0?(row.current>0?'New Fund':'—'):percentText(row.percent),percentText(row.share)];
+}
+function renderFundComparisonDetails(data){
+  const target=document.getElementById('fundComparisonDetails');
+  if(!data){target.innerHTML='';return}
+  const headers=fundComparisonHeaders(data);
+  target.innerHTML=`<p>Net change = proposed − budgeted. Percent change = net change ÷ budgeted. Fund share = proposed fund amount ÷ total proposed departmental funds. An absent fund in either matched year counts as $0; a missing department-year prevents the comparison.</p><div class="table-wrap"><table><thead><tr>${headers.map(header=>`<th scope="col">${escapeHtml(header)}</th>`).join('')}</tr></thead><tbody>${data.rows.map(row=>`<tr>${fundComparisonCells(row).map((value,index)=>index?`<td>${escapeHtml(value)}</td>`:`<th scope="row">${escapeHtml(value)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+}
+function renderFundComparison(data){
+  const chart=document.getElementById('fundComparisonChart');
+  chart.querySelector('svg')?.remove();
+  if(!data)return;
+  const W=Math.max(320,Math.round(chart.getBoundingClientRect().width||760)),compact=W<720;
+  const widths=[.31,.135,.135,.14,.14,.14],positions=[0];
+  widths.forEach(width=>positions.push(positions.at(-1)+width*W));
+  const headers=fundComparisonHeaders(data);
+  const lines=(value,count)=>{
+    const result=[];let line='';
+    for(const word of value.split(' ')){
+      if(line&&(line+' '+word).length>count){result.push(line);line=word}else line=(line+' '+word).trim();
+    }
+    if(line)result.push(line);
+    return result;
+  };
+  const layouts=data.rows.map(row=>({row,labelLines:lines(row.label,Math.max(18,Math.floor((compact?W-24:W*widths[0]-20)/6.3)))}));
+  const heights=layouts.map(item=>compact?item.labelLines.length*16+186:Math.max(54,item.labelLines.length*16+22));
+  const H=(compact?0:100)+heights.reduce((sum,height)=>sum+height,0);
+  const svg=svgEl('svg',{id:'fundComparisonSvg',viewBox:`0 0 ${W} ${H}`,role:'group','aria-labelledby':'fundComparisonSvgTitle fundComparisonSvgDesc'});
+  svg.append(svgEl('title',{id:'fundComparisonSvgTitle'},document.getElementById('fundComparisonTitle').textContent));
+  svg.append(svgEl('desc',{id:'fundComparisonSvgDesc'},'Fund comparison including budgeted and proposed amounts, net and percent changes, and each fund’s share of the proposed departmental budget.'));
+  const text=(x,y,value,attrs={})=>svg.append(svgEl('text',{x,y,fill:COLORS.dark,'font-family':'Synthese,Helvetica Neue,Helvetica,Arial,sans-serif','font-size':compact?12:11,...attrs},value));
+  if(!compact){
+    headers.forEach((header,index)=>lines(header,Math.max(12,Math.floor((widths[index]*W-16)/6))).forEach((line,n)=>text(positions[index]+8,20+n*15,line,{'font-weight':700})));
+  }
+  let top=compact?0:100;
+  layouts.forEach(({row,labelLines},index)=>{
+    const height=heights[index],values=fundComparisonCells(row);
+    svg.append(svgEl('rect',{x:0,y:top,width:W,height,fill:index%2?'#f7fafc':COLORS.surface}));
+    svg.append(svgEl('line',{x1:0,x2:W,y1:top,y2:top,stroke:COLORS.border}));
+    labelLines.forEach((line,n)=>text(8,top+22+n*16,line,{'font-weight':700}));
+    values.slice(1).forEach((value,column)=>{
+      const y=compact?top+labelLines.length*16+32+column*32:top+height/2+4;
+      if(compact){
+        lines(headers[column+1],Math.floor((W*.64-16)/6.3)).forEach((line,n)=>text(8,y+n*13,line,{'font-size':11}));
+      }
+      text(compact?W-8:positions[column+2]-8,y,value,{'text-anchor':'end','font-weight':column===2?700:400});
+    });
+    top+=height;
+  });
+  chart.append(svg);
+  document.getElementById('downloadFundComparisonSvg').hidden=false;
+}
+async function buildFundComparison(){
+  const status=document.getElementById('fundComparisonStatus');
+  const currentYear=activeCycle.latestYear,previousYear=currentYear-1;
+  document.getElementById('fundComparisonTitle').textContent=`${displayDepartmentName(selectedDepartment)} Fund Comparison, ${previousYear}–${currentYear}`;
+  status.className='status';status.textContent='Loading departmental funds…';
+  try{
+    lastFundComparisonData=await loadFundComparison(selectedDepartment);
+    document.getElementById('fundComparisonFoot').textContent=`Source: City of Chicago ${previousYear} Budget Ordinance — Appropriations (${lastFundComparisonData.previousSource.id}) and ${currentYear} Budget Recommendations — Appropriations (${lastFundComparisonData.currentSource.id}). Funds match by fund code, which is omitted from the table. Shares use all recommended funds for the selected department; rounding may prevent percentages from summing to 100%.`;
+    renderFundComparison(lastFundComparisonData);renderFundComparisonDetails(lastFundComparisonData);
+    status.className='status ready';status.textContent='';
+  }catch(error){
+    lastFundComparisonData=null;renderFundComparison(null);renderFundComparisonDetails(null);
+    document.getElementById('downloadFundComparisonSvg').hidden=true;
+    status.className='status error';status.textContent=`Could not build fund comparison: ${error.message}`;
+  }
+}
+
 async function loadLargestAppropriations(department){
   const year=activeCycle.latestYear;
   const source=await resolveDataset(year);
@@ -2474,14 +2602,13 @@ function averageAnnualChange(data,key,startYear,endYear,factors=null){
   return Number.isFinite(average)?average:null;
 }
 function inflationAdjustedRate(data,key,startYear,endYear,factors){
-  if(endYear<=startYear) return null;
-  const start=valueForYear(data,startYear,key),end=valueForYear(data,endYear,key);
-  const startFactor=factors?.[startYear],endFactor=factors?.[endYear];
-  if(start===null||end===null||!Number.isFinite(startFactor)||startFactor<=0||!Number.isFinite(endFactor)||endFactor<=0) return null;
-  const adjustedStart=start*startFactor,adjustedEnd=end*endFactor;
-  if(!Number.isFinite(adjustedStart)||!Number.isFinite(adjustedEnd)||adjustedStart===0) return null;
-  const rate=(adjustedEnd-adjustedStart)/adjustedStart/(endYear-startYear);
-  return Number.isFinite(rate)?rate:null;
+  // Match the supplied spreadsheet: years after the dollar base retain nominal values.
+  if(!factors) return null;
+  const dollarYear=Math.max(...Object.keys(factors).map(Number));
+  if(!Number.isFinite(dollarYear)) return null;
+  const rateFactors={...factors};
+  for(let year=dollarYear+1;year<=endYear;year++) rateFactors[year]=1;
+  return averageAnnualChange(data,key,startYear,endYear,rateFactors);
 }
 function valueForYear(data,year,key){
   const row=(data||[]).find(d=>d.year===year&&d.available);
@@ -2504,10 +2631,10 @@ function renderSummaryTable(appropriationData,workforceData){
   const posAverage=averageAnnualChange(workforceData,'positions',rateStartYear,rateEndYear);
   const inflationYear=activeCycle.inflationYear;
   const inflationFactors=INFLATION_FACTORS_BY_YEAR[inflationYear];
-  const appInflationAdjusted=inflationAdjustedRate(appropriationData,'amount',rateStartYear,inflationYear,inflationFactors);
+  const appInflationAdjusted=inflationAdjustedRate(appropriationData,'amount',rateStartYear,rateEndYear,inflationFactors);
 
-  summaryTableTitleEl.textContent=`${displayDepartmentName(selectedDepartment)} Budget Summary`;
-  summaryTableFootEl.textContent=`Source: City of Chicago budget APIs. Rates are arithmetic averages of year-to-year percentage changes over ${rateStartYear}–${rateEndYear}${selectedDepartment?.code==='60'?' for COPA/IPRA to avoid the agency transition.':'.'} Inflation-adjusted appropriations over ${rateStartYear}–${inflationYear} use (ending adjusted budget − starting adjusted budget) / starting adjusted budget / (${inflationYear} − ${rateStartYear}), with both budgets in ${inflationYear} dollars. Nominal rates require every year and nonzero annual baselines; the inflation-adjusted rate requires both endpoints and a nonzero starting adjusted budget.`;
+  summaryTableTitleEl.textContent=`${displayDepartmentName(selectedDepartment)} Snapshot: Appropriation & Staffing Changes from ${previousYear} Budget`;
+  summaryTableFootEl.textContent=`Source: City of Chicago budget APIs. Both rates are arithmetic averages of year-to-year percentage changes over ${rateStartYear}–${rateEndYear}${selectedDepartment?.code==='60'?' for COPA/IPRA to avoid the agency transition.':'.'} Inflation-adjusted appropriations use supplied ${inflationYear}-dollar factors through ${inflationYear}; later years retain nominal values (factor 1), matching the supplied spreadsheet. Both rates require every year and nonzero annual baselines. Proposed ${currentYear} is excluded.`;
   derivedSummaryData={previousYear,currentYear,rateStartYear,rateEndYear,inflationYear,rows:[
     {id:'appropriations',label:'Appropriations',previous:appPrevious,current:appCurrent,averageRatePct:appAverage===null?null:appAverage*100,inflationRatePct:appInflationAdjusted===null?null:appInflationAdjusted*100},
     {id:'positions',label:'Positions & FTEs',previous:posPrevious,current:posCurrent,averageRatePct:posAverage===null?null:posAverage*100,inflationRatePct:null}
@@ -2540,7 +2667,7 @@ function renderSummaryGraphic(data){
   if(!data)return;
   data={...data,rows:summaryRows(data)};
   lastSummaryData=data;
-  const headers=['Measure',`${data.previousYear} Budgeted`,`${data.currentYear} Proposed`,'Net Change','Percent Change',`Average Annual Rate (${data.rateStartYear}–${data.rateEndYear})`,`Inflation-adjusted Rate (${data.rateStartYear}–${data.inflationYear})`];
+  const headers=['Measure',`${data.previousYear} Budgeted`,`${data.currentYear} Proposed`,'Net Change','Percent Change',`Average Annual Rate (${data.rateStartYear}–${data.rateEndYear})`,`Inflation-adjusted Rate (${data.rateStartYear}–${data.rateEndYear})`];
   const chart=document.getElementById('summaryChart');
   chart.querySelector('svg')?.remove();
   const W=Math.max(320,Math.round(chart.getBoundingClientRect().width||760));
@@ -3058,7 +3185,7 @@ async function buildWorkforce(){
   downloadWorkforceBtn.hidden=true;
   workforceStatusEl.className='status';
   workforceStatusEl.textContent=`Loading ${chartRangeLabel()} budgeted workforce for ${displayDepartmentName(selectedDepartment)}…`;
-  document.getElementById('workforceTitle').textContent=`${displayDepartmentName(selectedDepartment)} Budgeted Workforce, ${proposalRangeLabel()}`;
+  document.getElementById('workforceTitle').textContent=`${displayDepartmentName(selectedDepartment)} Budgeted Workforce, ${proposalRangeLabel().replace('(Proposed)','(proposed)')}`;
   workforceFootEl.textContent=`Source: City of Chicago Budget Ordinance positions and salaries datasets, ${ordinanceSourceRange()}${stage(activeCycle.latestYear)==='Recommendation'?`, and ${activeCycle.latestYear} Budget Recommendations — Positions and Salaries`:'.'} Years without a row for the selected department are left blank rather than estimated.`;
 
   try{
@@ -3132,7 +3259,7 @@ async function buildAppropriationChanges(){
   downloadAppropriationChangesBtn.hidden=true;
   appropriationChangesStatusEl.className='status';
   appropriationChangesStatusEl.textContent=`Loading ${activeCycle.previousYear}–${activeCycle.currentYear} appropriation changes for ${displayDepartmentName(selectedDepartment)}…`;
-  document.getElementById('appropriationChangesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Net and Percent Appropriation Changes, ${activeCycle.previousYear} to ${activeCycle.currentYear} (Proposed) Budgets`;
+  document.getElementById('appropriationChangesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Net and Percent Appropriation Changes, ${activeCycle.previousYear} to ${activeCycle.currentYear} (proposed) Budgets`;
   appropriationChangesFootEl.textContent=`Source: City of Chicago ${activeCycle.previousYear} Budget Ordinance and ${activeCycle.currentYear} Budget Recommendations appropriations datasets. Percent change is net change divided by ${activeCycle.previousYear} budgeted appropriation.`;
   if(!activeCycle.currentAvailable){
     lastAppropriationChangesData=null;
@@ -3212,7 +3339,7 @@ async function buildPersistentVacancies(){
   downloadPersistentVacanciesBtn.hidden=true;
   persistentVacanciesStatusEl.className='status';
   persistentVacanciesStatusEl.textContent=`Loading persistent vacancies for ${displayDepartmentName(selectedDepartment)}…`;
-  document.getElementById('persistentVacanciesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Persistent Vacancies by Title`;
+  document.getElementById('persistentVacanciesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Persistent Full-time Vacancies`;
   document.getElementById('persistentVacanciesFoot').textContent=activeCycle.persistentVacancyYear===2026
     ? `Source: ${PERSISTENT_VACANCIES_2026_SOURCE}. Supplied January–September 2026 persistent counts, summed by job title across funds and organizational units.`
     : 'Source: BGA retained City Workforce Vacancies snapshots, February–September 2025. Persistent vacancies are title/division/section/subsection vacancy identities present in every loaded month.';
@@ -3226,7 +3353,7 @@ async function buildPersistentVacancies(){
     if(!rows.length) throw new Error(`No persistent vacancy titles were found for ${displayDepartmentName(selectedDepartment)}.`);
 
     lastPersistentVacanciesData=result;
-    document.getElementById('persistentVacanciesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Persistent Vacancies by Title, ${result.rangeLabel}`;
+    document.getElementById('persistentVacanciesTitle').textContent=`${displayDepartmentName(selectedDepartment)} Persistent Full-time Vacancies, ${activeCycle.persistentVacancyYear===2026?'Jan-Sept 2026':result.rangeLabel}`;
     renderPersistentVacanciesChart(result);
     renderPersistentVacanciesDetails(result);
     persistentVacanciesStatusEl.className='status ready';
@@ -3317,7 +3444,8 @@ async function build(){
   statusEl.textContent=`Loading ${chartRangeLabel()} City appropriations for ${displayDepartmentName(selectedDepartment)}…`;
   buildFringe();
   buildActualSpendCategories();
-  chartTitleEl.textContent=`${displayDepartmentName(selectedDepartment)} Appropriation, Chicago City Budgets ${proposalRangeLabel()}`;
+  await buildFundComparison();
+  chartTitleEl.textContent=`${displayDepartmentName(selectedDepartment)} Appropriations and Inflation-adjusted Appropriations (${activeCycle.inflationYear} dollars)`;
   chartFootEl.textContent=`Source: City of Chicago Budget Ordinance appropriations datasets, ${ordinanceSourceRange()}${stage(activeCycle.latestYear)==='Recommendation'?`, and ${activeCycle.latestYear} Budget Recommendations — Appropriations`:'.'} Years without a row for the selected department are left blank rather than estimated.`;
 
   try{
@@ -3372,6 +3500,8 @@ function clearRenderedData(){
   summaryOverrides={};
   lastData=null;
   lastFringeData=null;
+  lastFundComparisonData=null;
+  renderFundComparisonDetails(null);
   lastLocalFundsData=null;
   lastWorkforceData=null;
   lastPositionChangesData=null;
@@ -3430,17 +3560,18 @@ budgetCycleSelect.addEventListener('change',()=>{
 });
 // The generator remains standalone. Exported files contain no fetching or chart-building code.
 const EXPORT_CHARTS=[
+  ['summary','summarySvg','downloadSummarySvg'],
   ['appropriations','budgetSvg','downloadSvg'],
+  ['fund-comparison','fundComparisonSvg','downloadFundComparisonSvg'],
   ['estimated-fringe','fringeSvg','downloadFringeSvg'],
   ['local-funds','localFundsSvg','downloadLocalFundsSvg'],
   ['workforce','workforceSvg','downloadWorkforceSvg'],
   ['vacancies','vacanciesSvg','downloadVacanciesSvg'],
   ['persistent-vacancies','persistentVacanciesSvg','downloadPersistentVacanciesSvg'],
-  ['largest-appropriations','largestAppropriationsSvg','downloadLargestAppropriationsSvg'],
   ['position-changes','positionChangesSvg','downloadPositionChangesSvg'],
-  ['appropriation-changes','appropriationChangesSvg','downloadAppropriationChangesSvg'],
+  ['largest-appropriations','largestAppropriationsSvg','downloadLargestAppropriationsSvg'],
   ['actual-spend-categories','actualSpendCategoriesSvg','downloadActualSpendCategoriesSvg'],
-  ['summary','summarySvg','downloadSummarySvg']
+  ['appropriation-changes','appropriationChangesSvg','downloadAppropriationChangesSvg']
 ].map(([id,svgId,buttonId])=>({id,svgId,buttonId}));
 let exportBusy=true;
 const exportStatus=document.getElementById('exportStatus');
@@ -3494,6 +3625,8 @@ function chartDataTable(chart){
       }]];break;
     case 'workforce':
       fields=[year,field('Positions and FTEs','positions'),...WORKFORCE_COMPONENTS.map(item=>field(item.label,'components.'+item.key))];break;
+    case 'fund-comparison':
+      fields=[field('Fund','label'),field(`${value.previousYear} Budgeted ($)`,'previous'),field(`${value.currentYear} Proposed ($)`,'current'),field('Net Change ($)','net'),['Percent Change (%)',row=>row.previous===0?(row.current>0?'New Fund':null):row.percent*100],['Percent of Recommended Funds (%)',row=>row.share===null?null:row.share*100]];break;
     case 'estimated-fringe':
       fields=[year,field('Appropriations ($)','appropriations'),field('Full-time fringe ($)','fullTimeFringe'),field('Part-time fringe ($)','partTimeFringe'),field('Total budget with fringe ($)','total')];break;
     case 'local-funds':
@@ -3632,6 +3765,7 @@ function frozenGraphic(chart,context,singleView=false){
   const warning=state&&!state.classList.contains('ready')?state.textContent.trim():'';
   const edited=Boolean(editorStates.get(chart.id)?.edited);
   const metadata={...context,id:chart.id,title:heading,source:foot,warning,edited};
+  if(chart.id==='fund-comparison')metadata.data=structuredClone(lastFundComparisonData);
   if(chart.id==='summary')metadata.data=structuredClone(lastSummaryData);
   if(chart.id==='actual-spend-categories')metadata.data={...structuredClone(lastActualSpendCategoriesData),rows:lastActualSpendCategoriesData.rows.map(row=>({...structuredClone(row),unspent:actualSpendUnspent(row)}))};
   if(chart.id==='appropriations'){
@@ -3866,6 +4000,7 @@ document.getElementById('downloadAllData').addEventListener('click',downloadAllD
 const editorStates=new Map();
 const editorFields=(...fields)=>fields.map(([key,label,type='number'])=>({key,label,type}));
 const EDITOR_CONFIGS=[
+  {id:'fund-comparison',title:'fundComparisonTitle',get:()=>lastFundComparisonData,set:value=>lastFundComparisonData=value,rows:value=>value.rows,fields:editorFields(['label','Fund','text'],['previous','Budgeted ($)'],['current','Proposed ($)']),render:renderFundComparison,details:renderFundComparisonDetails},
   {id:'actual-spend-categories',title:'actualSpendCategoriesTitle',get:()=>lastActualSpendCategoriesData,set:value=>lastActualSpendCategoriesData=value,rows:value=>value.rows,fields:[{key:'label',label:'Category',type:'text'},...['budget','actuals'].map(key=>({key,label:key==='actuals'?'Actual spend ($)':'Budget ($)',type:'number',signed:true,nullable:true}))],render:renderActualSpendCategories,details:renderActualSpendCategoriesDetails},
   {id:'estimated-fringe',title:'fringeTitle',get:()=>lastFringeData,set:value=>lastFringeData=value,rows:value=>value,fields:editorFields(['appropriations','Appropriations ($)'],['fullTimeFringe','Full-time fringe ($)'],['partTimeFringe','Part-time fringe ($)']),render:renderFringeChart,details:renderFringeDetails},
   {id:'appropriations',title:'chartTitle',get:()=>lastData,set:value=>lastData=value,rows:value=>value,fields:editorFields(['amount','Appropriation ($)']),render:renderChart,details:renderDetails},
@@ -3919,6 +4054,7 @@ function syncEditorDataStatus(state){
   status.textContent=`${manual} manually entered data point${manual===1?'':'s'}.${missing.length?` Missing values remain gaps: ${missing.join(', ')}.`:''}`;
 }
 function normalizeEditedData(id,data){
+  if(id==='fund-comparison')calculateFundComparison(data);
   if(id==='summary'){
     data.rows=summaryRows(data);
     for(const row of data.rows)if(Object.values(row).some(value=>typeof value==='number'&&!Number.isFinite(value)))throw new Error('Summary values are too large.');
@@ -4123,6 +4259,7 @@ window.addEventListener('resize',()=>{
     if(lastSummaryData)renderSummaryGraphic(lastSummaryData);
     if(lastData)renderChart(lastData);
     if(lastFringeData)renderFringeChart(lastFringeData);
+    if(lastFundComparisonData)renderFundComparison(lastFundComparisonData);
     if(lastLocalFundsData)renderLocalFundsChart(lastLocalFundsData);
     if(lastWorkforceData)renderWorkforceChart(lastWorkforceData);
     if(lastPositionChangesData)renderPositionChangesChart(lastPositionChangesData);
